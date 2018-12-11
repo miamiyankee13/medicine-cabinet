@@ -1,0 +1,20 @@
+{
+  "name": "medicine-cabinet",
+  "version": "1.0.0",
+  "description": "A strain tracking app for medicinal cannabis patients",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --exit",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miamiyankee13/medicine-cabinet.git"
+  },
+  "author": "Anthony D'Amico",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/miamiyankee13/medicine-cabinet/issues"
+  },
+  "homepage": "https://github.com/miamiyankee13/medicine-cabinet#readme"
+}
