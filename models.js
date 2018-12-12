@@ -2,6 +2,9 @@
 //Import dependencies
 const mongoose = require('mongoose');
 
+//Configure mongoose to use ES6 promises
+mongoose.Promise = global.Promise;    
+
 //Declare schema for comments
 const commentSchema = mongoose.Schema({
     content: { type: String }
@@ -50,3 +53,5 @@ userSchema.methods.serialize = function() {
 //Create mongoose models
 const Strain = mongoose.model('Strain', strainSchema);
 const User = mongoose.model('User', userSchema);
+
+module.exports = { Strain, User};
