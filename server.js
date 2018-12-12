@@ -9,6 +9,7 @@ mongoose.Promise = global.Promise;
 
 //Import modules
 const { PORT, DATABASE_URL } = require('./config');  
+const strainsRouter = require('./routers/strains-router');
 
 //Declare new app instance
 const app = express();
@@ -26,6 +27,9 @@ app.use( (req, res, next) => {
 
 //Serve static files from public folder
 app.use(express.static('public'));
+
+//Enable use of routers
+app.use('/strains', strainsRouter);
 
 //Declare global server object
 let server;
