@@ -1,5 +1,5 @@
 {"name":"A-Dub","type":"Hybrid","description":"A cross between Sour Double & Alien Dawg","flavor":"Earthy","comments":[]}
-{"name":"ACDC","type":"Hybrid (High-CBD)","description":"A phenotype of Cannatonic","flavor":"Earthy","comments":[]}
+{"name":"ACDC","type":"Hybrid","description":"High CBD & low THC potency","flavor":"Earthy","comments":[]}
 {"name":"Afghan Haze","type":"Hybrid","description":"A cross between Afghani & Haze","flavor":"Flowery","comments":[]}
 {"name":"Alien Dawg","type":"Indica","description":"A cross between Chemdawg & Alien Technology","flavor":"Earthy","comments":[]}
 {"name":"Apple Kush","type":"Hybrid","description":"A cross between Sour Diesel & Pure Kush","flavor":"Apple","comments":[]}
@@ -7,4 +7,34 @@
 {"name":"Berry OG","type":"Hybrid","description":"A cross between OG Kush & Blueberry","flavor":"Earthy","comments":[]}
 {"name":"Blackberry Haze","type":"Sativa","description":"A cross between Blackberry & Lime Haze","flavor":"Berry","comments":[]}
 {"name":"Blue Dream","type":"Hybrid","description":"A cross between Blueberry & Haze","flavor":"Blueberry","comments":[]}
-{"name":"Blueberry","type":"Indica","description":"2000 High Times Cannabis Cup Winner for Best Indica","flavor":"","comments":[]}
+{"name":"Blueberry","type":"Indica","description":"2000 High Times Cannabis Cup Winner for Best Indica","flavor":"Blueberry","comments":[]}
+{"name":"Bruce Banner","type":"Hybrid","description":"A cross between OG Kush & Strawberry Diesel","flavor":"Sweet","comments":[]}
+{"name":"Candyland","type":"Sativa","description":"A cross between Granddaddy Purple & Platinum Cookies","flavor":"Sweet","comments":[]}
+{"name":"Charlotte's Web","type":"Sativa","description":"High CBD & low THC potency","flavor":"Earthy","comments":[]}
+{"name":"Cherry Diesel","type":"Hybrid","description":"A cross between Cherry OG & Turbo Diesel","flavor":"Diesel","comments":[]}
+{"name":"Chocolate Hashberry","type":"Hybrid","description":"A cross between Chocolate Kush & Blackberry Kush","flavor":"Earthy","comments":[]}
+{"name":"Chocolope","type":"Sativa","description":"A cross between Chocolate Thai & Cannalope Haze","flavor":"Coffee","comments":[]}
+{"name":"Critical Kush","type":"Indica","description":"A cross between Critical Mass & OG Kush","flavor":"Earthy","comments":[]}
+{"name":"Diamond OG","type":"Indica","description":"A cross between OG Kush & an unknown strain","flavor":"Citrus","comments":[]}
+{"name":"Do-Si-Dos","type":"Indica","description":"A phenotype of GSC","flavor":"Earthy","comments":[]}
+{"name":"Double Tangie Banana","type":"Hybrid","description":"A cross between Banana Sherbert & Tangie","flavor":"Orange","comments":[]}
+{"name":"Dutch Treat","type":"Hybrid","description":"Very popular among Amsterdam coffee shops","flavor":"Sweet","comments":[]}
+{"name":"Electric Lemonade","type":"Sativa","description":"A cross between Tahoe OG & Blue Dream","flavor":"Lemon","comments":[]}
+{"name":"Euphoria Cookies","type":"Hybrid","description":"A cross between GSC & Euphoria","flavor":"Sweet","comments":[]}
+{"name":"Face on Fire","type":"Hybrid","description":"A cross between White Fire & Face Off OG","flavor":"Earthy","comments":[]}
+{"name":"Fire Alien Kush","type":"Hybrid","description":"A cross between Alien Kush & Fire OG","flavor":"Earthy","comments":[]}
+{"name":"Flo","type":"Hybrid","description":"A cross between Purple Thai & Afghani","flavor":"Sweet","comments":[]}
+{"name":"Forbidden Fruit","type":"Indica","description":"A cross between Cherry Pie & Tangie","flavor":"Grapefruit","comments":[]}
+{"name":"Fruit Punch","type":"Sativa","description":"A cross between Skunk, Haze, & Northern Lights","flavor":"Berry","comments":[]}
+{"name":"G13","type":"Indica","description":"Apparently bred by the United States government in the 1960s","flavor":"Earthy","comments":[]}
+{"name":"GSC","type":"Hybrid","description":"A cross between OG Kush & Durban Poison","flavor":"Earthy","comments":[]}
+{"name":"Gelato","type":"Hybrid","description":"A cross between Sunset Sherbert & Thin Mint GSC","flavor":"Sweet","comments":[]}
+{"name":"Ghost Train Haze","type":"Sativa","description":"A cross between Ghost OG & Neville's Wreck","flavor":"Citrus","comments":[]}
+{"name":"God's Gift","type":"Indica","description":"A cross between Granddaddy Purple & OG Kush","flavor":"Sweet","comments":[]}
+{"name":"Goji OG","type":"Hybrid","description":"A cross between Nepali OG & Snow Lotus","flavor":"Sweet","comments":[]}
+{"name":"Golden State Banana","type":"Indica","description":"A cross between Ghost OG & Banana Kush","flavor":"Citrus","comments":[]}
+{"name":"Golden Ticket","type":"Hybrid","description":"A phenotype of Chernobyl","flavor":"Lemon","comments":[]}
+{"name":"Granddaddy Purple","type":"Indica","description":"A cross between Purple Urkle & Big Bug","flavor":"Grape","comments":[]}
+{"name":"Grape Valley Kush","type":"Indica","description":"A cross between SFV OG & Grape Kush","flavor":"Grape","comments":[]}
+
+
