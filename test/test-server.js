@@ -5,6 +5,7 @@ const chaiHttp = require('chai-http');
 
 //Import modules
 const { app, runServer, closeServer } = require("../server");
+const { TEST_DATABASE_URL } = require('../config');  
 
 //Enable expect style syntax
 const expect = chai.expect;
@@ -17,7 +18,7 @@ describe('Index Page', function () {
 
     //Activate server before tests run
     before(function() {
-        return runServer();
+        return runServer(TEST_DATABASE_URL);
     });
 
     //Close server after tests run

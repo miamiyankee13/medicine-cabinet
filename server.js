@@ -2,6 +2,13 @@
 //Import dependencies
 const express = require('express');
 const morgan = require('morgan');
+const mongoose = require('mongoose');
+
+//Configure mongoose to use ES6 promises
+mongoose.Promise = global.Promise;  
+
+//Import modules
+const { PORT, DATABASE_URL } = require('./config');  
 
 //Declare new app instance
 const app = express();
@@ -24,38 +31,46 @@ app.use(express.static('public'));
 let server;
 
 //Start server and return a Promise
-function runServer() {
-  const port = process.env.PORT || 8080;
-  return new Promise((resolve, reject) => {
-    server = app
-      .listen(port, () => {
-        console.log(`Your app is listening on port ${port}`);
-        resolve(server);
-      })
-      .on("error", err => {
-        reject(err);
-      });
-  });
+function runServer(databaseUrl, port = PORT) {
+    return new Promise((resolve, reject) => {
+      mongoose.connect(
+        databaseUrl, { useNewUrlParser: true },
+        err => {
+          if (err) {
+            return reject(err);
+          }
+          server = app
+            .listen(port, () => {
+              console.log(`Your app is listening on port ${port}`);
+              resolve();
+            })
+            .on("error", err => {
+              mongoose.disconnect();
+              reject(err);
+            });
+        }
+      );
+    });
 }
 
 //Close server and return a Promise
 function closeServer() {
-  return new Promise((resolve, reject) => {
-    console.log("Closing server");
-    server.close(err => {
-      if (err) {
-        reject(err);
-        // so we don't also call `resolve()`
-        return;
-      }
-      resolve();
+    return mongoose.disconnect().then(() => {
+      return new Promise((resolve, reject) => {
+        console.log("Closing server");
+        server.close(err => {
+          if (err) {
+            return reject(err);
+          }
+          resolve();
+        });
+      });
     });
-  });
 }
 
 //Allows access to 'node server.js' & other test files if imported/exported
 if (require.main === module) {
-  runServer().catch(err => console.error(err));
+    runServer(DATABASE_URL).catch(err => console.error(err));
 }
 
 module.exports = { app, runServer, closeServer };
