@@ -76,5 +76,29 @@ describe('/strains API resource', function() {
                 expect(res.body.strains).to.have.lengthOf(count);
             })
         });
+
+        it('Should return strains with correct fields', function() {
+            let resStrain;
+            return chai.request(app).get('/strains').then(function(res) {
+                expect(res).to.have.status(200);
+                expect(res).to.be.json;
+                expect(res.body.strains).to.be.a('array');
+                expect(res.body.strains).to.have.lengthOf.at.least(1);
+                
+                res.body.strains.forEach(function(strain) {
+                    expect(strain).to.be.a('object');
+                    expect(strain).to.include.keys('_id', 'name', 'type', 'description', 'flavor');
+                });
+
+                resStrain = res.body.strains[0];
+                return Strain.findById(resStrain._id);
+            }).then(function(strain) {
+                expect(resStrain._id).to.equal(strain.id);
+                expect(resStrain.name).to.equal(strain.name);
+                expect(resStrain.type).to.equal(strain.type);
+                expect(resStrain.description).to.equal(strain.description);
+                expect(resStrain.flavor).to.equal(strain.flavor);
+            });
+        });
     });
 });

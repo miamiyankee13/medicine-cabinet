@@ -2,8 +2,9 @@
 //Import dependencies
 const mongoose = require('mongoose');
 
-//Configure mongoose to use ES6 promises
+//Configure mongoose to use ES6 promises & createIndex
 mongoose.Promise = global.Promise;    
+mongoose.set('useCreateIndex', true)
 
 //Declare schema for comments
 const commentSchema = mongoose.Schema({

@@ -22,4 +22,14 @@ router.get('/', (req, res) => {
     });
 });
 
+//GET route handler for /strains/:id
+router.get('/:id', (req, res) => {
+    Strain.findById(req.params.id).then(strain => {
+        res.json(strain);
+    }).catch(err => {
+        console.error(err);
+        res.status(500).json({ message: 'Internal server error' });
+    });
+});
+
 module.exports = router;
