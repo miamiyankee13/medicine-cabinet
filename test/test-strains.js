@@ -108,7 +108,7 @@ describe('/strains API resource', function() {
     //Tests for /strains POST
     describe('POST endpoint', function() {
 
-        //Verify request was successful & response has correct fields
+        //Create a strain & verify request was successful/response has correct fields
         it('Should add new strain', function() {
             const newStrain = generateStrainData();
             return chai.request(app).post('/strains').send(newStrain).then(function(res) {
@@ -128,6 +128,51 @@ describe('/strains API resource', function() {
                 expect(strain.description).to.equal(newStrain.description);
                 expect(strain.flavor).to.equal(newStrain.flavor);
             });
+        });
+    });
+
+    //Tests for /strains PUT
+    describe('PUT endpoint', function() {
+
+        //Update a strain & verify it was updated correctly in DB
+        it('Should update a strain', function() {
+            const toUpdate = {
+                name: 'Updated Strain',
+                type: 'Sativa',
+                description: 'Blue Hot Flames',
+                flavor: 'Peanut Butter'
+            }
+
+            return Strain.findOne().then(function(strain) {
+                toUpdate._id = strain._id;
+                return chai.request(app).put(`/strains/${strain._id}`).send(toUpdate).then(function(res) {
+                    expect(res).to.have.status(200);
+                    return Strain.findById(toUpdate._id);
+                }).then(function(strain) {
+                    expect(strain.name).to.equal(toUpdate.name);
+                    expect(strain.type).to.equal(toUpdate.type);
+                    expect(strain.description).to.equal(toUpdate.description);
+                    expect(strain.flavor).to.equal(toUpdate.flavor);
+                })
+            })
+        });
+    });
+
+    //Tests for /strains DELETE
+    describe('DELETE endpoint', function() {
+
+        //Delete a strain & verify response status/strain does not exist in DB
+        it('Should delete a strain', function() {
+            let strain;
+            return Strain.findOne().then(function(_strain) {
+                strain = _strain;
+                return chai.request(app).delete(`/strains/${strain._id}`);
+            }).then(function(res) {
+                expect(res).to.have.status(204);
+                return Strain.findById(strain._id);
+            }).then(function(_strain) {
+                expect(_strain).to.be.null;
+            })
         });
     });
 

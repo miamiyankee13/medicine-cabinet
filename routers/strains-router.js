@@ -61,4 +61,42 @@ router.post('/', jsonParser, (req, res) => {
     });
 });
 
+//PUT route handler for /strains
+//-validate request id & updateable fields
+//-update strain & send json response
+router.put('/:id', jsonParser, (req, res) => {
+    if (!(req.params.id && req.body._id && req.params.id === req.body._id)) {
+        const message = `Request path id ${req.params.id} and request body id ${req.body._id} must match`;
+        console.error(message);
+        return res.status(400).send(message);
+    }
+
+    const toUpdate = {};
+    const updateableFields = ['name', 'type', 'description', 'flavor'];
+
+    updateableFields.forEach(field => {
+        if (field in req.body) {
+            toUpdate[field] = req.body[field];
+        }
+    });
+
+    Strain.findByIdAndUpdate(req.params.id, { $set: toUpdate }, { new: true }).then(strain => {
+        res.status(200).json(strain);
+    }).catch(err => {
+        console.error(err);
+        res.status(500).json({ message: 'Internal server error' });
+    });
+});
+
+//DELETE route handler for /strains
+//-delete strain & send response status
+router.delete('/:id', (req, res) => {
+    Strain.findByIdAndRemove(req.params.id).then(() =>{
+        res.status(204).end();
+    }).catch(err => {
+        console.error(err);
+        res.status(500).json({ message: 'Internal server error' });
+    });
+});
+
 module.exports = router;
