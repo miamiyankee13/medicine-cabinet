@@ -16,7 +16,7 @@ const expect = chai.expect;
 //Enable use of chai-http testing methods
 chai.use(chaiHttp);
 
-//Create function that returns object of random strain data
+//Return object of random strain data
 function generateStrainData() {
     return {
         name: faker.lorem.words(),
@@ -44,7 +44,7 @@ function tearDownDb() {
     return mongoose.connection.dropDatabase();
 }
 
-//Indicate entity being tested
+//Tests for /strains endpoints
 describe('/strains API resource', function() {
 
     //Activate server before tests run
@@ -63,20 +63,23 @@ describe('/strains API resource', function() {
         return closeServer();
     });
 
-    //Indicate entity being tested
+    //Tests for /strains GET
     describe('GET endpoint', function() {
 
+        //Verify response status, type, & count
         it('Should return all existing strains', function() {
             let res;
             return chai.request(app).get('/strains').then(function(_res) {
                 res = _res;
                 expect(res).to.have.status(200);
+                expect(res).to.be.json;
                 return Strain.countDocuments();
             }).then(function(count) {
                 expect(res.body.strains).to.have.lengthOf(count);
             })
         });
 
+        //Verify response is an array of objects & each object has expected fields
         it('Should return strains with correct fields', function() {
             let resStrain;
             return chai.request(app).get('/strains').then(function(res) {

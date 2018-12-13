@@ -13,6 +13,7 @@ const { Strain, User } = require('../models');
 const router = express.Router();
 
 //GET route handler for /strains
+//-find all strains, sort by name, & send json data
 router.get('/', (req, res) => {
     Strain.find().sort({ name: 1 }).then(strains => {
         res.json({ strains: strains});
@@ -23,6 +24,7 @@ router.get('/', (req, res) => {
 });
 
 //GET route handler for /strains/:id
+//-find individual strain by id & send json data
 router.get('/:id', (req, res) => {
     Strain.findById(req.params.id).then(strain => {
         res.json(strain);
