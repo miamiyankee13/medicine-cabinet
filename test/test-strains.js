@@ -104,4 +104,31 @@ describe('/strains API resource', function() {
             });
         });
     });
+
+    //Tests for /strains POST
+    describe('POST endpoint', function() {
+
+        //Verify request was successful & response has correct fields
+        it('Should add new strain', function() {
+            const newStrain = generateStrainData();
+            return chai.request(app).post('/strains').send(newStrain).then(function(res) {
+                expect(res).to.have.status(201);
+                expect(res).to.be.json;
+                expect(res.body).to.be.a('object');
+                expect(res.body).to.include.keys('_id', 'name', 'type', 'description', 'flavor');
+                expect(res.body._id).to.not.be.null;
+                expect(res.body.name).to.equal(newStrain.name);
+                expect(res.body.type).to.equal(newStrain.type);
+                expect(res.body.description).to.equal(newStrain.description);
+                expect(res.body.flavor).to.equal(newStrain.flavor);
+                return Strain.findById(res.body._id);
+            }).then(function(strain) {
+                expect(strain.name).to.equal(newStrain.name);
+                expect(strain.type).to.equal(newStrain.type);
+                expect(strain.description).to.equal(newStrain.description);
+                expect(strain.flavor).to.equal(newStrain.flavor);
+            });
+        });
+    });
+
 });

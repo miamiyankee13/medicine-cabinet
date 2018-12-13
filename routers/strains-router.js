@@ -34,4 +34,31 @@ router.get('/:id', (req, res) => {
     });
 });
 
+//POST route handler for /strains
+//-validate request body
+//-create strain & send json response
+router.post('/', jsonParser, (req, res) => {
+    const requiredFields = ['name', 'type', 'description', 'flavor'];
+    for (let i = 0; i < requiredFields.length; i++) {
+        const field = requiredFields[i];
+        if (!(field in req.body)) {
+            const message = `Missing ${field} in request body`;
+            console.error(message);
+            return res.status(400).send(message);
+        }
+    }
+
+    Strain.create({
+        name: req.body.name,
+        type: req.body.type,
+        description: req.body.description,
+        flavor: req.body.flavor
+    }).then(strain => {
+        res.status(201).json(strain);
+    }).catch(err => {
+        console.error(err);
+        res.status(500).json({ message: 'Internal server error' });
+    });
+});
+
 module.exports = router;
