@@ -51,6 +51,17 @@ userSchema.methods.serialize = function() {
     }
 }
 
+strainSchema.methods.serialize = function() {
+    return {
+        _id: this.id,
+        name: this.name,
+        type: this.type,
+        description: this.description,
+        flavor: this.flavor,
+        comments: this.comments
+    }
+}
+
 //Create mongoose models
 const Strain = mongoose.model('Strain', strainSchema);
 const User = mongoose.model('User', userSchema);

@@ -16,7 +16,7 @@ const router = express.Router();
 //-find all strains, sort by name, & send json data
 router.get('/', (req, res) => {
     Strain.find().sort({ name: 1 }).then(strains => {
-        res.json({ strains: strains});
+        res.json({ strains: strains.map(strain => strain.serialize())});
     }).catch(err => {
         console.error(err);
         res.status(500).json({ message: 'Internal server error' });
@@ -27,7 +27,7 @@ router.get('/', (req, res) => {
 //-find individual strain by id & send json data
 router.get('/:id', (req, res) => {
     Strain.findById(req.params.id).then(strain => {
-        res.json(strain);
+        res.json(strain.serialize());
     }).catch(err => {
         console.error(err);
         res.status(500).json({ message: 'Internal server error' });
@@ -54,7 +54,7 @@ router.post('/', jsonParser, (req, res) => {
         description: req.body.description,
         flavor: req.body.flavor
     }).then(strain => {
-        res.status(201).json(strain);
+        res.status(201).json(strain.serialize());
     }).catch(err => {
         console.error(err);
         res.status(500).json({ message: 'Internal server error' });
@@ -81,7 +81,7 @@ router.put('/:id', jsonParser, (req, res) => {
     });
 
     Strain.findByIdAndUpdate(req.params.id, { $set: toUpdate }, { new: true }).then(strain => {
-        res.status(200).json(strain);
+        res.status(200).json(strain.serialize());
     }).catch(err => {
         console.error(err);
         res.status(500).json({ message: 'Internal server error' });
