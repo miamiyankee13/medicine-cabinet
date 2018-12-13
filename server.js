@@ -1,15 +1,21 @@
 'use strict'
 //Import dependencies
+require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+const passport = require('passport');
 
 //Configure mongoose to use ES6 promises
 mongoose.Promise = global.Promise;  
 
 //Import modules
-const { PORT, DATABASE_URL } = require('./config');  
+const { PORT, DATABASE_URL } = require('./config');
+const { localStrategy, jwtStrategy } = require('./strategies');
 const strainsRouter = require('./routers/strains-router');
+const usersRouter = require('./routers/users-router');
+const authRouter = require('./routers/auth-router');
+
 
 //Declare new app instance
 const app = express();
@@ -28,8 +34,19 @@ app.use( (req, res, next) => {
 //Serve static files from public folder
 app.use(express.static('public'));
 
+//Enable use of passport authentication strategies
+passport.use(localStrategy);
+passport.use(jwtStrategy);
+
 //Enable use of routers
 app.use('/strains', strainsRouter);
+app.use('/users', usersRouter);
+app.use('/auth', authRouter);
+
+//Catch all handler if route does not exist
+app.use('*', (req, res) => {
+  res.status(404).json({ message: "Not found" });
+});
 
 //Declare global server object
 let server;

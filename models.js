@@ -1,6 +1,7 @@
 'use strict'
 //Import dependencies
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 //Configure mongoose to use ES6 promises & createIndex
 mongoose.Promise = global.Promise;    
@@ -40,7 +41,7 @@ userSchema.pre('findOne', function(next) {
     next();
 });
 
-//Create serialize method to control data shown to client
+//Create serialize method for users to control data shown to client
 userSchema.methods.serialize = function() {
     return {
         _id: this.id,
@@ -49,8 +50,19 @@ userSchema.methods.serialize = function() {
         userName: this.userName,
         strains: this.strains
     }
-}
+};
 
+//Create password validation method for users
+userSchema.methods.validatePassword = function(password) {
+    return bcrypt.compare(password, this.password);
+};
+
+//Create password hash method for users
+userSchema.methods.hashPassword = function(password) {
+    return bcrypt.hash(password, 10);
+};
+
+//Create serialze method for strains to control data shown to client
 strainSchema.methods.serialize = function() {
     return {
         _id: this.id,
@@ -60,7 +72,7 @@ strainSchema.methods.serialize = function() {
         flavor: this.flavor,
         comments: this.comments
     }
-}
+};
 
 //Create mongoose models
 const Strain = mongoose.model('Strain', strainSchema);
