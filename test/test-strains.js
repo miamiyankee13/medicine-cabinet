@@ -76,7 +76,11 @@ describe('/strains API resource', function() {
                 return Strain.countDocuments();
             }).then(function(count) {
                 expect(res.body.strains).to.have.lengthOf(count);
-            })
+            }).catch(function(err) {
+                if (err instanceof chai.AssertionError) {
+                    throw err;
+                }
+            });
         });
 
         //Verify response is an array of objects & each object has expected fields
@@ -101,6 +105,10 @@ describe('/strains API resource', function() {
                 expect(resStrain.type).to.equal(strain.type);
                 expect(resStrain.description).to.equal(strain.description);
                 expect(resStrain.flavor).to.equal(strain.flavor);
+            }).catch(function(err) {
+                if (err instanceof chai.AssertionError) {
+                    throw err;
+                }
             });
         });
     });
@@ -127,6 +135,10 @@ describe('/strains API resource', function() {
                 expect(strain.type).to.equal(newStrain.type);
                 expect(strain.description).to.equal(newStrain.description);
                 expect(strain.flavor).to.equal(newStrain.flavor);
+            }).catch(function(err) {
+                if (err instanceof chai.AssertionError) {
+                    throw err;
+                }
             });
         });
     });
@@ -154,7 +166,11 @@ describe('/strains API resource', function() {
                     expect(strain.description).to.equal(toUpdate.description);
                     expect(strain.flavor).to.equal(toUpdate.flavor);
                 })
-            })
+            }).catch(function(err) {
+                if (err instanceof chai.AssertionError) {
+                    throw err;
+                }
+            });
         });
     });
 
@@ -172,7 +188,11 @@ describe('/strains API resource', function() {
                 return Strain.findById(strain._id);
             }).then(function(_strain) {
                 expect(_strain).to.be.null;
-            })
+            }).catch(function(err) {
+                if (err instanceof chai.AssertionError) {
+                    throw err;
+                }
+            });
         });
     });
 
