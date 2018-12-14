@@ -2,8 +2,6 @@ language: node_js
 node_js: node
 services:
 - mongodb
-env:
-  - JWT_SECRET=DEH
 deploy:
   provider: heroku
   api_key:
