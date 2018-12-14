@@ -58,7 +58,7 @@ userSchema.methods.validatePassword = function(password) {
 };
 
 //Create password hash method for users
-userSchema.methods.hashPassword = function(password) {
+userSchema.statics.hashPassword = function(password) {
     return bcrypt.hash(password, 10);
 };
 
