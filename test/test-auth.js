@@ -1,7 +1,9 @@
 'use strict'
 //Import dependencies
+const mongoose = require('mongoose');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
+const faker = require('faker');
 const jwt = require('jsonwebtoken');
 
 //Import modules
@@ -15,8 +17,14 @@ const expect = chai.expect;
 //Enable use of chai-http testing methods
 chai.use(chaiHttp);
 
+//Delete entire DB
+function tearDownDb() {
+    console.warn('Deleting database');
+    return mongoose.connection.dropDatabase();
+}
+
 describe('Auth endpoints', function() {
-    const userName = 'exampleUser';
+    const userName = faker.lorem.words();
     const password = '0123456789';
     const firstName = 'Babe';
     const lastName = 'Ruth';
@@ -37,7 +45,7 @@ describe('Auth endpoints', function() {
     });
 
     afterEach(function() {
-        return User.remove({});
+        return tearDownDb();
     })
 
     after(function() {
@@ -45,8 +53,19 @@ describe('Auth endpoints', function() {
     });
 
     describe('/auth/login', function() {
+        
         it('Should reject request with no credentials', function() {
             return chai.request(app).post('/auth/login').send({}).then(function(res) {
+                expect(res).to.have.status(400);
+            }).catch(function(err) {
+                if (err instanceof chai.AssertionError) {
+                    throw err;
+                }
+            });
+        });
+
+        it('Should reject request with incorrect usernames', function() {
+            return chai.request(app).post('/auth/login').send({ userName: 'wrongUsername', password }).then(function(res) {
                 expect(res).to.have.status(400);
             }).catch(function(err) {
                 if (err instanceof chai.AssertionError) {
