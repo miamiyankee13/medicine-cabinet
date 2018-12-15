@@ -24,7 +24,7 @@ function tearDownDb() {
 }
 
 describe('Auth endpoints', function() {
-    const userName = faker.lorem.words();
+    const userName = 'exampleUser'
     const password = '0123456789';
     const firstName = 'Babe';
     const lastName = 'Ruth';
@@ -71,6 +71,33 @@ describe('Auth endpoints', function() {
                 if (err instanceof chai.AssertionError) {
                     throw err;
                 }
+            });
+        });
+
+        it('Should reject request with incorrect passwords', function() {
+            return chai.request(app).post('/auth/login').send({ userName, password: 'wrongPassword' }).then(function(res) {
+                expect(res).to.have.status(400);
+            }).catch(function(err) {
+                if (err instanceof chai.AssertionError) {
+                    throw err;
+                }
+            });
+        });
+
+        it('Should return a valid auth token', function() {
+            return chai.request(app).post('/auth/login').send({ userName, password }).then(function(res) {
+                expect(res).to.have.status(200);
+                expect(res.body).to.be.a('object');
+                const token = res.body.authToken;
+                expect(token).to.be.a('string');
+                const payload = jwt.verify(token, JWT_SECRET, {
+                    algorithms: ['HS256']
+                });
+                expect(payload.user).to.deep.equal({
+                    userName,
+                    firstName,
+                    lastName
+                });
             });
         });
     });
