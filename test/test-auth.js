@@ -84,22 +84,7 @@ describe('Auth endpoints', function() {
             });
         });
 
-        it('Should return a valid auth token', function() {
-            return chai.request(app).post('/auth/login').send({ userName, password }).then(function(res) {
-                expect(res).to.have.status(200);
-                expect(res.body).to.be.a('object');
-                const token = res.body.authToken;
-                expect(token).to.be.a('string');
-                const payload = jwt.verify(token, JWT_SECRET, {
-                    algorithms: ['HS256']
-                });
-                expect(payload.user).to.deep.equal({
-                    userName,
-                    firstName,
-                    lastName
-                });
-            });
-        });
+        
     });
 
 
