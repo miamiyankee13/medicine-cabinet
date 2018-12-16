@@ -8,7 +8,12 @@ const { User } = require('./models');
 const { JWT_SECRET } = require('./config');
 
 //Create strategy to validate user information
-const localStrategy = new LocalStrategy((userName, password, callback) => {
+const localStrategy = new LocalStrategy(
+    {
+        usernameField: 'userName', //since e-mails are unique we'll use those as identifiers
+        passwordField: 'password',
+    },
+    (userName, password, callback) => {
     let user;
     User.findOne({ userName: userName}).then(_user => {
         user = _user;
