@@ -66,7 +66,7 @@ describe('Auth endpoints', function() {
 
         it('Should reject request with incorrect usernames', function() {
             return chai.request(app).post('/auth/login').send({ userName: 'wrongUsername', password }).then(function(res) {
-                expect(res).to.have.status(400);
+                expect(res).to.have.status(401);
             }).catch(function(err) {
                 if (err instanceof chai.AssertionError) {
                     throw err;
@@ -76,7 +76,7 @@ describe('Auth endpoints', function() {
 
         it('Should reject request with incorrect passwords', function() {
             return chai.request(app).post('/auth/login').send({ userName, password: 'wrongPassword' }).then(function(res) {
-                expect(res).to.have.status(400);
+                expect(res).to.have.status(401);
             }).catch(function(err) {
                 if (err instanceof chai.AssertionError) {
                     throw err;
