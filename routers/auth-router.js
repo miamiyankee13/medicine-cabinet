@@ -38,7 +38,7 @@ router.post('/login', localAuth, (req, res) => {
 
 //POST request handler for JWT refresh
 router.post('/refresh', jwtAuth, (req, res) => {
-    const authToken = createAuthToken(res.user);
+    const authToken = createAuthToken(req.user);
     res.json({authToken});
 });
 

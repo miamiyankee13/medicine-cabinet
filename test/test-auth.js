@@ -93,10 +93,111 @@ describe('Auth endpoints', function() {
                 const payload = jwt.verify(token, JWT_SECRET, {
                     algorithm: ['HS256']
                 });
+            }).catch(function(err) {
+                if (err instanceof chai.AssertionError) {
+                    throw err;
+                }
+            });
+        });     
+    });
+
+    describe('auth/refresh', function() {
+
+        it('Should reject request with no credentials', function() {
+            return chai.request(app).post('/auth/refresh').send({}).then(function(res) {
+                expect(res).to.have.status(401);
+            }).catch(function(err) {
+                if (err instanceof chai.AssertionError) {
+                    throw err;
+                }
             });
         });
 
-        
+        it('Should reject requests with an invalid token', function() {
+            const token = jwt.sign(
+                {
+                    user: {
+                        userName,
+                        firstName,
+                        lastName
+                    }
+                },
+                'wrongSecret',
+                {
+                    algorithm: 'HS256',
+                    expiresIn: '7d'
+                }
+            );
+
+            return chai.request(app).post('/auth/refresh').set('authorization', `Bearer ${token}`).then(function(res) {
+                expect(res).to.have.status(401);
+            }).catch(function(err) {
+                if (err instanceof chai.AssertionError) {
+                    throw err;
+                }
+            })
+        });
+
+        it('Should reject requests with an expired token', function() {
+            const token = jwt.sign(
+                {
+                    user: {
+                        userName,
+                        firstName,
+                        lastName  
+                    },
+                    exp: Math.floor(Date.now() / 1000) - 10
+                },
+                JWT_SECRET,
+                {
+                    algorithm: 'HS256',
+                    subject: userName,
+                }
+            );
+
+            return chai.request(app).post('/auth/refresh').set('authorization', `Bearer ${token}`).then(function(res) {
+                expect(res).to.have.status(401);
+            }).catch(function(err) {
+                if (err instanceof chai.AssertionError) {
+                    throw err;
+                }
+            });
+        });
+
+        it('Should return a valid auth token with a new expiry date', function() {
+            const token = jwt.sign(
+                {
+                    user: {
+                        userName,
+                        firstName,
+                        lastName
+                    }
+                },
+                JWT_SECRET,
+                {
+                    algorithm: 'HS256',
+                    subject: userName,
+                    expiresIn: '7d'
+                }
+            );
+            const decoded = jwt.decode(token);
+
+            return chai.request(app).post('/auth/refresh').set('authorization', `Bearer ${token}`).then(function(res) {
+                expect(res).to.have.status(200);
+                expect(res.body).to.be.a('object');
+                const token = req.body.authToken;
+                expect(token).to.be.a('string');
+                const payload = jwt.verify(token, JWT_SECRET, {
+                    algorithm: ['HS256']
+                });
+                expect(payload.exp).to.be.at.least(decoded.exp);
+            }).catch(function(err) {
+                if (err instanceof chai.AssertionError) {
+                    throw err;
+                }
+            });
+        });
+
     });
 
 
