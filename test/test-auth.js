@@ -35,12 +35,12 @@ describe('Auth endpoints', function() {
 
     beforeEach(function() {
         return User.hashPassword(password).then(function(password) {
-            User.create({
+            return User.create({
                 userName,
                 password,
                 firstName,
                 lastName
-            });
+            })
         });
     });
 
@@ -85,14 +85,6 @@ describe('Auth endpoints', function() {
         });
 
         it('Should return a valid auth token', function() {
-            User.hashPassword(password).then(function(password) {
-                User.create({
-                    userName,
-                    password,
-                    firstName,
-                    lastName
-                });
-            });
             return chai.request(app).post('/auth/login').send({ userName, password }).then(function(res) {
                 expect(res).to.have.status(200);
                 expect(res.body).to.be.a('object');
@@ -106,4 +98,6 @@ describe('Auth endpoints', function() {
 
         
     });
+
+
 });
