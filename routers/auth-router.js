@@ -30,13 +30,13 @@ const jwtAuth = passport.authenticate('jwt', {session: false});
 //Enable JSON parser
 router.use(jsonParser);
 
-//POST request handler for user login
+//POST route handler for user login
 router.post('/login', localAuth, (req, res) => {
     const authToken = createAuthToken(req.user.serialize());
     res.json({authToken});
 });
 
-//POST request handler for JWT refresh
+//POST route handler for JWT refresh
 router.post('/refresh', jwtAuth, (req, res) => {
     const authToken = createAuthToken(req.user);
     res.json({authToken});
