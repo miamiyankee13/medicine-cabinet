@@ -23,16 +23,20 @@ function tearDownDb() {
     return mongoose.connection.dropDatabase();
 }
 
-describe('Auth endpoints', function() {
+//Test for /auth endpoints
+describe('/auth endpoints', function() {
+    //Declare user fields
     const userName = 'exampleUser'
     const password = 'examplePassword';
     const firstName = 'Babe';
     const lastName = 'Ruth';
 
+    //Activate server before tests run
     before(function() {
         return runServer(TEST_DATABASE_URL);
     });
 
+    //Create user before each test
     beforeEach(function() {
         return User.hashPassword(password).then(function(password) {
             return User.create({
@@ -44,16 +48,20 @@ describe('Auth endpoints', function() {
         });
     });
 
+    //Delete database after each test
     afterEach(function() {
         return tearDownDb();
     })
 
+    //Close server after tests run
     after(function() {
         return closeServer();
     });
 
+    //Tests for /auth/login
     describe('/auth/login', function() {
         
+        //Verify response status
         it('Should reject request with no credentials', function() {
             return chai.request(app).post('/auth/login').send({}).then(function(res) {
                 expect(res).to.have.status(400);
@@ -64,6 +72,7 @@ describe('Auth endpoints', function() {
             });
         });
 
+        //Verify response status
         it('Should reject request with incorrect usernames', function() {
             return chai.request(app).post('/auth/login').send({ userName: 'wrongUsername', password }).then(function(res) {
                 expect(res).to.have.status(401);
@@ -74,6 +83,7 @@ describe('Auth endpoints', function() {
             });
         });
 
+        //Verify response status
         it('Should reject request with incorrect passwords', function() {
             return chai.request(app).post('/auth/login').send({ userName, password: 'wrongPassword' }).then(function(res) {
                 expect(res).to.have.status(401);
@@ -84,6 +94,7 @@ describe('Auth endpoints', function() {
             });
         });
 
+        //Verify response status, type, & token present
         it('Should return a valid auth token', function() {
             return chai.request(app).post('/auth/login').send({ userName, password }).then(function(res) {
                 expect(res).to.have.status(200);
@@ -101,8 +112,10 @@ describe('Auth endpoints', function() {
         });     
     });
 
-    describe('auth/refresh', function() {
+    //Tests for /auth/refresh
+    describe('/auth/refresh', function() {
 
+        //Verify response status
         it('Should reject request with no credentials', function() {
             return chai.request(app).post('/auth/refresh').send({}).then(function(res) {
                 expect(res).to.have.status(401);
@@ -113,6 +126,7 @@ describe('Auth endpoints', function() {
             });
         });
 
+        //Create invalid token & verify response status
         it('Should reject requests with an invalid token', function() {
             const token = jwt.sign(
                 {
@@ -138,6 +152,7 @@ describe('Auth endpoints', function() {
             })
         });
 
+        //Create expired token & verify response status
         it('Should reject requests with an expired token', function() {
             const token = jwt.sign(
                 {
@@ -164,6 +179,7 @@ describe('Auth endpoints', function() {
             });
         });
 
+        //Create valid token & verify response status, type, & new token present
         it('Should return a valid auth token with a new expiry date', function() {
             const token = jwt.sign(
                 {

@@ -52,11 +52,12 @@ describe('/strains API resource', function() {
         return runServer(TEST_DATABASE_URL);
     });
 
-    //Delete test database & seed with new data before each test
+    //Create new data before each test
     beforeEach(function() {
         return seedStrainData();
     });
 
+    //Delete database after each test
     afterEach(function() {
         return tearDownDb();
     })
