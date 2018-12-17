@@ -40,7 +40,7 @@ passport.use(jwtStrategy);
 
 //Enable use of routers
 app.use('/strains', strainsRouter);
-
+app.use('/users', usersRouter);
 app.use('/auth', authRouter);
 
 //Catch all handler if route does not exist
