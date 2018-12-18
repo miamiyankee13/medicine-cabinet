@@ -89,7 +89,7 @@ router.post('/', jsonParser, (req, res) => {
     firstName = firstName.trim();
     lastName = lastName.trim();
     
-    return User.find({userName}).count().then(count => {
+    return User.find({userName}).countDocuments().then(count => {
         if (count > 0) {
             return Promise.reject({
                 code: 422,
