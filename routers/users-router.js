@@ -130,7 +130,7 @@ router.get('/strains', jwtAuth, (req, res) => {
 
 //GET route hanlder for individual user's strain
 router.get('/strains/:id', jwtAuth, (req, res) => {
-    User.findOne({userName: req.user.userName}, {strains: { $elemMatch: req.params.id} }).then(strain => {
+    User.findOne({userName: req.user.userName}, {strains: { $elemMatch: { _id: req.params.id } } }).then(strain => {
         res.status(200).json(strain.serialize());
     }).catch(err => {
         console.error(err);
@@ -150,7 +150,7 @@ router.put('/strains/:id', jwtAuth, (req, res) => {
 
 //POST route handler for adding a comment to a user's individual strain
 router.post('/strains/:id', jwtAuth, jsonParser, (req, res) => {
-    User.updateOne({userName: req.user.userName, strains: { $elemMatch: req.params.id }}, 
+    User.updateOne({userName: req.user.userName, strains: { $elemMatch: { _id: req.params.id } }}, 
         { $push: { "strains.$.comments": req.body.comment } }, { new: true }).then(user => {
             res.status(200).json(user.serialize());
         }).catch(err => {
@@ -170,9 +170,9 @@ router.delete('/strains/:id', jwtAuth, (req, res) => {
 });
 
 //DELETE route handler for removing a comment from a user's indivudal strain
-router.delete('/strains/:id/:comment', jwtAuth, (req, res) => {
-    User.updateOne({userName: userName, strains: { $elemMatch: req.params.id }}, 
-        { $pull: { "strains.$.comments": { $elemMatch: req.params.comment } } }, { new: true }).then(user => {
+router.delete('/strains/:id/:commentId', jwtAuth, (req, res) => {
+    User.updateOne({userName: userName, strains: { $elemMatch: { _id: req.params.id } }}, 
+        { $pull: { "strains.$.comments": { $elemMatch: { comments: req.params.commentId} } } }, { new: true }).then(user => {
             res.status(200).json(user.serialize());
         }).catch(err => {
             console.error(err);
