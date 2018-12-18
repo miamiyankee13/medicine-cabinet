@@ -36,6 +36,7 @@ router.get('/:id', (req, res) => {
 
 //POST route handler for /strains
 //-validate request body
+//-check if strain already exists
 //-create strain & send json response
 router.post('/', jsonParser, (req, res) => {
     const requiredFields = ['name', 'type', 'description', 'flavor'];
@@ -48,16 +49,27 @@ router.post('/', jsonParser, (req, res) => {
         }
     }
 
-    Strain.create({
-        name: req.body.name,
-        type: req.body.type,
-        description: req.body.description,
-        flavor: req.body.flavor
-    }).then(strain => {
-        res.status(201).json(strain.serialize());
+    Strain.findOne({name: req.body.name}).then(strain => {
+        if (strain) {
+            const message = 'Strain already exists';
+            console.error(message);
+            return res.status(400).send(message);
+        } else {
+            Strain.create({
+                name: req.body.name,
+                type: req.body.type,
+                description: req.body.description,
+                flavor: req.body.flavor
+            }).then(strain => {
+                res.status(201).json(strain.serialize());
+            }).catch(err => {
+                console.error(err);
+                res.status(500).json({ message: 'Internal server error' });
+            });
+        }
     }).catch(err => {
         console.error(err);
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ message: 'Internal server error'});
     });
 });
 
