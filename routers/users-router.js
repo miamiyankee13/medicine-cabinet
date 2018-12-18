@@ -13,6 +13,9 @@ const { User } = require('../models');
 const router = express.Router();
 
 //POST route handler to register a new user
+//-validate userName & password fields
+//-check if userName already exists
+//-hash password, create user & send json response
 router.post('/', jsonParser, (req, res) => {
     const requiredFields = ['userName', 'password'];
     const missingField = requiredFields.find(field => !(field in req.body));
