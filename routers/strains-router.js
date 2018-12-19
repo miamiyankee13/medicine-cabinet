@@ -80,7 +80,7 @@ router.post('/', jsonParser, jwtAuth, (req, res) => {
 //PUT route handler for /strains/:id
 //-validate request id & updateable fields
 //-update strain & send json response
-router.put('/:id', jsonParser, (req, res) => {
+router.put('/:id', jsonParser, jwtAuth, (req, res) => {
     if (!(req.params.id && req.body._id && req.params.id === req.body._id)) {
         const message = `Request path id ${req.params.id} and request body id ${req.body._id} must match`;
         console.error(message);
@@ -106,7 +106,7 @@ router.put('/:id', jsonParser, (req, res) => {
 
 //DELETE route handler for /strains/:id
 //-delete strain & send response status
-router.delete('/:id', (req, res) => {
+router.delete('/:id', jwtAuth, (req, res) => {
     Strain.findByIdAndRemove(req.params.id).then(() =>{
         res.status(204).end();
     }).catch(err => {
@@ -117,7 +117,7 @@ router.delete('/:id', (req, res) => {
 
 //POST route handler for /strains/:id
 //-add comment to strain & send response status
-router.post('/:id', jsonParser, (req, res) => {
+router.post('/:id', jsonParser, jwtAuth, (req, res) => {
     const requiredField = 'comment';
         if (!(requiredField in req.body)) {
             const message = `Missing ${requiredField} in request body`;
@@ -135,7 +135,7 @@ router.post('/:id', jsonParser, (req, res) => {
 
 //DELETE route handler for /strains/:id/:commentId
 //-delete comment froms train & send response status
-router.delete('/:id/:commentId', (req, res) => {
+router.delete('/:id/:commentId', jwtAuth, (req, res) => {
     Strain.updateOne({_id: req.params.id}, { $pull: {comments: {_id: req.params.commentId} } }, { new: true }).then(() => {
         res.status(204).end();
     }).catch(err => {

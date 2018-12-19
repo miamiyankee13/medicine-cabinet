@@ -203,13 +203,108 @@ describe('/strains API resource', function() {
                         expect(res.body).to.be.a('object');
                     })
                 })
-            }).catch(function(err) {
-                if (err instanceof chai.AssertionError) {
-                    throw err;
-                }
+                }).catch(function(err) {
+                    if (err instanceof chai.AssertionError) {
+                        throw err;
+                    }
+                });
             });
         });
     });
+
+    //Tests for /strains PUT
+    describe('PUT endpoint', function() {
+
+        //Update a strain & verify it was updated correctly in DB
+        it('Should update a strain', function() {
+            let token;
+
+            return User.hashPassword(password).then(function(password) {
+                return User.create({
+                    userName,
+                    password,
+                    firstName,
+                    lastName
+                })
+            }).then(function() {
+                return chai.request(app).post('/auth/login').send({userName, password}).then(function(res) {
+                    expect(res).to.have.status(200);
+                    expect(res).to.be.a('object');
+                    token = res.body.authToken
+                    expect(token).to.be.a('string');
+                    const payload = jwt.verify(token, JWT_SECRET, {
+                        algorithm: ['HS256']
+                    });
+                }).then(function() {
+                    const toUpdate = {
+                        name: 'Updated Strain',
+                        type: 'Sativa',
+                        description: 'Blue Hot Flames',
+                        flavor: 'Peanut Butter'
+                    }
+        
+                    return Strain.findOne().then(function(strain) {
+                        toUpdate._id = strain._id;
+                        return chai.request(app).put(`/strains/${strain._id}`).send(toUpdate).then(function(res) {
+                            expect(res).to.have.status(200);
+                            return Strain.findById(toUpdate._id);
+                        }).then(function(strain) {
+                            expect(strain.name).to.equal(toUpdate.name);
+                            expect(strain.type).to.equal(toUpdate.type);
+                            expect(strain.description).to.equal(toUpdate.description);
+                            expect(strain.flavor).to.equal(toUpdate.flavor);
+                        })
+                    })
+                }).catch(function(err) {
+                    if (err instanceof chai.AssertionError) {
+                        throw err;
+                    }
+                });          
+            });
+        });
+    });
+
+    //Tests for /strains DELETE
+    describe('DELETE endpoint', function() {
+
+        //Delete a strain & verify response status/strain does not exist in DB
+        it('Should delete a strain', function() {
+            let token;
+            let strain;
+
+            return User.hashPassword(password).then(function(password) {
+                return User.create({
+                    userName,
+                    password,
+                    firstName,
+                    lastName
+                })
+            }).then(function() {
+                return chai.request(app).post('/auth/login').send({userName, password}).then(function(res) {
+                    expect(res).to.have.status(200);
+                    expect(res).to.be.a('object');
+                    token = res.body.authToken
+                    expect(token).to.be.a('string');
+                    const payload = jwt.verify(token, JWT_SECRET, {
+                        algorithm: ['HS256']
+                    });
+                }).then(function() {
+                    return Strain.findOne().then(function(_strain) {
+                        strain = _strain;
+                        return chai.request(app).delete(`/strains/${strain._id}`);
+                    }).then(function(res) {
+                        expect(res).to.have.status(204);
+                        return Strain.findById(strain._id);
+                    }).then(function(_strain) {
+                        expect(_strain).to.be.null;
+                    })
+                }).catch(function(err) {
+                    if (err instanceof chai.AssertionError) {
+                        throw err;
+                    }
+                })
+             });
+        });
 
         it('Should add new strain, add a comment, & delete a comment', function() {
             let token;
@@ -260,58 +355,4 @@ describe('/strains API resource', function() {
             });
         });
     });
-
-    //Tests for /strains PUT
-    describe('PUT endpoint', function() {
-
-        //Update a strain & verify it was updated correctly in DB
-        it('Should update a strain', function() {
-            const toUpdate = {
-                name: 'Updated Strain',
-                type: 'Sativa',
-                description: 'Blue Hot Flames',
-                flavor: 'Peanut Butter'
-            }
-
-            return Strain.findOne().then(function(strain) {
-                toUpdate._id = strain._id;
-                return chai.request(app).put(`/strains/${strain._id}`).send(toUpdate).then(function(res) {
-                    expect(res).to.have.status(200);
-                    return Strain.findById(toUpdate._id);
-                }).then(function(strain) {
-                    expect(strain.name).to.equal(toUpdate.name);
-                    expect(strain.type).to.equal(toUpdate.type);
-                    expect(strain.description).to.equal(toUpdate.description);
-                    expect(strain.flavor).to.equal(toUpdate.flavor);
-                })
-            }).catch(function(err) {
-                if (err instanceof chai.AssertionError) {
-                    throw err;
-                }
-            });
-        });
-    });
-
-    //Tests for /strains DELETE
-    describe('DELETE endpoint', function() {
-
-        //Delete a strain & verify response status/strain does not exist in DB
-        it('Should delete a strain', function() {
-            let strain;
-            return Strain.findOne().then(function(_strain) {
-                strain = _strain;
-                return chai.request(app).delete(`/strains/${strain._id}`);
-            }).then(function(res) {
-                expect(res).to.have.status(204);
-                return Strain.findById(strain._id);
-            }).then(function(_strain) {
-                expect(_strain).to.be.null;
-            }).catch(function(err) {
-                if (err instanceof chai.AssertionError) {
-                    throw err;
-                }
-            });
-        });
-    });
-
 });
