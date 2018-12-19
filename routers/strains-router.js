@@ -73,7 +73,7 @@ router.post('/', jsonParser, (req, res) => {
     });
 });
 
-//PUT route handler for /strains
+//PUT route handler for /strains/:id
 //-validate request id & updateable fields
 //-update strain & send json response
 router.put('/:id', jsonParser, (req, res) => {
@@ -100,7 +100,7 @@ router.put('/:id', jsonParser, (req, res) => {
     });
 });
 
-//DELETE route handler for /strains
+//DELETE route handler for /strains/:id
 //-delete strain & send response status
 router.delete('/:id', (req, res) => {
     Strain.findByIdAndRemove(req.params.id).then(() =>{
@@ -109,6 +109,35 @@ router.delete('/:id', (req, res) => {
         console.error(err);
         res.status(500).json({ message: 'Internal server error' });
     });
+});
+
+//POST route handler for /strains/:id
+//-add comment to strain & send response status
+router.post('/:id', jsonParser, (req, res) => {
+    const requiredField = 'comment';
+        if (!(requiredField in req.body)) {
+            const message = `Missing ${requiredField} in request body`;
+            console.error(message);
+            return res.status(400).send(message);
+        }
+    
+    Strain.updateOne({_id: req.params.id}, { $push: {comments: req.body.comment} }, { new: true }).then(result => {
+        res.status(201).json(result);
+    }).catch(err => {
+        console.error(err);
+        res.status(400).json({ message: 'Bad request'});
+    });
+});
+
+//DELETE route handler for /strains/:id/:commentId
+//-delete comment froms train & send response status
+router.delete('/:id/:commentId', (req, res) => {
+    Strain.updateOne({_id: req.params.id}, { $pull: {comments: req.params.commentId } }, { new: true }).then(result => {
+        res.status(204).end();
+    }).catch(err => {
+        console.error(err);
+        res.status(500).json({ message: 'Internal server error'});
+    })
 });
 
 module.exports = router;
