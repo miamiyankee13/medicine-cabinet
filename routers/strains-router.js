@@ -132,7 +132,7 @@ router.post('/:id', jsonParser, (req, res) => {
 //DELETE route handler for /strains/:id/:commentId
 //-delete comment froms train & send response status
 router.delete('/:id/:commentId', (req, res) => {
-    Strain.updateOne({_id: req.params.id}, { $pull: {comments: req.params.commentId } }, { new: true }).then(result => {
+    Strain.updateOne({_id: req.params.id}, { $pull: {comments: req.params.commentId } }, { new: true }).then(() => {
         res.status(204).end();
     }).catch(err => {
         console.error(err);

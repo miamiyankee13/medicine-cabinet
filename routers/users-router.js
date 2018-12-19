@@ -118,7 +118,7 @@ router.post('/', jsonParser, (req, res) => {
     });
 });
 
-//GET rout handler for all user's strains
+//GET route handler for all user's strains
 router.get('/strains', jwtAuth, (req, res) => {
     User.findOne({userName: req.user.userName}, "strains").then(result => {
         res.status(200).json(result);
