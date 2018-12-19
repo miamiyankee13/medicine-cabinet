@@ -145,6 +145,28 @@ describe('/strains API resource', function() {
                 }
             });
         });
+
+        it('Should add new strain & add a comment', function() {
+            let strainId;
+            const newStrain = generateStrainData();
+            return chai.request(app).post('/strains').send(newStrain).then(function(res) {
+                expect(res).to.have.status(201);
+                strainId = res.body._id;
+            }).then(function() {
+                return chai.request(app).post(`/strains/${strainId}`).send({comment: 'Test'}).then(function(res) {
+                    expect(res).to.have.status(201);
+                    expect(res.body).to.be.a('object');
+                }).catch(function(err) {
+                    if (err instanceof chai.AssertionError) {
+                        throw err;
+                    }
+                });
+            }).catch(function(err) {
+                if (err instanceof chai.AssertionError) {
+                    throw err;
+                }
+            });
+        });
     });
 
     //Tests for /strains PUT
