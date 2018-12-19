@@ -153,7 +153,7 @@ describe('/strains API resource', function() {
                 expect(res).to.have.status(201);
                 strainId = res.body._id;
             }).then(function() {
-                return chai.request(app).post(`/strains/${strainId}`).send({comment: 'Test'}).then(function(res) {
+                return chai.request(app).post(`/strains/${strainId}`).send({comment: { content: 'Test'}}).then(function(res) {
                     expect(res).to.have.status(201);
                     expect(res.body).to.be.a('object');
                 }).catch(function(err) {
@@ -161,6 +161,34 @@ describe('/strains API resource', function() {
                         throw err;
                     }
                 });
+            }).catch(function(err) {
+                if (err instanceof chai.AssertionError) {
+                    throw err;
+                }
+            });
+        });
+
+        it('Should add new strain, add a comment, & delete a comment', function() {
+            let strainId;
+            let commentId;
+            const newStrain = generateStrainData();
+            return chai.request(app).post('/strains').send(newStrain).then(function(res) {
+                expect(res).to.have.status(201);
+                strainId = res.body._id;
+            }).then(function() {
+                return chai.request(app).post(`/strains/${strainId}`).send({comment: { content: 'Test'}}).then(function(res) {
+                    expect(res).to.have.status(201);
+                    expect(res.body).to.be.a('object');
+                })
+            }).then(function() {
+                return chai.request(app).get(`/strains/${strainId}`).then(function(res) {
+                    expect(res).to.have.status(200);
+                    commentId = res.body.comments[0]._id;
+                })
+            }).then(function() {
+                return chai.request(app).delete(`/strains/${strainId}/${commentId}`).then(function(res) {
+                    expect(res).to.have.status(204);
+                })
             }).catch(function(err) {
                 if (err instanceof chai.AssertionError) {
                     throw err;

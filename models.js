@@ -7,6 +7,10 @@ const bcrypt = require('bcryptjs');
 mongoose.Promise = global.Promise;    
 mongoose.set('useCreateIndex', true)
 
+//Declare schema for comments model
+const commentSchema = mongoose.Schema({
+    content: { type: String },
+});
 
 //Declare schema for strains
 const strainSchema = mongoose.Schema({
@@ -14,7 +18,7 @@ const strainSchema = mongoose.Schema({
     type: { type: String, required: true },
     description: { type: String, required: true},
     flavor: { type: String, required: true },
-    comments: [{ type: String}]
+    comments: [commentSchema]
 });
 
 //Declare schema for users
