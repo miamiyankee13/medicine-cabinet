@@ -46,6 +46,11 @@ function tearDownDb() {
 
 //Tests for /strains endpoints
 describe('/strains API resource', function() {
+    //Declare user fields
+    const userName = 'exampleUser'
+    const password = 'examplePassword';
+    const firstName = 'Babe';
+    const lastName = 'Ruth';
 
     //Activate server before tests run
     before(function() {
@@ -122,77 +127,136 @@ describe('/strains API resource', function() {
 
         //Create a strain & verify request was successful/response has correct fields
         it('Should add new strain', function() {
-            const newStrain = generateStrainData();
-            return chai.request(app).post('/strains').send(newStrain).then(function(res) {
-                expect(res).to.have.status(201);
-                expect(res).to.be.json;
-                expect(res.body).to.be.a('object');
-                expect(res.body).to.include.keys('_id', 'name', 'type', 'description', 'flavor');
-                expect(res.body._id).to.not.be.null;
-                expect(res.body.name).to.equal(newStrain.name);
-                expect(res.body.type).to.equal(newStrain.type);
-                expect(res.body.description).to.equal(newStrain.description);
-                expect(res.body.flavor).to.equal(newStrain.flavor);
-                return Strain.findById(res.body._id);
-            }).then(function(strain) {
-                expect(strain.name).to.equal(newStrain.name);
-                expect(strain.type).to.equal(newStrain.type);
-                expect(strain.description).to.equal(newStrain.description);
-                expect(strain.flavor).to.equal(newStrain.flavor);
-            }).catch(function(err) {
-                if (err instanceof chai.AssertionError) {
-                    throw err;
-                }
-            });
-        });
+            let token;
 
-        it('Should add new strain & add a comment', function() {
-            let strainId;
-            const newStrain = generateStrainData();
-            return chai.request(app).post('/strains').send(newStrain).then(function(res) {
-                expect(res).to.have.status(201);
-                strainId = res.body._id;
+            return User.hashPassword(password).then(function(password) {
+                return User.create({
+                    userName,
+                    password,
+                    firstName,
+                    lastName
+                })
             }).then(function() {
-                return chai.request(app).post(`/strains/${strainId}`).send({comment: { content: 'Test'}}).then(function(res) {
-                    expect(res).to.have.status(201);
-                    expect(res.body).to.be.a('object');
+                return chai.request(app).post('/auth/login').send({userName, password}).then(function(res) {
+                    expect(res).to.have.status(200);
+                    expect(res).to.be.a('object');
+                    token = res.body.authToken
+                    expect(token).to.be.a('string');
+                    const payload = jwt.verify(token, JWT_SECRET, {
+                        algorithm: ['HS256']
+                    });
+                }).then(function() {
+                    const newStrain = generateStrainData();
+                    return chai.request(app).post('/strains').send(newStrain).then(function(res) {
+                        expect(res).to.have.status(201);
+                        expect(res).to.be.json;
+                        expect(res.body).to.be.a('object');
+                        expect(res.body).to.include.keys('_id', 'name', 'type', 'description', 'flavor');
+                        expect(res.body._id).to.not.be.null;
+                        expect(res.body.name).to.equal(newStrain.name);
+                        expect(res.body.type).to.equal(newStrain.type);
+                        expect(res.body.description).to.equal(newStrain.description);
+                        expect(res.body.flavor).to.equal(newStrain.flavor);
+                        return Strain.findById(res.body._id);
+                    }).then(function(strain) {
+                        expect(strain.name).to.equal(newStrain.name);
+                        expect(strain.type).to.equal(newStrain.type);
+                        expect(strain.description).to.equal(newStrain.description);
+                        expect(strain.flavor).to.equal(newStrain.flavor);
+                    })
                 }).catch(function(err) {
                     if (err instanceof chai.AssertionError) {
                         throw err;
                     }
                 });
+            });
+        });
+
+        it('Should add new strain & add a comment', function() {
+            let strainId;
+            let token;
+
+            return User.hashPassword(password).then(function(password) {
+                return User.create({
+                    userName,
+                    password,
+                    firstName,
+                    lastName
+                })
+            }).then(function() {
+                return chai.request(app).post('/auth/login').send({userName, password}).then(function(res) {
+                    expect(res).to.have.status(200);
+                    expect(res).to.be.a('object');
+                    token = res.body.authToken
+                    expect(token).to.be.a('string');
+                    const payload = jwt.verify(token, JWT_SECRET, {
+                        algorithm: ['HS256']
+                    });
+            }).then(function() {
+                const newStrain = generateStrainData();
+                return chai.request(app).post('/strains').send(newStrain).then(function(res) {
+                    expect(res).to.have.status(201);
+                    strainId = res.body._id;
+                }).then(function() {
+                    return chai.request(app).post(`/strains/${strainId}`).send({comment: { content: 'Test'}}).then(function(res) {
+                        expect(res).to.have.status(201);
+                        expect(res.body).to.be.a('object');
+                    })
+                })
             }).catch(function(err) {
                 if (err instanceof chai.AssertionError) {
                     throw err;
                 }
             });
         });
+    });
 
         it('Should add new strain, add a comment, & delete a comment', function() {
+            let token;
             let strainId;
             let commentId;
-            const newStrain = generateStrainData();
-            return chai.request(app).post('/strains').send(newStrain).then(function(res) {
-                expect(res).to.have.status(201);
-                strainId = res.body._id;
-            }).then(function() {
-                return chai.request(app).post(`/strains/${strainId}`).send({comment: { content: 'Test'}}).then(function(res) {
-                    expect(res).to.have.status(201);
-                    expect(res.body).to.be.a('object');
+
+            return User.hashPassword(password).then(function(password) {
+                return User.create({
+                    userName,
+                    password,
+                    firstName,
+                    lastName
                 })
             }).then(function() {
-                return chai.request(app).get(`/strains/${strainId}`).then(function(res) {
+                return chai.request(app).post('/auth/login').send({userName, password}).then(function(res) {
                     expect(res).to.have.status(200);
-                    commentId = res.body.comments[0]._id;
-                })
+                    expect(res).to.be.a('object');
+                    token = res.body.authToken
+                    expect(token).to.be.a('string');
+                    const payload = jwt.verify(token, JWT_SECRET, {
+                        algorithm: ['HS256']
+                    });
             }).then(function() {
-                return chai.request(app).delete(`/strains/${strainId}/${commentId}`).then(function(res) {
-                    expect(res).to.have.status(204);
+                const newStrain = generateStrainData();
+                return chai.request(app).post('/strains').send(newStrain).then(function(res) {
+                    expect(res).to.have.status(201);
+                    strainId = res.body._id;
+                }).then(function() {
+                    return chai.request(app).post(`/strains/${strainId}`).send({comment: { content: 'Test'}}).then(function(res) {
+                        expect(res).to.have.status(201);
+                        expect(res.body).to.be.a('object');
+                    })
+                }).then(function() {
+                    return chai.request(app).get(`/strains/${strainId}`).then(function(res) {
+                        expect(res).to.have.status(200);
+                        commentId = res.body.comments[0]._id;
+                    })
+                }).then(function() {
+                    return chai.request(app).delete(`/strains/${strainId}/${commentId}`).then(function(res) {
+                        expect(res).to.have.status(204);
+                    })
                 })
             }).catch(function(err) {
-                if (err instanceof chai.AssertionError) {
-                    throw err;
-                }
+                    if (err instanceof chai.AssertionError) {
+                        throw err;
+                    }
+                });
             });
         });
     });

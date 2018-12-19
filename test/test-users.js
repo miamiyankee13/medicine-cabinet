@@ -234,7 +234,7 @@ describe('/users endpoints', function() {
                         algorithm: ['HS256']
                     });
                 }).then(function() {
-                    return chai.request(app).post('/strains').send({
+                    return chai.request(app).post('/strains').set('authorization', `Bearer ${token}`).send({
                         name: strainName, 
                         type: strainType, 
                         description: strainDesc, 
@@ -284,7 +284,7 @@ describe('/users endpoints', function() {
                         algorithm: ['HS256']
                     });
                 }).then(function() {
-                    return chai.request(app).post('/strains').send({
+                    return chai.request(app).post('/strains').set('authorization', `Bearer ${token}`).send({
                         name: strainName, 
                         type: strainType, 
                         description: strainDesc, 
@@ -338,7 +338,7 @@ describe('/users endpoints', function() {
                         algorithm: ['HS256']
                     });
                 }).then(function() {
-                    return chai.request(app).post('/strains').send({
+                    return chai.request(app).post('/strains').set('authorization', `Bearer ${token}`).send({
                         name: strainName, 
                         type: strainType, 
                         description: strainDesc, 

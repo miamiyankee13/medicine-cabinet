@@ -2,6 +2,7 @@
 //Import dependencies
 const express = require('express');
 const bodyParser = require('body-parser');
+const passport = require('passport');
 
 //Declare JSON parser
 const jsonParser = bodyParser.json();
@@ -11,6 +12,9 @@ const { Strain, User } = require('../models');
 
 //Create router instance
 const router = express.Router();
+
+//Declare JWT strategy middleware
+const jwtAuth = passport.authenticate('jwt', { session: false });
 
 //GET route handler for /strains
 //-find all strains, sort by name, & send json data
@@ -38,7 +42,7 @@ router.get('/:id', (req, res) => {
 //-validate request body
 //-check if strain already exists
 //-create strain & send json response
-router.post('/', jsonParser, (req, res) => {
+router.post('/', jsonParser, jwtAuth, (req, res) => {
     const requiredFields = ['name', 'type', 'description', 'flavor'];
     for (let i = 0; i < requiredFields.length; i++) {
         const field = requiredFields[i];

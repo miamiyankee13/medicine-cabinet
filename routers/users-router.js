@@ -148,26 +148,5 @@ router.delete('/strains/:id', jwtAuth, (req, res) => {
     })
 });
 
-//POST route handler for adding a comment to a user's individual strain
-//router.post('/strains/:id', jwtAuth, jsonParser, (req, res) => {
-//    User.updateOne({userName: req.user.userName, "strains": { $elemMatch: { _id: req.params.id } }}, 
-//        { $push: { "strains.$.comments": req.body.comment } }, { new: true }).then(result => {
-//            res.status(201).json(result);
-//       }).catch(err => {
-//            console.error(err);
-//           res.status(400).json({ message: 'Bad request' });
-//       })
-//});
-
-//DELETE route handler for removing a comment from a user's indivudal strain
-//router.delete('/strains/:id/:commentId', jwtAuth, (req, res) => {
-//    User.updateOne({userName: userName, strains: { $elemMatch: { _id: req.params.id } }}, 
-//        { $pull: { "strains.$.comments": { $elemMatch: { comments: req.params.commentId} } } }, { new: true }).then(user => {
-//            res.status(204).end()
-//       }).catch(err => {
-//            console.error(err);
-//            res.status(500).json({ message: 'Internal server error' });
-//        })
-//});
 
 module.exports = router;
