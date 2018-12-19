@@ -212,7 +212,7 @@ describe('/users endpoints', function() {
     //Tests for /users/strains
     describe('users/strains', function() {
 
-        //Login, create strain, & add a strain
+        //Login, create strain, & add strain
         it('Should login, create a strain, & add a strain', function() {
             let token;
             let strainId;
@@ -262,6 +262,59 @@ describe('/users endpoints', function() {
 
         });
 
+        //Login, create strain, add strain, retreive strains
+        it('Should login, create a strain, add a strain, & retreive strains', function() {
+            let token;
+            let strainId;
 
+            return User.hashPassword(password).then(function(password) {
+                return User.create({
+                    userName,
+                    password,
+                    firstName,
+                    lastName
+                })
+            }).then(function() {
+                return chai.request(app).post('/auth/login').send({userName, password}).then(function(res) {
+                    expect(res).to.have.status(200);
+                    expect(res).to.be.a('object');
+                    token = res.body.authToken
+                    expect(token).to.be.a('string');
+                    const payload = jwt.verify(token, JWT_SECRET, {
+                        algorithm: ['HS256']
+                    });
+                }).then(function() {
+                    return chai.request(app).post('/strains').send({
+                        name: strainName, 
+                        type: strainType, 
+                        description: strainDesc, 
+                        flavor: strainFlavor}
+                        ).then(function(res) {
+                            expect(res).to.have.status(201);
+                            expect(res.body).to.be.a('object');
+                            strainId = res.body._id;
+                    })
+                }).then(function() {
+                    return chai.request(app).put(`/users/strains/${strainId}`).set('authorization', `Bearer ${token}`).then(function(res) {
+                        expect(res).to.have.status(200);
+                        expect(res.body).to.be.a('object');
+                    })
+                }).then(function() {
+                    return chai.request(app).get(`/users/strains/`).set('authorization', `Bearer ${token}`).then(function(res) {
+                        expect(res).to.have.status(200);
+                        expect(res.body).to.be.a('object');
+                        console.log(res.body);
+                    })
+                }).catch(function(err) {
+                    if (err instanceof chai.AssertionError) {
+                        throw err;
+                    }
+                });
+            }).catch(function(err) {
+                if (err instanceof chai.AssertionError) {
+                    throw err;
+                }
+            });
+        });
     });
 });

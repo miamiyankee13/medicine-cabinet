@@ -120,8 +120,8 @@ router.post('/', jsonParser, (req, res) => {
 
 //GET rout handler for all user's strains
 router.get('/strains', jwtAuth, (req, res) => {
-    User.findOne({userName: req.user.userName}, {strains}).then(strains => {
-        res.status(200).json({ strains: strains.map(strain => strain.serialize())});
+    User.findOne({userName: req.user.userName}, "strains").then(result => {
+        res.status(200).json(result);
     }).catch(err => {
         console.error(err);
         res.status(500).json({ message: 'Internal server error' });
@@ -130,8 +130,8 @@ router.get('/strains', jwtAuth, (req, res) => {
 
 //GET route hanlder for individual user's strain
 router.get('/strains/:id', jwtAuth, (req, res) => {
-    User.findOne({userName: req.user.userName}, {strains: { $elemMatch: { _id: req.params.id } } }).then(strain => {
-        res.status(200).json(strain.serialize());
+    User.findOne({userName: req.user.userName}, {"strains": { $elemMatch: { _id: req.params.id } } }).then(result => {
+        res.status(200).json(result);
     }).catch(err => {
         console.error(err);
         res.status(500).json({ message: 'Internal server error' });
