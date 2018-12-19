@@ -128,16 +128,6 @@ router.get('/strains', jwtAuth, (req, res) => {
     });
 });
 
-//GET route hanlder for individual user's strain
-router.get('/strains/:id', jwtAuth, (req, res) => {
-    User.findOne({userName: req.user.userName}, {"strains": { $elemMatch: { _id: req.params.id } } }).then(result => {
-        res.status(200).json(result);
-    }).catch(err => {
-        console.error(err);
-        res.status(500).json({ message: 'Internal server error' });
-    });
-});
-
 //PUT route handler for adding a strain to a user
 router.put('/strains/:id', jwtAuth, (req, res) => {
     User.updateOne({userName: req.user.userName}, { $push: { strains: req.params.id } }, { new: true }).then(result => {
@@ -146,6 +136,16 @@ router.put('/strains/:id', jwtAuth, (req, res) => {
         console.error(err);
         res.status(500).json({ message: 'Internal server error' });
     });
+});
+
+//DELETE route handler for removing a strain from a user
+router.delete('/strains/:id', jwtAuth, (req, res) => {
+    User.updateOne({userName: req.user.userName}, { $pull: { strains: req.params.id} }, { new: true }).then(user => {
+        res.status(204).end();
+    }).catch(err => {
+        console.error(err);
+        res.status(500).json({ message: 'Internal server error' });
+    })
 });
 
 //POST route handler for adding a comment to a user's individual strain
@@ -157,16 +157,6 @@ router.post('/strains/:id', jwtAuth, jsonParser, (req, res) => {
             console.error(err);
             res.status(400).json({ message: 'Bad request' });
         })
-});
-
-//DELETE route handler for removing a strain from a user
-router.delete('/strains/:id', jwtAuth, (req, res) => {
-    User.updateOne({userName: req.user.userName}, { $pull: { strains: req.params.id} }, { new: true }).then(user => {
-        res.status(204).end();
-    }).catch(err => {
-        console.error(err);
-        res.status(500).json({ message: 'Internal server error' });
-    })
 });
 
 //DELETE route handler for removing a comment from a user's indivudal strain
