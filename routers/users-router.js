@@ -140,8 +140,8 @@ router.get('/strains/:id', jwtAuth, (req, res) => {
 
 //PUT route handler for adding a strain to a user
 router.put('/strains/:id', jwtAuth, (req, res) => {
-    User.updateOne({userName: req.user.userName}, { $push: { strains: req.params.id } }, { new: true }).then(user => {
-        res.status(200).json(user.serialize());
+    User.updateOne({userName: req.user.userName}, { $push: { strains: req.params.id } }, { new: true }).then(result => {
+        res.status(200).json(result);
     }).catch(err => {
         console.error(err);
         res.status(500).json({ message: 'Internal server error' });
@@ -151,8 +151,8 @@ router.put('/strains/:id', jwtAuth, (req, res) => {
 //POST route handler for adding a comment to a user's individual strain
 router.post('/strains/:id', jwtAuth, jsonParser, (req, res) => {
     User.updateOne({userName: req.user.userName, strains: { $elemMatch: { _id: req.params.id } }}, 
-        { $push: { "strains.$.comments": req.body.comment } }, { new: true }).then(user => {
-            res.status(201).json(user.serialize());
+        { $push: { "strains.$.comments": req.body.comment } }, { new: true }).then(result => {
+            res.status(201).json(result);
         }).catch(err => {
             console.error(err);
             res.status(400).json({ message: 'Bad request' });
