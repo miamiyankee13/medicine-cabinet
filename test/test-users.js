@@ -303,7 +303,6 @@ describe('/users endpoints', function() {
                     return chai.request(app).get(`/users/strains/`).set('authorization', `Bearer ${token}`).then(function(res) {
                         expect(res).to.have.status(200);
                         expect(res.body).to.be.a('object');
-                        console.log(res.body);
                     })
                 }).catch(function(err) {
                     if (err instanceof chai.AssertionError) {
