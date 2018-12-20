@@ -4,11 +4,12 @@ const mongoose = require('mongoose');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const faker = require('faker');
+const jwt = require('jsonwebtoken');
 
 //Import modules
 const { Strain, User } = require('../models');
 const { app, runServer, closeServer } = require('../server');
-const { TEST_DATABASE_URL } = require('../config');
+const { JWT_SECRET, TEST_DATABASE_URL } = require('../config');
 
 //Enable expect style syntax
 const expect = chai.expect;
@@ -147,7 +148,7 @@ describe('/strains API resource', function() {
                     });
                 }).then(function() {
                     const newStrain = generateStrainData();
-                    return chai.request(app).post('/strains').send(newStrain).then(function(res) {
+                    return chai.request(app).post('/strains').set('authorization', `Bearer ${token}`).send(newStrain).then(function(res) {
                         expect(res).to.have.status(201);
                         expect(res).to.be.json;
                         expect(res.body).to.be.a('object');
@@ -184,7 +185,7 @@ describe('/strains API resource', function() {
                     lastName
                 })
             }).then(function() {
-                return chai.request(app).post('/auth/login').send({userName, password}).then(function(res) {
+                return chai.request(app).post('/auth/login').set('authorization', `Bearer ${token}`).send({userName, password}).then(function(res) {
                     expect(res).to.have.status(200);
                     expect(res).to.be.a('object');
                     token = res.body.authToken
@@ -194,11 +195,11 @@ describe('/strains API resource', function() {
                     });
             }).then(function() {
                 const newStrain = generateStrainData();
-                return chai.request(app).post('/strains').send(newStrain).then(function(res) {
+                return chai.request(app).post('/strains').set('authorization', `Bearer ${token}`).send(newStrain).then(function(res) {
                     expect(res).to.have.status(201);
                     strainId = res.body._id;
                 }).then(function() {
-                    return chai.request(app).post(`/strains/${strainId}`).send({comment: { content: 'Test'}}).then(function(res) {
+                    return chai.request(app).post(`/strains/${strainId}`).set('authorization', `Bearer ${token}`).send({comment: { content: 'Test'}}).then(function(res) {
                         expect(res).to.have.status(201);
                         expect(res.body).to.be.a('object');
                     })
@@ -227,7 +228,7 @@ describe('/strains API resource', function() {
                     lastName
                 })
             }).then(function() {
-                return chai.request(app).post('/auth/login').send({userName, password}).then(function(res) {
+                return chai.request(app).post('/auth/login').set('authorization', `Bearer ${token}`).send({userName, password}).then(function(res) {
                     expect(res).to.have.status(200);
                     expect(res).to.be.a('object');
                     token = res.body.authToken
@@ -245,7 +246,7 @@ describe('/strains API resource', function() {
         
                     return Strain.findOne().then(function(strain) {
                         toUpdate._id = strain._id;
-                        return chai.request(app).put(`/strains/${strain._id}`).send(toUpdate).then(function(res) {
+                        return chai.request(app).put(`/strains/${strain._id}`).set('authorization', `Bearer ${token}`).send(toUpdate).then(function(res) {
                             expect(res).to.have.status(200);
                             return Strain.findById(toUpdate._id);
                         }).then(function(strain) {
@@ -280,7 +281,7 @@ describe('/strains API resource', function() {
                     lastName
                 })
             }).then(function() {
-                return chai.request(app).post('/auth/login').send({userName, password}).then(function(res) {
+                return chai.request(app).post('/auth/login').set('authorization', `Bearer ${token}`).send({userName, password}).then(function(res) {
                     expect(res).to.have.status(200);
                     expect(res).to.be.a('object');
                     token = res.body.authToken
@@ -291,7 +292,7 @@ describe('/strains API resource', function() {
                 }).then(function() {
                     return Strain.findOne().then(function(_strain) {
                         strain = _strain;
-                        return chai.request(app).delete(`/strains/${strain._id}`);
+                        return chai.request(app).delete(`/strains/${strain._id}`).set('authorization', `Bearer ${token}`);
                     }).then(function(res) {
                         expect(res).to.have.status(204);
                         return Strain.findById(strain._id);
@@ -319,7 +320,7 @@ describe('/strains API resource', function() {
                     lastName
                 })
             }).then(function() {
-                return chai.request(app).post('/auth/login').send({userName, password}).then(function(res) {
+                return chai.request(app).post('/auth/login').set('authorization', `Bearer ${token}`).send({userName, password}).then(function(res) {
                     expect(res).to.have.status(200);
                     expect(res).to.be.a('object');
                     token = res.body.authToken
@@ -329,11 +330,11 @@ describe('/strains API resource', function() {
                     });
             }).then(function() {
                 const newStrain = generateStrainData();
-                return chai.request(app).post('/strains').send(newStrain).then(function(res) {
+                return chai.request(app).post('/strains').set('authorization', `Bearer ${token}`).send(newStrain).then(function(res) {
                     expect(res).to.have.status(201);
                     strainId = res.body._id;
                 }).then(function() {
-                    return chai.request(app).post(`/strains/${strainId}`).send({comment: { content: 'Test'}}).then(function(res) {
+                    return chai.request(app).post(`/strains/${strainId}`).set('authorization', `Bearer ${token}`).send({comment: { content: 'Test'}}).then(function(res) {
                         expect(res).to.have.status(201);
                         expect(res.body).to.be.a('object');
                     })
@@ -343,7 +344,7 @@ describe('/strains API resource', function() {
                         commentId = res.body.comments[0]._id;
                     })
                 }).then(function() {
-                    return chai.request(app).delete(`/strains/${strainId}/${commentId}`).then(function(res) {
+                    return chai.request(app).delete(`/strains/${strainId}/${commentId}`).set('authorization', `Bearer ${token}`).then(function(res) {
                         expect(res).to.have.status(204);
                     })
                 })
