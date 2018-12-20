@@ -27,7 +27,7 @@ function getAllStrains() {
 //DISPLAY FUNCTIONS
 
 function displayStrainDropDown() {
-    const strainOptions = STATE.strains.map((strain, index) => renderStrainOptions(strain, index)).join('');
+    const strainOptions = STATE.strains.map((strain, index) => renderStrainOptions(strain, index));
     const strainDropDownHtml = `
         <form>
             <label for="strain-select">Select a Strain:</label>
