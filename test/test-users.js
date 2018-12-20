@@ -3,7 +3,7 @@
 const mongoose = require('mongoose');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const faker = require ('faker');
+const faker = require('faker');
 const jwt = require('jsonwebtoken');
 
 //Import modules
