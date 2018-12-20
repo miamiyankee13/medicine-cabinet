@@ -3,13 +3,34 @@
 const STATE = {
     token: null,
     strains: null,
-    userStrains: [{
-        name: 'Your cabinet is currently empty'
-    }]
+    userStrains: null
 }
+
+//Make login area visible
+$('.js-login').prop('hidden', false);
 
 //API CALLS
 
+function authenticateUser(userName, password) {
+    const settings = {
+        url: '/auth/login',
+        data: {
+            username: userName,
+            password: password
+        },
+        dataType: 'json',
+        type: 'POST'
+    }
+
+    $.ajax(settings).then(results => {
+        STATE.token = results.authToken
+        $('.js-login').prop('hidden', true);
+        getAllStrains();
+        getUserStrains();
+    }).catch(displayError);
+
+    console.log(STATE);
+}
 
 function getAllStrains() {
     const settings = {
@@ -21,13 +42,25 @@ function getAllStrains() {
     $.ajax(settings).then(results => {
         STATE.strains = results.strains;
         displayStrainDropDown();
-        console.log(STATE);
     }).catch(displayError);
+
+    console.log(STATE);
 }
 
-//TODO set up API call after setting up user authentication & user creation - call after successful auth
 function getUserStrains() {
-    displayCabinet();
+    const settings = {
+        url: '/users/strains',
+        headers: {"Authorization": `Bearer ${STATE.token}`},
+        dataType: 'json',
+        type: 'GET'
+    }
+    
+    $.ajax(settings).then(results => {
+        STATE.userStrains = results.strains;
+        displayCabinet();
+    }).catch(displayEmptyCabinet);
+    
+    console.log(STATE);
 }
 
 
@@ -60,6 +93,11 @@ function displayError() {
     $('.js-message').prop('hidden', false);
 }
 
+function displayEmptyCabinet() {
+    $('.js-message').text('Your cabinet is currently empty');
+    $('.js-message').prop('hidden', false);
+}
+
 //RENDERING FUNCTIONS
 
 function renderStrainOptions(strain, index) {
@@ -72,12 +110,24 @@ function renderCabinet(strain, index) {
     return `<div class="cabinet-strain" data-index="${index}"><h2>${name}</h2></div>`;
 }
 
+//EVENT LISTENERS
+
+function submitUserLogin() {
+    $('.js-login-btn').on('click', function(event) {
+        event.preventDefault();
+        const userName = $('#username').val();
+        const password = $('#password').val();
+        console.log(userName);
+        console.log(password);
+        authenticateUser(userName, password);
+    });
+}
+
 
 //DOCUMENT READY FUNCTION
 
-//TODO remove getAllStrains & call after succesful auth
 function handleMedicineCabinet() {
-    getAllStrains();
+    submitUserLogin();
 }
 
 
