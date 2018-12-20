@@ -25,6 +25,7 @@ function authenticateUser(userName, password) {
     $.ajax(settings).then(results => {
         STATE.token = results.authToken
         $('.js-login').prop('hidden', true);
+        $('.js-message').prop('hidden', true);
         getAllStrains();
         getUserStrains();
     }).catch(displayError);
