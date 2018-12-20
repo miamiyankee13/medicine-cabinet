@@ -15,7 +15,7 @@ function authenticateUser(userName, password) {
     const settings = {
         url: '/auth/login',
         data: {
-            username: userName,
+            userName: userName,
             password: password
         },
         dataType: 'json',
