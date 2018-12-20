@@ -3,7 +3,9 @@
 const STATE = {
     token: null,
     strains: null,
-    userStrains: null
+    userStrains: [{
+        name: 'Your cabinet is currently empty'
+    }]
 }
 
 //API CALLS
@@ -21,6 +23,11 @@ function getAllStrains() {
         displayStrainDropDown();
         console.log(STATE);
     }).catch(displayError);
+}
+
+//TODO set up API call after setting up user authentication & user creation - call after successful auth
+function getUserStrains() {
+    displayCabinet();
 }
 
 
@@ -42,6 +49,12 @@ function displayStrainDropDown() {
     $('.js-cabinet-form').prop('hidden', false);
 }
 
+function displayCabinet() {
+    const cabinet = STATE.userStrains.map((strain, index) => renderCabinet(strain, index));
+    $('.js-cabinet').html(cabinet);
+    $('.js-cabinet').prop('hidden', false);
+}
+
 function displayError() {
     $('.js-message').text('There was an error loading the requested data');
     $('.js-message').prop('hidden', false);
@@ -54,11 +67,15 @@ function renderStrainOptions(strain, index) {
     return `<option value="${name}" data-index="${index}">${name}</option>`;
 }
 
-
+function renderCabinet(strain, index) {
+    const name = strain.name;
+    return `<div class="cabinet-strain" data-index="${index}"><h2>${name}</h2></div>`;
+}
 
 
 //DOCUMENT READY FUNCTION
 
+//TODO remove getAllStrains & call after succesful auth
 function handleMedicineCabinet() {
     getAllStrains();
 }
