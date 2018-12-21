@@ -167,6 +167,27 @@ function getSingleUserStrain() {
     }).catch(displayError);
 }
 
+function createNewStrain(name, type, flavor, description) {
+    const settings = {
+        url: '/strains',
+        headers: {"Authorization": `Bearer ${STATE.token}`},
+        data: JSON.stringify({
+            name: name,
+            type: type,
+            description: description,
+            flavor: flavor
+        }),
+        contentType: 'application/json',
+        dataType: 'json',
+        type: 'POST'
+    }
+
+    $.ajax(settings).then(() => {
+        $('.js-message').text('Strain created successfully!');
+        $('.js-message').prop('hidden', false);
+    }).catch(displayError);
+}
+
 
 //DISPLAY FUNCTIONS
 
@@ -261,7 +282,7 @@ function submitUserLogin() {
     });
 }
 
-function submitUserRegister() {
+function goToUserRegister() {
     $('.js-register-btn').on('click', function(event) {
         event.preventDefault();
         $('.js-login').prop('hidden', true);
@@ -280,7 +301,7 @@ function submitCreateUser() {
     });
 }
 
-function submitBackToLogin() {
+function goBackToLogin() {
     $('.js-login-return-btn').on('click', function(event) {
         event.preventDefault(); 
         $('.js-message').prop('hidden', true);
@@ -307,7 +328,7 @@ function submitRemoveFromCabinet() {
     });
 }
 
-function submitStrainDetails() {
+function goToStrainDetails() {
     $('body').on('click', '.js-details-btn', function(event) {
         event.preventDefault();
         const index = $(event.target).attr('data-index');
@@ -337,12 +358,35 @@ function submitRemoveComment() {
     });
 }
 
-function submitMyCabinet() {
+function goToMyCabinet() {
     $('.js-my-cabinet').on('click', function(event) {
         event.preventDefault();
         $('.js-single-strain').prop('hidden', true);
-        $('.js-cabinet-form').prop('hidden', false);
-        $('.js-cabinet').prop('hidden', false);
+        $('.js-create-strain').prop('hidden', true);
+        $('.js-message').prop('hidden', true);
+        getAllStrains();
+        getUserStrains();
+    });
+}
+
+function goToCreateStrainPage() {
+    $('.js-create-strain-link').on('click', function(event) {
+        event.preventDefault();
+        $('.js-single-strain').prop('hidden', true);
+        $('.js-cabinet-form').prop('hidden', true);
+        $('.js-cabinet').prop('hidden', true);
+        $('.js-create-strain').prop('hidden', false);
+    });
+}
+
+function submitCreateStrain() {
+    $('.js-create-strain-btn').on('click', function(event) {
+        event.preventDefault();
+        const name = $('#strain-name-create').val();
+        const type = $('#strain-type-create').val();
+        const flavor = $('#strain-flavor-create').val();
+        const description = $('#strain-description-create').val();
+        createNewStrain(name, type, flavor, description);
     });
 }
 
@@ -350,15 +394,17 @@ function submitMyCabinet() {
 
 function handleMedicineCabinet() {
     submitUserLogin();
-    submitUserRegister();
+    goToUserRegister();
     submitCreateUser();
-    submitBackToLogin();
+    goBackToLogin();
     submitAddToCabinet();
     submitRemoveFromCabinet();
-    submitStrainDetails();
+    goToStrainDetails();
     submitUserComment();
     submitRemoveComment();
-    submitMyCabinet();
+    goToMyCabinet();
+    goToCreateStrainPage();
+    submitCreateStrain();
 }
 
 
