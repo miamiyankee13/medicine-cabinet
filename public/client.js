@@ -111,6 +111,61 @@ function removeStrainFromCabinet(id) {
     }).catch(displayError);
 }
 
+function addCommentToStrain(id, content) {
+    const settings = {
+        url:`/strains/${id}`,
+        headers: {"Authorization": `Bearer ${STATE.token}`},
+        data: JSON.stringify({
+            comment: {
+                content: content
+            }
+        }),
+        contentType: 'application/json',
+        dataType: 'json',
+        type: 'POST'
+    }
+
+    $.ajax(settings).then(() => {
+        getSingleUserStrain();
+    }).catch(displayError);
+
+    console.log(STATE);
+}
+
+function removeCommentFromStrain(id, commentId) {
+    const settings = {
+        url: `/strains/${id}/${commentId}`,
+        headers: {"Authorization": `Bearer ${STATE.token}`},
+        dataType: 'json',
+        type: 'DELETE'
+    }
+
+    $.ajax(settings).then(() => {
+        getSingleUserStrain();
+    }).catch(displayError)
+
+    console.log(STATE);
+}
+
+//Get updated userStrains, update current strain, & display single strain
+function getSingleUserStrain() {
+    const settings = {
+        url: '/users/strains',
+        headers: {"Authorization": `Bearer ${STATE.token}`},
+        dataType: 'json',
+        type: 'GET'
+    }
+    
+    $.ajax(settings).then(results => {
+        STATE.userStrains = results.strains;
+        const singleStrain = STATE.userStrains.find((element) => {
+            return element.name === STATE.currentStrain.name;
+        });
+        STATE.currentStrain = singleStrain
+        displaySingleStrain(STATE.currentStrain);
+    }).catch(displayError);
+}
+
 
 //DISPLAY FUNCTIONS
 
@@ -160,7 +215,7 @@ function renderCabinet(strain, index) {
     const name = strain.name;
     return `<div class="cabinet-strain">
                 <h2>${name}</h2>
-                <button class="js-details-btn btn" data-index="${index}">Details</button>
+                <button class="js-details-btn btn" data-index="${index}">Strain Details</button>
                 <button class="js-remove-btn btn" data-index="${index}">Remove</button>
             </div>`;
 }
@@ -170,12 +225,25 @@ function renderSingleStrain(strain) {
     const type = strain.type;
     const flavor = strain.flavor;
     const description = strain.description;
-    
+    const comments = strain.comments.map((comment, index) => {
+        const content = comment.content;
+        return `
+        <p>${content}</p>
+        <button class="js-remove-comment-btn btn" data-index="${index}">Remove</button>`
+    }).join('');
+
     return `<div class="single-strain">
                 <h2>${name}</h2>
                 <h3>${type}</h3>
                 <h4>${flavor}</h4>
                 <p>${description}</p>
+                <div>
+                    <h3>Community Comments</h3>
+                    ${comments}
+                </div>
+                <label for="add-comment">Add a comment:</label>
+                <textarea id="add-comment" name="add-comment" rows="4" cols="50"></textarea>
+                <button class="js-add-comment-btn btn">Add Comment</button>
             </div>`;
 }
 
@@ -247,6 +315,25 @@ function submitStrainDetails() {
     });
 }
 
+function submitUserComment() {
+    $('body').on('click', '.js-add-comment-btn', function(event) {
+        event.preventDefault();
+        const id = STATE.currentStrain._id;
+        const content = $('#add-comment').val();
+        addCommentToStrain(id, content);
+    });
+}
+
+function submitRemoveComment() {
+    $('body').on('click', '.js-remove-comment-btn', function(event) {
+        event.preventDefault();
+        const id = STATE.currentStrain._id;
+        const index = $(event.target).attr('data-index');
+        const commentId = STATE.currentStrain.comments[index]._id;
+        removeCommentFromStrain(id, commentId);
+    });
+}
+
 //DOCUMENT READY FUNCTION
 
 function handleMedicineCabinet() {
@@ -257,6 +344,8 @@ function handleMedicineCabinet() {
     submitAddToCabinet();
     submitRemoveFromCabinet();
     submitStrainDetails();
+    submitUserComment();
+    submitRemoveComment();
 }
 
 
