@@ -36,11 +36,28 @@
           <input type="password" id="password" name="password">
 
           <button class="js-login-btn btn" type="submit">Login</button>
+          <button class="js-register-btn btn">Register</button>
         </form>
       </section>
 
-      <section role="region" class="js-register-form" aria-live="assertive" hidden>
+      <section role="region" class="js-register" aria-live="assertive" hidden>
+        <form>
+          <h2>Please enter your information below:</h2>
+          <label for="username-create">Username:</label>
+          <input type= "text" id="username-create" name="username-create">
 
+          <label for="password-create">Password (must be 10 characters long):</label>
+          <input type="password" id="password-create" name="password-create">
+
+          <label for="firstname-create">First Name:</label>
+          <input type="text" id="firstname-create" name="firstname-create">
+
+          <label for="lastname-create">Last Name:</label>
+          <input type="text" id="lastname-create" name="lastname-create">
+
+          <button class="js-create-btn btn">Create Account</button>
+          <button class="js-login-return-btn btn">Back to Login</button>
+        </form>
       </section>
 
       <section role="region" class="js-cabinet-form" aria-live="assertive" hidden>

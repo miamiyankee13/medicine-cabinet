@@ -33,6 +33,26 @@ function authenticateUser(userName, password) {
     console.log(STATE);
 }
 
+function createUser(userName, password, firstName, lastName) {
+    const settings = {
+        url: '/users',
+        data: JSON.stringify({
+            userName: userName,
+            password: password,
+            firstName: firstName,
+            lastName: lastName
+        }),
+        contentType: 'application/json',
+        dataType: 'json',
+        type: 'POST'
+    }
+
+    $.ajax(settings).then(() => {
+        $('.js-message').text('Account created successfully!');
+        $('.js-message').prop('hidden', false);
+    });
+}
+
 function getAllStrains() {
     const settings = {
         url: '/strains',
@@ -101,7 +121,7 @@ function displayStrainDropDown() {
             <select id="strain-select">
             ${strainOptions}
             </select>
-            <button class="js-add-btn" type="submit">Add to Cabinet</button>
+            <button class="js-add-btn btn" type="submit">Add to Cabinet</button>
         </form>
     `;
 
@@ -131,8 +151,8 @@ function renderCabinet(strain, index) {
     const name = strain.name;
     return `<div class="cabinet-strain">
                 <h2>${name}</h2>
-                <button class="js-details-btn" data-index="${index}">Details</button>
-                <button class="js-remove-btn" data-index="${index}">Remove</button>
+                <button class="js-details-btn btn" data-index="${index}">Details</button>
+                <button class="js-remove-btn btn" data-index="${index}">Remove</button>
             </div>`;
 }
 
@@ -144,6 +164,34 @@ function submitUserLogin() {
         const userName = $('#username').val();
         const password = $('#password').val();
         authenticateUser(userName, password);
+    });
+}
+
+function submitUserRegister() {
+    $('.js-register-btn').on('click', function(event) {
+        event.preventDefault();
+        $('.js-login').prop('hidden', true);
+        $('.js-register').prop('hidden', false);
+    });
+}
+
+function submitCreateUser() {
+    $('.js-create-btn').on('click', function(event) {
+        event.preventDefault();
+        const userName = $('#username-create').val();
+        const password = $('#password-create').val();
+        const firstName = $('#firstname-create').val();
+        const lastName = $('#lastname-create').val();
+        createUser(userName, password, firstName, lastName);
+    });
+}
+
+function submitBackToLogin() {
+    $('.js-login-return-btn').on('click', function(event) {
+        event.preventDefault(); 
+        $('.js-message').prop('hidden', true);
+        $('.js-register').prop('hidden', true);
+        $('.js-login').prop('hidden', false);
     });
 }
 
@@ -169,8 +217,11 @@ function submitRemoveFromCabinet() {
 
 function handleMedicineCabinet() {
     submitUserLogin();
+    submitUserRegister();
+    submitCreateUser();
     submitAddToCabinet();
     submitRemoveFromCabinet();
+    submitBackToLogin();
 }
 
 
