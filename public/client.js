@@ -27,6 +27,7 @@ function authenticateUser(userName, password) {
         STATE.token = results.authToken
         $('.js-login').prop('hidden', true);
         $('.js-message').prop('hidden', true);
+        $('.js-nav').prop('hidden', false);
         getAllStrains();
         getUserStrains();
     }).catch(displayError);
@@ -228,14 +229,16 @@ function renderSingleStrain(strain) {
     const comments = strain.comments.map((comment, index) => {
         const content = comment.content;
         return `
-        <p>${content}</p>
+        <p><em>${content}</em></p>
         <button class="js-remove-comment-btn btn" data-index="${index}">Remove</button>`
     }).join('');
 
     return `<div class="single-strain">
                 <h2>${name}</h2>
                 <h3>${type}</h3>
-                <h4>${flavor}</h4>
+                <h4>Flavor</h4>
+                <p>${flavor}</p>
+                <h4>Description</h4>
                 <p>${description}</p>
                 <div>
                     <h3>Community Comments</h3>
@@ -334,6 +337,15 @@ function submitRemoveComment() {
     });
 }
 
+function submitMyCabinet() {
+    $('.js-my-cabinet').on('click', function(event) {
+        event.preventDefault();
+        $('.js-single-strain').prop('hidden', true);
+        $('.js-cabinet-form').prop('hidden', false);
+        $('.js-cabinet').prop('hidden', false);
+    });
+}
+
 //DOCUMENT READY FUNCTION
 
 function handleMedicineCabinet() {
@@ -346,6 +358,7 @@ function handleMedicineCabinet() {
     submitStrainDetails();
     submitUserComment();
     submitRemoveComment();
+    submitMyCabinet();
 }
 
 
