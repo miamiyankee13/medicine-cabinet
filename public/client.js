@@ -3,7 +3,8 @@
 const STATE = {
     token: null,
     strains: null,
-    userStrains: null
+    userStrains: null,
+    currentStrain: null,
 }
 
 //Make login area visible
@@ -135,6 +136,14 @@ function displayCabinet() {
     $('.js-cabinet').prop('hidden', false);
 }
 
+function displaySingleStrain(strain) {
+    const singleStrain = renderSingleStrain(strain);
+    $('.js-single-strain').html(singleStrain);
+    $('.js-cabinet-form').prop('hidden', true);
+    $('.js-cabinet').prop('hidden', true);
+    $('.js-single-strain').prop('hidden', false);
+}
+
 function displayError() {
     $('.js-message').text('There was an error loading the requested data');
     $('.js-message').prop('hidden', false);
@@ -153,6 +162,20 @@ function renderCabinet(strain, index) {
                 <h2>${name}</h2>
                 <button class="js-details-btn btn" data-index="${index}">Details</button>
                 <button class="js-remove-btn btn" data-index="${index}">Remove</button>
+            </div>`;
+}
+
+function renderSingleStrain(strain) {
+    const name = strain.name;
+    const type = strain.type;
+    const flavor = strain.flavor;
+    const description = strain.description;
+    
+    return `<div class="single-strain">
+                <h2>${name}</h2>
+                <h3>${type}</h3>
+                <h4>${flavor}</h4>
+                <p>${description}</p>
             </div>`;
 }
 
@@ -213,15 +236,27 @@ function submitRemoveFromCabinet() {
     });
 }
 
+function submitStrainDetails() {
+    $('body').on('click', '.js-details-btn', function(event) {
+        event.preventDefault();
+        const index = $(event.target).attr('data-index');
+        const strain = STATE.userStrains[index];
+        STATE.currentStrain = strain;
+        displaySingleStrain(strain);
+        console.log(STATE);
+    });
+}
+
 //DOCUMENT READY FUNCTION
 
 function handleMedicineCabinet() {
     submitUserLogin();
     submitUserRegister();
     submitCreateUser();
+    submitBackToLogin();
     submitAddToCabinet();
     submitRemoveFromCabinet();
-    submitBackToLogin();
+    submitStrainDetails();
 }
 
 
