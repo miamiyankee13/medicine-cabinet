@@ -390,6 +390,20 @@ function submitCreateStrain() {
     });
 }
 
+function userLogOut() {
+    $('.js-logout').on('click', function(event) {
+        event.preventDefault();
+        STATE.token = null;
+        $('.js-single-strain').prop('hidden', true);
+        $('.js-cabinet-form').prop('hidden', true);
+        $('.js-cabinet').prop('hidden', true);
+        $('.js-create-strain').prop('hidden', true);
+        $('.js-nav').prop('hidden', true);
+        $('.js-login').prop('hidden', false);
+        console.log(STATE);
+    });
+}
+
 //DOCUMENT READY FUNCTION
 
 function handleMedicineCabinet() {
@@ -405,6 +419,7 @@ function handleMedicineCabinet() {
     goToMyCabinet();
     goToCreateStrainPage();
     submitCreateStrain();
+    userLogOut();
 }
 
 
