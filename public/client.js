@@ -5,6 +5,7 @@ const STATE = {
     strains: null,
     userStrains: null,
     currentStrain: null,
+    interval: null
 }
 
 //Make login area visible
@@ -30,11 +31,29 @@ function authenticateUser(userName, password) {
 
     $.ajax(settings).then(results => {
         STATE.token = results.authToken
+        STATE.interval = window.setInterval(refreshToken, 120 * 1000);
         $('.js-login').prop('hidden', true);
         $('.js-message').prop('hidden', true);
         $('.js-nav').prop('hidden', false);
         getAllStrains();
         getUserStrains();
+    }).catch(displayError);
+
+    console.log(STATE);
+}
+
+//POST JWT token for refresh
+//-save new token to STATE
+function refreshToken() {
+    const settings = {
+        url: '/auth/refresh',
+        headers: {"Authorization": `Bearer ${STATE.token}`},
+        dataType: 'json',
+        type: 'POST'
+    }
+
+    $.ajax(settings).then((results) => {
+        STATE.token = results.authToken;
     }).catch(displayError);
 
     console.log(STATE);
@@ -449,11 +468,13 @@ function submitCreateStrain() {
     });
 }
 
-//Remove token & render login area on click
+//Remove token, clear interval, & render login area on click
 function userLogOut() {
     $('.js-logout').on('click', function(event) {
         event.preventDefault();
         STATE.token = null;
+        window.clearInterval(STATE.interval);
+        STATE.interval = null;
         $('.js-single-strain').prop('hidden', true);
         $('.js-cabinet-form').prop('hidden', true);
         $('.js-cabinet').prop('hidden', true);
