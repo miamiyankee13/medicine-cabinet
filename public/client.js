@@ -10,8 +10,13 @@ const STATE = {
 //Make login area visible
 $('.js-login').prop('hidden', false);
 
+
 //API CALLS
 
+//POST userName & password for authorization/login
+//-save JWT token to STATE
+//-hide login & message
+//-display nav bar, strain drop down, & user cabinet
 function authenticateUser(userName, password) {
     const settings = {
         url: '/auth/login',
@@ -35,6 +40,8 @@ function authenticateUser(userName, password) {
     console.log(STATE);
 }
 
+//POST userName, password, firstName, & lastName to DB
+//-display message
 function createUser(userName, password, firstName, lastName) {
     const settings = {
         url: '/users',
@@ -52,9 +59,12 @@ function createUser(userName, password, firstName, lastName) {
     $.ajax(settings).then(() => {
         $('.js-message').text('Account created successfully!');
         $('.js-message').prop('hidden', false);
-    });
+    }).catch(displayError);
 }
 
+//GET all existing strains from DB
+//-save strains to STATE
+//-display strain drop down
 function getAllStrains() {
     const settings = {
         url: '/strains',
@@ -70,6 +80,9 @@ function getAllStrains() {
     console.log(STATE);
 }
 
+//GET user specific strains from DB
+//-save user specific strains to STATE
+//-display user "cabinet"
 function getUserStrains() {
     const settings = {
         url: '/users/strains',
@@ -86,6 +99,8 @@ function getUserStrains() {
     console.log(STATE);
 }
 
+//PUT specific strain in user "cabinet" in DB
+//-retreive & display updated data
 function addStrainToCabinet(id) {
     const settings = {
         url: `/users/strains/${id}`,
@@ -99,6 +114,8 @@ function addStrainToCabinet(id) {
     }).catch(displayError);
 }
 
+//DELETE specific strain from user "cabinet" in DB
+//-retreive & display updated data
 function removeStrainFromCabinet(id) {
     const settings = {
         url: `/users/strains/${id}`,
@@ -112,6 +129,8 @@ function removeStrainFromCabinet(id) {
     }).catch(displayError);
 }
 
+//POST comment to strain in DB
+//-retreive & display updated data
 function addCommentToStrain(id, content) {
     const settings = {
         url:`/strains/${id}`,
@@ -127,12 +146,14 @@ function addCommentToStrain(id, content) {
     }
 
     $.ajax(settings).then(() => {
-        getSingleUserStrain();
+        getCurrentStrain();
     }).catch(displayError);
 
     console.log(STATE);
 }
 
+//DELETE comment from strain in DB
+//-retreive & display updated data
 function removeCommentFromStrain(id, commentId) {
     const settings = {
         url: `/strains/${id}/${commentId}`,
@@ -142,14 +163,18 @@ function removeCommentFromStrain(id, commentId) {
     }
 
     $.ajax(settings).then(() => {
-        getSingleUserStrain();
+        getCurrentStrain();
     }).catch(displayError)
 
     console.log(STATE);
 }
 
-//Get updated userStrains, update current strain, & display single strain
-function getSingleUserStrain() {
+//GET current strain from DB
+//-retreive user specific strains from DB
+//-save user specific strains to STATE
+//-update current strain in STATE using 'find' method
+//-display current strain
+function getCurrentStrain() {
     const settings = {
         url: '/users/strains',
         headers: {"Authorization": `Bearer ${STATE.token}`},
@@ -163,10 +188,12 @@ function getSingleUserStrain() {
             return element.name === STATE.currentStrain.name;
         });
         STATE.currentStrain = singleStrain
-        displaySingleStrain(STATE.currentStrain);
+        displayCurrentStrain(STATE.currentStrain);
     }).catch(displayError);
 }
 
+//POST strain name, type, flavor & description to DB
+//-display message
 function createNewStrain(name, type, flavor, description) {
     const settings = {
         url: '/strains',
@@ -191,6 +218,8 @@ function createNewStrain(name, type, flavor, description) {
 
 //DISPLAY FUNCTIONS
 
+
+//Create & display strain drop down by passing each strain from STATE through rendering function
 function displayStrainDropDown() {
     const strainOptions = STATE.strains.map((strain, index) => renderStrainOptions(strain, index)).join('');
     const strainDropDownHtml = `
@@ -207,20 +236,23 @@ function displayStrainDropDown() {
     $('.js-cabinet-form').prop('hidden', false);
 }
 
+//Create & display user cabinet by passing each user strain from STATE through rendering function
 function displayCabinet() {
     const cabinet = STATE.userStrains.map((strain, index) => renderCabinet(strain, index));
     $('.js-cabinet').html(cabinet);
     $('.js-cabinet').prop('hidden', false);
 }
 
-function displaySingleStrain(strain) {
-    const singleStrain = renderSingleStrain(strain);
-    $('.js-single-strain').html(singleStrain);
+//Create & display current strain by passing current strain from STATE through rendering function
+function displayCurrentStrain(strain) {
+    const currentStrain = renderCurrentStrain(strain);
+    $('.js-single-strain').html(currentStrain);
     $('.js-cabinet-form').prop('hidden', true);
     $('.js-cabinet').prop('hidden', true);
     $('.js-single-strain').prop('hidden', false);
 }
 
+//Create & display error message
 function displayError() {
     $('.js-message').text('There was an error loading the requested data');
     $('.js-message').prop('hidden', false);
@@ -228,11 +260,14 @@ function displayError() {
 
 //RENDERING FUNCTIONS
 
+
+//Create HTML for strain option using strain & index passed from display function
 function renderStrainOptions(strain, index) {
     const name = strain.name;
     return `<option value="${index}">${name}</option>`;
 }
 
+//Create HTML for user cabinet using strain & index passed from display function
 function renderCabinet(strain, index) {
     const name = strain.name;
     return `<div class="cabinet-strain">
@@ -242,7 +277,8 @@ function renderCabinet(strain, index) {
             </div>`;
 }
 
-function renderSingleStrain(strain) {
+//Create HTML for current strain using strain passed from display function
+function renderCurrentStrain(strain) {
     const name = strain.name;
     const type = strain.type;
     const flavor = strain.flavor;
@@ -273,15 +309,20 @@ function renderSingleStrain(strain) {
 
 //EVENT LISTENERS
 
+
+//User login on click
 function submitUserLogin() {
     $('.js-login-btn').on('click', function(event) {
         event.preventDefault();
         const userName = $('#username').val();
         const password = $('#password').val();
         authenticateUser(userName, password);
+        $('#username').val('');
+        $('#password').val('');
     });
 }
 
+//Render user registration area on click
 function goToUserRegister() {
     $('.js-register-btn').on('click', function(event) {
         event.preventDefault();
@@ -290,6 +331,7 @@ function goToUserRegister() {
     });
 }
 
+//User creation on click
 function submitCreateUser() {
     $('.js-create-btn').on('click', function(event) {
         event.preventDefault();
@@ -298,9 +340,14 @@ function submitCreateUser() {
         const firstName = $('#firstname-create').val();
         const lastName = $('#lastname-create').val();
         createUser(userName, password, firstName, lastName);
+        $('#username-create').val('');
+        $('#password-create').val('');
+        $('#firstname-create').val('');
+        $('#lastname-create').val('');
     });
 }
 
+//Render login area on click
 function goBackToLogin() {
     $('.js-login-return-btn').on('click', function(event) {
         event.preventDefault(); 
@@ -310,6 +357,7 @@ function goBackToLogin() {
     });
 }
 
+//Add strain to cabinet on click
 function submitAddToCabinet() {
     $('body').on('click', '.js-add-btn', function(event) {
         event.preventDefault();
@@ -319,6 +367,7 @@ function submitAddToCabinet() {
     });
 }
 
+//Remove strain from cabinet on click
 function submitRemoveFromCabinet() {
     $('body').on('click', '.js-remove-btn', function(event) {
         event.preventDefault();
@@ -328,17 +377,19 @@ function submitRemoveFromCabinet() {
     });
 }
 
+//Render current strain details area on click
 function goToStrainDetails() {
     $('body').on('click', '.js-details-btn', function(event) {
         event.preventDefault();
         const index = $(event.target).attr('data-index');
         const strain = STATE.userStrains[index];
         STATE.currentStrain = strain;
-        displaySingleStrain(strain);
+        displayCurrentStrain(strain);
         console.log(STATE);
     });
 }
 
+//Add comment to strain on click
 function submitUserComment() {
     $('body').on('click', '.js-add-comment-btn', function(event) {
         event.preventDefault();
@@ -348,6 +399,7 @@ function submitUserComment() {
     });
 }
 
+//Remove comment from strain on click
 function submitRemoveComment() {
     $('body').on('click', '.js-remove-comment-btn', function(event) {
         event.preventDefault();
@@ -358,6 +410,7 @@ function submitRemoveComment() {
     });
 }
 
+//Render cabinet area on click
 function goToMyCabinet() {
     $('.js-my-cabinet').on('click', function(event) {
         event.preventDefault();
@@ -369,6 +422,7 @@ function goToMyCabinet() {
     });
 }
 
+//Render create strain area on click
 function goToCreateStrainPage() {
     $('.js-create-strain-link').on('click', function(event) {
         event.preventDefault();
@@ -379,6 +433,7 @@ function goToCreateStrainPage() {
     });
 }
 
+//Add strain to DB on click
 function submitCreateStrain() {
     $('.js-create-strain-btn').on('click', function(event) {
         event.preventDefault();
@@ -387,9 +442,14 @@ function submitCreateStrain() {
         const flavor = $('#strain-flavor-create').val();
         const description = $('#strain-description-create').val();
         createNewStrain(name, type, flavor, description);
+        $('#strain-name-create').val('');
+        $('#strain-type-create').val('');
+        $('#strain-flavor-create').val('');
+        $('#strain-description-create').val('');
     });
 }
 
+//Remove token & render login area on click
 function userLogOut() {
     $('.js-logout').on('click', function(event) {
         event.preventDefault();
@@ -403,6 +463,7 @@ function userLogOut() {
         console.log(STATE);
     });
 }
+
 
 //DOCUMENT READY FUNCTION
 
@@ -421,6 +482,5 @@ function handleMedicineCabinet() {
     submitCreateStrain();
     userLogOut();
 }
-
 
 $(handleMedicineCabinet);
