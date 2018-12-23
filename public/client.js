@@ -310,7 +310,7 @@ function renderCurrentStrain(strain) {
         const author = comment.author;
         return `
         <p><em>${content}</em></p>
-        <p>Posted by ${author}</p>
+        <p><small>Posted by ${author}</small></p>
         <button class="js-remove-comment-btn btn" data-index="${index}">Remove</button>`
     }).join('');
 
