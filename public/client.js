@@ -474,11 +474,16 @@ function submitCreateStrain() {
     });
 }
 
-//Remove token, clear interval, & render login area on click
+//Render login area on click
+//-Remove token, currentUser, currentStrain, & userStrains
+//-Clear & remove interval
 function userLogOut() {
     $('.js-logout').on('click', function(event) {
         event.preventDefault();
         STATE.token = null;
+        STATE.currentUser = null;
+        STATE.currentStrain = null;
+        STATE.userStrains = null;
         window.clearInterval(STATE.interval);
         STATE.interval = null;
         $('.js-single-strain').prop('hidden', true);
