@@ -3,6 +3,7 @@
 const STATE = {
     token: null,
     strains: null,
+    currentUser: null,
     userStrains: null,
     currentStrain: null,
     interval: null
@@ -30,7 +31,8 @@ function authenticateUser(userName, password) {
     }
 
     $.ajax(settings).then(results => {
-        STATE.token = results.authToken
+        STATE.token = results.authToken;
+        STATE.currentUser = userName;
         STATE.interval = window.setInterval(refreshToken, 120 * 1000);
         $('.js-login').prop('hidden', true);
         $('.js-message').prop('hidden', true);
@@ -150,13 +152,14 @@ function removeStrainFromCabinet(id) {
 
 //POST comment to strain in DB
 //-retreive & display updated data
-function addCommentToStrain(id, content) {
+function addCommentToStrain(id, content, author) {
     const settings = {
         url:`/strains/${id}`,
         headers: {"Authorization": `Bearer ${STATE.token}`},
         data: JSON.stringify({
             comment: {
-                content: content
+                content: content,
+                author: author
             }
         }),
         contentType: 'application/json',
@@ -304,8 +307,10 @@ function renderCurrentStrain(strain) {
     const description = strain.description;
     const comments = strain.comments.map((comment, index) => {
         const content = comment.content;
+        const author = comment.author;
         return `
         <p><em>${content}</em></p>
+        <p>Posted by ${author}</p>
         <button class="js-remove-comment-btn btn" data-index="${index}">Remove</button>`
     }).join('');
 
@@ -414,7 +419,8 @@ function submitUserComment() {
         event.preventDefault();
         const id = STATE.currentStrain._id;
         const content = $('#add-comment').val();
-        addCommentToStrain(id, content);
+        const author = STATE.currentUser;
+        addCommentToStrain(id, content, author);
     });
 }
 

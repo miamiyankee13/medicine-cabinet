@@ -9,7 +9,8 @@ mongoose.set('useCreateIndex', true)
 
 //Declare schema for comments model
 const commentSchema = mongoose.Schema({
-    content: { type: String },
+    content: { type: String, required: true },
+    author: { type: String, required: true }
 });
 
 //Declare schema for strains

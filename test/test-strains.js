@@ -199,7 +199,7 @@ describe('/strains API resource', function() {
                     expect(res).to.have.status(201);
                     strainId = res.body._id;
                 }).then(function() {
-                    return chai.request(app).post(`/strains/${strainId}`).set('authorization', `Bearer ${token}`).send({comment: { content: 'Test'}}).then(function(res) {
+                    return chai.request(app).post(`/strains/${strainId}`).set('authorization', `Bearer ${token}`).send({comment: { content: 'Test', author: 'Author'}}).then(function(res) {
                         expect(res).to.have.status(201);
                         expect(res.body).to.be.a('object');
                     })
@@ -334,7 +334,7 @@ describe('/strains API resource', function() {
                     expect(res).to.have.status(201);
                     strainId = res.body._id;
                 }).then(function() {
-                    return chai.request(app).post(`/strains/${strainId}`).set('authorization', `Bearer ${token}`).send({comment: { content: 'Test'}}).then(function(res) {
+                    return chai.request(app).post(`/strains/${strainId}`).set('authorization', `Bearer ${token}`).send({comment: { content: 'Test', author: 'Author'}}).then(function(res) {
                         expect(res).to.have.status(201);
                         expect(res.body).to.be.a('object');
                     })
