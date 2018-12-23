@@ -311,8 +311,9 @@ function renderCurrentStrain(strain) {
         return `
         <p><em>${content}</em></p>
         <p><small>Posted by ${author}</small></p>
-        <button class="js-remove-comment-btn btn" data-index="${index}">Remove</button>`
+        `
     }).join('');
+    //<button class="js-remove-comment-btn btn" data-index="${index}">Remove</button>
 
     return `<div class="single-strain">
                 <h2>${name}</h2>
