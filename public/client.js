@@ -311,10 +311,18 @@ function renderCurrentStrain(strain) {
     const comments = strain.comments.map((comment, index) => {
         const content = comment.content;
         const author = comment.author;
+        let removeButton;
+        
+        if (STATE.currentUser === author) {
+            removeButton = `<button class="js-remove-comment-btn btn" data-index="${index}">Remove</button>`
+        } else {
+            removeButton = '';
+        }
+        
         return `
         <p><em>${content}</em></p>
         <p><small>Posted by ${author}</small></p>
-        <button class="js-remove-comment-btn btn" data-index="${index}">Remove</button>
+        ${removeButton}
         `
     }).join('');
     
@@ -438,16 +446,7 @@ function submitRemoveComment() {
         const id = STATE.currentStrain._id;
         const index = $(event.target).attr('data-index');
         const commentId = STATE.currentStrain.comments[index]._id;
-        const author = STATE.currentStrain.comments[index].author;
-        
-        if (STATE.currentUser !== author) {
-            $('.js-message').text('You may only remove your comments');
-            $('.js-message').prop('hidden', false);
-            return 
-        }
-
         removeCommentFromStrain(id, commentId);
-        $('.js-message').prop('hidden', true);
     });
 }
 
