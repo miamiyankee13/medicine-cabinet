@@ -328,7 +328,7 @@ function renderCurrentStrain(strain) {
     }).join('');
     
 
-    return `
+    return `<div class="single-strain">
                 <h2>${name}</h2>
                 <br>
                 <h3>${type}</h3>
@@ -347,7 +347,7 @@ function renderCurrentStrain(strain) {
                 <label for="add-comment">Add a comment</label>
                 <textarea id="add-comment" name="add-comment" rows="4" cols="50"></textarea>
                 <button class="js-add-comment-btn btn">Add Comment</button>
-                `;
+            </div>`;
 }
 
 //EVENT LISTENERS
