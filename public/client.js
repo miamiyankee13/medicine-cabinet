@@ -312,9 +312,10 @@ function renderCurrentStrain(strain) {
         return `
         <p><em>${content}</em></p>
         <p><small>Posted by ${author}</small></p>
+        <button class="js-remove-comment-btn btn" data-index="${index}">Remove</button>
         `
     }).join('');
-    //<button class="js-remove-comment-btn btn" data-index="${index}">Remove</button>
+    
 
     return `<div class="single-strain">
                 <h2>${name}</h2>
@@ -363,11 +364,20 @@ function submitCreateUser() {
         event.preventDefault();
         const userName = $('#username-create').val();
         const password = $('#password-create').val();
+        const passwordCheck = $('#password-check').val();
         const firstName = $('#firstname-create').val();
         const lastName = $('#lastname-create').val();
+
+        if (password !== passwordCheck) {
+            $('.js-message').text('"Password" & "Verify Password" fields must match');
+            $('.js-message').prop('hidden', false);
+            return
+        }
+
         createUser(userName, password, firstName, lastName);
         $('#username-create').val('');
         $('#password-create').val('');
+        $('#password-check').val('');
         $('#firstname-create').val('');
         $('#lastname-create').val('');
     });
@@ -423,6 +433,7 @@ function submitUserComment() {
         const content = $('#add-comment').val();
         const author = STATE.currentUser;
         addCommentToStrain(id, content, author);
+        $('.js-message').prop('hidden', true);
     });
 }
 
@@ -433,7 +444,16 @@ function submitRemoveComment() {
         const id = STATE.currentStrain._id;
         const index = $(event.target).attr('data-index');
         const commentId = STATE.currentStrain.comments[index]._id;
+        const author = STATE.currentStrain.comments[index].author;
+        
+        if (STATE.currentUser !== author) {
+            $('.js-message').text('You may only remove a comment posted by you');
+            $('.js-message').prop('hidden', false);
+            return 
+        }
+
         removeCommentFromStrain(id, commentId);
+        $('.js-message').prop('hidden', true);
     });
 }
 
@@ -456,6 +476,7 @@ function goToCreateStrainPage() {
         $('.js-single-strain').prop('hidden', true);
         $('.js-cabinet-form').prop('hidden', true);
         $('.js-cabinet').prop('hidden', true);
+        $('.js-message').prop('hidden', true);
         $('.js-create-strain').prop('hidden', false);
     });
 }
@@ -488,6 +509,7 @@ function userLogOut() {
         STATE.userStrains = null;
         window.clearInterval(STATE.interval);
         STATE.interval = null;
+        $('.js-message').prop('hidden', true);
         $('.js-single-strain').prop('hidden', true);
         $('.js-cabinet-form').prop('hidden', true);
         $('.js-cabinet').prop('hidden', true);
