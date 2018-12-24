@@ -326,7 +326,7 @@ function renderCurrentStrain(strain) {
         
         return `
         <br>
-        <p><em>${content}</em></p>
+        <p class="comment-content"><em>${content}</em></p>
         <p><small>Posted by ${author}</small></p>
         ${removeButton}
         `

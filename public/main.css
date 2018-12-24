@@ -43,13 +43,11 @@ html, body {
 
 .flex-nav ul {
     display: inline-flex;
-    flex-direction: column;
 }
 
 .flex-nav li {
-    flex: 1;
     list-style-type: none;
-    margin: 5px;
+    margin: 10px;
 }
 
 .flex-single-strain {
@@ -59,6 +57,13 @@ html, body {
 
 .cabinet-strain {
     margin: 25px;
+}
+
+.comment-content {
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
 }
 
 input, textarea, label, select, button {
@@ -93,6 +98,10 @@ a {
 
 @media (max-width: 845px) {
     .flex-cabinet {
+        flex-direction: column;
+    }
+
+    .flex-nav ul {
         flex-direction: column;
     }
 }
