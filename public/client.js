@@ -263,8 +263,13 @@ function displayStrainDropDown() {
 
 //Create & display user cabinet by passing each user strain from STATE through rendering function
 function displayCabinet() {
-    const cabinet = STATE.userStrains.map((strain, index) => renderCabinet(strain, index));
-    $('.js-cabinet').html(cabinet);
+    const cabinetStrains = STATE.userStrains.map((strain, index) => renderCabinet(strain, index)).join('');
+    const cabinetHtml = `
+        <div class="flex-cabinet">
+            ${cabinetStrains}
+        </div>`;
+
+    $('.js-cabinet').html(cabinetHtml);
     $('.js-cabinet').prop('hidden', false);
 }
 
@@ -328,7 +333,7 @@ function renderCurrentStrain(strain) {
     }).join('');
     
 
-    return `<div class="single-strain">
+    return `<div class="flex-single-strain">
                 <h2>${name}</h2>
                 <br>
                 <h3>${type}</h3>
@@ -345,7 +350,7 @@ function renderCurrentStrain(strain) {
                 </div>
                 <br>
                 <label for="add-comment">Add a comment</label>
-                <textarea id="add-comment" name="add-comment" rows="4" cols="50"></textarea>
+                <textarea id="add-comment" name="add-comment" rows="4" cols="30"></textarea>
                 <button class="js-add-comment-btn btn">Add Comment</button>
                 <br>
             </div>`;
