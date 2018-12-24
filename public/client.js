@@ -36,6 +36,7 @@ function authenticateUser(userName, password) {
         STATE.currentUser = userName;
         STATE.interval = window.setInterval(refreshToken, 120 * 1000);
         $('.js-login').prop('hidden', true);
+        $('.js-register').prop('hidden', true);
         $('.js-message').prop('hidden', true);
         $('.js-nav').prop('hidden', false);
         getAllStrains();
@@ -81,6 +82,7 @@ function createUser(userName, password, firstName, lastName) {
     $.ajax(settings).then(() => {
         $('.js-message').text('Account created successfully!');
         $('.js-message').prop('hidden', false);
+        authenticateUser(userName, password);
     }).catch(displayError);
 }
 
@@ -383,16 +385,6 @@ function submitCreateUser() {
     });
 }
 
-//Render login area on click
-function goBackToLogin() {
-    $('.js-login-return-btn').on('click', function(event) {
-        event.preventDefault(); 
-        $('.js-message').prop('hidden', true);
-        $('.js-register').prop('hidden', true);
-        $('.js-login').prop('hidden', false);
-    });
-}
-
 //Add strain to cabinet on click
 function submitAddToCabinet() {
     $('body').on('click', '.js-add-btn', function(event) {
@@ -529,7 +521,6 @@ function handleMedicineCabinet() {
     submitUserLogin();
     goToUserRegister();
     submitCreateUser();
-    goBackToLogin();
     submitAddToCabinet();
     submitRemoveFromCabinet();
     goToStrainDetails();
