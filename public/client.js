@@ -422,6 +422,8 @@ function goToStrainDetails() {
         STATE.currentStrain = strain;
         displayCurrentStrain(strain);
         console.log(STATE);
+
+        //maybe add if statements to change colors of strain type text?
     });
 }
 
@@ -447,7 +449,7 @@ function submitRemoveComment() {
         const author = STATE.currentStrain.comments[index].author;
         
         if (STATE.currentUser !== author) {
-            $('.js-message').text('You may only remove a comment posted by you');
+            $('.js-message').text('You may only remove your comments');
             $('.js-message').prop('hidden', false);
             return 
         }

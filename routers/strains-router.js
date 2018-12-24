@@ -134,7 +134,7 @@ router.post('/:id', jsonParser, jwtAuth, (req, res) => {
 });
 
 //DELETE route handler for /strains/:id/:commentId
-//-delete comment froms train & send response status
+//-delete comment from strain & send response status
 router.delete('/:id/:commentId', jwtAuth, (req, res) => {
     Strain.updateOne({_id: req.params.id}, { $pull: {comments: {_id: req.params.commentId} } }, { new: true }).then(() => {
         res.status(204).end();
