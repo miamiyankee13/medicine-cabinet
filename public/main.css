@@ -52,11 +52,6 @@ html, body {
     margin-top: 25px;
 }
 
-.single-strain {
-    display: flex;
-    flex-direction: column;
-}
-
 input, textarea, label, select, button {
     display: block;
     font-size: 16px;
