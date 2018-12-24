@@ -347,6 +347,7 @@ function renderCurrentStrain(strain) {
                 <label for="add-comment">Add a comment</label>
                 <textarea id="add-comment" name="add-comment" rows="4" cols="50"></textarea>
                 <button class="js-add-comment-btn btn">Add Comment</button>
+                <br>
             </div>`;
 }
 
@@ -397,6 +398,16 @@ function submitCreateUser() {
         $('#password-check').val('');
         $('#firstname-create').val('');
         $('#lastname-create').val('');
+    });
+}
+
+//Render login area on click
+function goBackToLogin() {
+    $('.js-login-return-btn').on('click', function(event) {
+        event.preventDefault(); 
+        $('.js-message').prop('hidden', true);
+        $('.js-register').prop('hidden', true);
+        $('.js-login').prop('hidden', false);
     });
 }
 
@@ -527,6 +538,7 @@ function handleMedicineCabinet() {
     submitUserLogin();
     goToUserRegister();
     submitCreateUser();
+    goBackToLogin();
     submitAddToCabinet();
     submitRemoveFromCabinet();
     goToStrainDetails();
