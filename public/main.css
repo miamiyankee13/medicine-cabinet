@@ -20,18 +20,15 @@ html, body {
 }
 
 .flex-header {
-    background-color: red;
     flex: 1;
     text-align: center;
 }
 
 .flex-main {
-    background-color: blue;
     flex: 10;
     text-align: center;
 }
 
 .flex-footer {
-    background-color: yellow;
     flex: 1;
 }
