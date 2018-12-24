@@ -279,6 +279,7 @@ function displayCurrentStrain(strain) {
     $('.js-single-strain').html(currentStrain);
     $('.js-cabinet-form').prop('hidden', true);
     $('.js-cabinet').prop('hidden', true);
+    $('.js-single-strain').scrollTop(0);
     $('.js-single-strain').prop('hidden', false);
 }
 
