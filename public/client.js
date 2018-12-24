@@ -364,6 +364,7 @@ function goToUserRegister() {
     $('.js-register-btn').on('click', function(event) {
         event.preventDefault();
         $('.js-login').prop('hidden', true);
+        $('.js-message').prop('hidden', true);
         $('.js-register').prop('hidden', false);
     });
 }
