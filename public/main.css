@@ -63,7 +63,7 @@ html, body {
     max-width: 400px;
     margin-left: auto;
     margin-right: auto;
-    text-align: left;
+    text-align: center;
 }
 
 input, textarea, label, select, button {
