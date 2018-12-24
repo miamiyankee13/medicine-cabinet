@@ -17,6 +17,7 @@ $('.js-login').prop('hidden', false);
 
 //POST userName & password for authorization/login
 //-save JWT token to STATE
+//-save userName to STATE
 //-hide login & message
 //-display nav bar, strain drop down, & user cabinet
 function authenticateUser(userName, password) {
