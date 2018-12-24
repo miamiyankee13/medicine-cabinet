@@ -12,25 +12,28 @@
 
     <header role="banner" class="flex-header">
       <h1>Medicine Cabinet</h1>
+      <br>
       <p>Track your favorite medicinal cannabis strains!</p>
-      <nav role="navigation" class="js-nav nav" aria-live="assertive" hidden>
+      <br>
+      <nav role="navigation" class="js-nav flex-nav" aria-live="assertive" hidden>
         <ul>
           <li><a href="#" class="js-my-cabinet">My Cabinet</a></li>
-          <li><a href="#" class="js-create-strain-link">Create New Strain</a></li>
+          <li><a href="#" class="js-create-strain-link">Create Strain</a></li>
           <li><a href="#" class="js-logout">Log Out</a></li>
         </ul>
       </nav>
       <p class="js-message" aria-live="assertive" hidden></p>
     </header>
-  
+    
+    <br>
     
     <main role="main" class="flex-main">
-      <section role="region" class="js-login" aria-live="assertive" hidden>
+      <section role="region" class="js-login login" aria-live="assertive" hidden>
         <form>
-          <label for="username">Username:</label>
+          <label for="username">Username</label>
           <input type= "text" id="username" name="username">
 
-          <label for="password">Password:</label>
+          <label for="password">Password</label>
           <input type="password" id="password" name="password">
 
           <button class="js-login-btn btn" type="submit">Login</button>
@@ -41,19 +44,19 @@
       <section role="region" class="js-register" aria-live="assertive" hidden>
         <form>
           <h2>Create Account</h2>
-          <label for="username-create">Username:</label>
+          <label for="username-create">Username</label>
           <input type="text" id="username-create" name="username-create">
 
-          <label for="password-create">Password (must be 10 characters long):</label>
+          <label for="password-create">Password (must be 10 characters long)</label>
           <input type="password" id="password-create" name="password-create">
 
-          <label for="password-check">Verify Password:</label>
+          <label for="password-check">Verify Password</label>
           <input type="password" id="password-check" name="password-check">
 
-          <label for="firstname-create">First Name:</label>
+          <label for="firstname-create">First Name</label>
           <input type="text" id="firstname-create" name="firstname-create">
 
-          <label for="lastname-create">Last Name:</label>
+          <label for="lastname-create">Last Name</label>
           <input type="text" id="lastname-create" name="lastname-create">
 
           <button class="js-create-btn btn" type="submit">Create Account</button>
@@ -63,16 +66,16 @@
       <section role="region" class="js-create-strain" aria-live="assertive" hidden>
         <form>
           <h2>Create Strain</h2>
-          <label for="strain-name-create">Name:</label>
+          <label for="strain-name-create">Name</label>
           <input type="text" id="strain-name-create" name="strain-name-create">
 
-          <label for="strain-type-create">Type (Sativa, Indica, or Hybrid):</label>
+          <label for="strain-type-create">Type (Sativa, Indica, or Hybrid)</label>
           <input type="text" id="strain-type-create" name="strain-type-create">
 
-          <label for="strain-flavor-create">Flavor:</label>
+          <label for="strain-flavor-create">Flavor</label>
           <input type="text" id="strain-flavor-create" name="strain-flavor-create">
 
-          <label for="strain-description-create">Description:</label>
+          <label for="strain-description-create">Description</label>
           <textarea id="strain-description-create" name="strain-description-create" rows="4" cols="50">
 
           </textarea>
@@ -84,16 +87,18 @@
       <section role="region" class="js-cabinet-form" aria-live="assertive" hidden>
       
       </section>
-
-      <section role="region" class="js-cabinet" aria-live="assertive" hidden>
+      <br>
+      <section role="region" class="js-cabinet cabinet" aria-live="assertive" hidden>
       
       </section>
 
-      <section role="region" class="js-single-strain" aria-live="assertive" hidden>
+      <section role="region" class="js-single-strain single-strain" aria-live="assertive" hidden>
 
       </section>
 
     </main>
+
+    <br>
 
     <footer role="contentinfo" class="flex-footer">
         <p><small>Copyright &copy; 2018 Anthony D'Amico</small></p>

@@ -249,7 +249,7 @@ function displayStrainDropDown() {
     const strainOptions = STATE.strains.map((strain, index) => renderStrainOptions(strain, index)).join('');
     const strainDropDownHtml = `
         <form>
-            <label for="strain-select">Select a Strain:</label>
+            <label for="strain-select">Select a Strain</label>
             <select id="strain-select">
             ${strainOptions}
             </select>
@@ -320,6 +320,7 @@ function renderCurrentStrain(strain) {
         }
         
         return `
+        <br>
         <p><em>${content}</em></p>
         <p><small>Posted by ${author}</small></p>
         ${removeButton}
@@ -329,16 +330,21 @@ function renderCurrentStrain(strain) {
 
     return `<div class="single-strain">
                 <h2>${name}</h2>
+                <br>
                 <h3>${type}</h3>
+                <br>
                 <h4>Flavor</h4>
                 <p>${flavor}</p>
+                <br>
                 <h4>Description</h4>
                 <p>${description}</p>
+                <br>
                 <div>
                     <h3>Community Comments</h3>
                     ${comments}
                 </div>
-                <label for="add-comment">Add a comment:</label>
+                <br>
+                <label for="add-comment">Add a comment</label>
                 <textarea id="add-comment" name="add-comment" rows="4" cols="50"></textarea>
                 <button class="js-add-comment-btn btn">Add Comment</button>
             </div>`;

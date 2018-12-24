@@ -11,6 +11,7 @@ html, body {
     height: 100%;
 }
 
+/* flexbox */
 .flex-container {
     display: flex;
     flex-direction: column;
@@ -26,13 +27,53 @@ html, body {
 
 .flex-main {
     flex: 10;
+    overflow-y: scroll;
     text-align: center;
+    display: flex;
+    flex-direction: column;
 }
 
 .flex-footer {
     flex: 1;
 }
 
-.nav li {
+.flex-nav ul {
+    display: inline-flex;
+    flex-direction: column;
+}
+
+.flex-nav li {
+    flex: 1;
     list-style-type: none;
+    margin: 5px;
+}
+
+.cabinet-strain {
+    margin-top: 25px;
+}
+
+input, textarea, label, select, button {
+    display: block;
+    font-size: 16px;
+}
+
+input, select, button {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+button {
+    margin-top: 10px;
+    padding: 4px;
+    border: 1px solid black;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+label {
+    margin: 10px;
+}
+
+a {
+    color: black;
 }
