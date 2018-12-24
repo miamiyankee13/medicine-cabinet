@@ -1,0 +1,37 @@
+/* custom CSS reset */
+* {                                            
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+/* allows flex container to stretch entire page*/
+html, body {                       
+    height: 100%;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    margin: 1px;
+}
+
+.flex-header {
+    background-color: red;
+    flex: 1;
+    text-align: center;
+}
+
+.flex-main {
+    background-color: blue;
+    flex: 10;
+    text-align: center;
+}
+
+.flex-footer {
+    background-color: yellow;
+    flex: 1;
+}
