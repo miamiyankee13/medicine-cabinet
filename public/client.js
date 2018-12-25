@@ -506,11 +506,20 @@ function submitCreateStrain() {
         const type = $('#strain-type-create').val();
         const flavor = $('#strain-flavor-create').val();
         const description = $('#strain-description-create').val();
-        createNewStrain(name, type, flavor, description);
-        $('#strain-name-create').val('');
-        $('#strain-type-create').val('');
-        $('#strain-flavor-create').val('');
-        $('#strain-description-create').val('');
+
+        if (type === 'sativa' || type === 'Sativa' || type === 'indica' || type === 'Indica' ||
+            type === 'hybrid' || type === 'Hybrid') {
+                createNewStrain(name, type, flavor, description);
+                $('#strain-name-create').val('');
+                $('#strain-type-create').val('');
+                $('#strain-flavor-create').val('');
+                $('#strain-description-create').val('');
+            } else {
+                $('.js-message').text('"Type" must be "Sativa", "Indica", or "Hybrid"' );
+                $('.js-message').prop('hidden', false);
+            }
+
+        
     });
 }
 
