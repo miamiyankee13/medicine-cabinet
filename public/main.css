@@ -1,4 +1,4 @@
-/* custom CSS reset */
+/* CUSTOM RESET */
 * {                                            
     margin: 0;
     padding: 0;
@@ -6,12 +6,11 @@
     font-family: Helvetica, Arial, sans-serif;
 }
 
-/* allows flex container to stretch entire page*/
+/* FLEXBOX SETTINGS */
 html, body {                       
     height: 100%;
 }
 
-/* flexbox */
 .flex-container {
     display: flex;
     flex-direction: column;
@@ -41,13 +40,8 @@ html, body {
     justify-content: space-evenly;
 }   
 
-.flex-nav ul {
+.flex-nav {
     display: inline-flex;
-}
-
-.flex-nav li {
-    list-style-type: none;
-    margin: 10px;
 }
 
 .flex-single-strain {
@@ -55,6 +49,7 @@ html, body {
     flex-direction: column;
 }
 
+/*CLASSES*/
 .cabinet-strain {
     margin: 25px;
 }
@@ -66,6 +61,12 @@ html, body {
     text-align: center;
 }
 
+.nav-item {
+    list-style-type: none;
+    margin: 25px;
+}
+
+/*ELEMENTS*/
 input, textarea, label, select, button {
     display: block;
     font-size: 16px;
@@ -96,8 +97,13 @@ a {
     color: black;
 }
 
+/*MEDIA QUERIES*/
 @media (max-width: 845px) {
     .flex-cabinet {
         flex-direction: column;
+    }
+
+    .nav-item {
+        margin: 10px;
     }
 }
