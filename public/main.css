@@ -100,8 +100,4 @@ a {
     .flex-cabinet {
         flex-direction: column;
     }
-
-    .flex-nav ul {
-        flex-direction: column;
-    }
 }
