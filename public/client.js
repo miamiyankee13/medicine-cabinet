@@ -494,6 +494,7 @@ function goToCreateStrainPage() {
         $('.js-cabinet-form').prop('hidden', true);
         $('.js-cabinet').prop('hidden', true);
         $('.js-message').prop('hidden', true);
+        $('.js-create-strain').scrollTop(0);
         $('.js-create-strain').prop('hidden', false);
     });
 }
