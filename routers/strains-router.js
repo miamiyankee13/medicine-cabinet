@@ -122,7 +122,7 @@ router.post('/:id', jsonParser, jwtAuth, (req, res) => {
         if (!(requiredField in req.body)) {
             const message = `Missing ${requiredField} in request body`;
             console.error(message);
-            return res.status(400).send(message);
+            return res.status(400).json({message});
         }
     
     Strain.updateOne({_id: req.params.id}, { $push: {comments: req.body.comment} }, { new: true }).then(result => {
