@@ -4,11 +4,13 @@
     padding: 0;
     box-sizing: border-box;
     font-family: Helvetica, Arial, sans-serif;
+    color: mediumseagreen;
 }
 
 /* FLEXBOX SETTINGS */
 html, body {                       
     height: 100%;
+    background-color: whitesmoke;
 }
 
 .flex-container {
@@ -52,6 +54,14 @@ html, body {
 /*CLASSES*/
 .cabinet-strain {
     margin: 25px;
+    padding: 15px;
+    max-width: 250px;
+    border: 3px solid black;
+    border-radius: 30px;
+}
+
+.cabinet-strain:hover {
+    border-color: mediumseagreen;
 }
 
 .comment-content {
@@ -64,6 +74,14 @@ html, body {
 .nav-item {
     list-style-type: none;
     margin: 25px;
+}
+
+.strain-content {
+    color: black;
+}
+
+.strain-type {
+    color: dodgerblue;
 }
 
 /*ELEMENTS*/
@@ -79,6 +97,7 @@ input, select, button, textarea {
 
 textarea {
     max-width: 300px;
+    color: black;
 }
 
 button {
@@ -87,13 +106,28 @@ button {
     border: 1px solid black;
     border-radius: 10px;
     cursor: pointer;
+    color: black;
+    background-color: whitesmoke;
+}
+
+button:hover {
+    color: mediumseagreen;
 }
 
 label {
     margin: 10px;
+    color: black;
 }
 
 a {
+    color: black;
+}
+
+a:hover {
+    color: mediumseagreen;
+}
+
+select {
     color: black;
 }
 

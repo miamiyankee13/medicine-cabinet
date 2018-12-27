@@ -336,6 +336,7 @@ function renderCurrentStrain(strain) {
     const type = strain.type;
     const flavor = strain.flavor;
     const description = strain.description;
+
     const comments = strain.comments.map((comment, index) => {
         const content = comment.content;
         const author = comment.author;
@@ -349,23 +350,22 @@ function renderCurrentStrain(strain) {
         
         return `
         <br>
-        <p class="comment-content"><em>${content}</em></p>
+        <p class="comment-content"><em class="strain-content">${content}</em></p>
         <p><small>Posted by ${author}</small></p>
         ${removeButton}
         `
     }).join('');
     
-
     return `<div class="flex-single-strain">
                 <h2>${name}</h2>
                 <br>
-                <h3>${type}</h3>
+                <h3 class="strain-type">${type}</h3>
                 <br>
                 <h4>Flavor</h4>
-                <p>${flavor}</p>
+                <p class="strain-content">${flavor}</p>
                 <br>
                 <h4>Description</h4>
-                <p>${description}</p>
+                <p class="strain-content">${description}</p>
                 <br>
                 <div>
                     <h3>Community Comments</h3>
