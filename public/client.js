@@ -41,7 +41,9 @@ function authenticateUser(userName, password) {
         $('.js-nav').prop('hidden', false);
         getAllStrains();
         getUserStrains();
-    }).catch(displayError);
+    }).catch(err => {
+        displayError(err.responseText);
+    });
 
     console.log(STATE);
 }
@@ -58,7 +60,9 @@ function refreshToken() {
 
     $.ajax(settings).then((results) => {
         STATE.token = results.authToken;
-    }).catch(displayError);
+    }).catch(err => {
+        displayError(err.responseText);
+    });
 
     console.log(STATE);
 }
@@ -83,7 +87,9 @@ function createUser(userName, password, firstName, lastName) {
         $('.js-message').text('Account created successfully!');
         $('.js-message').prop('hidden', false);
         authenticateUser(userName, password);
-    }).catch(displayError);
+    }).catch(err => {
+        displayError(err.responseJSON.message);
+    });
 }
 
 //GET all existing strains from DB
@@ -99,7 +105,9 @@ function getAllStrains() {
     $.ajax(settings).then(results => {
         STATE.strains = results.strains;
         displayStrainDropDown();
-    }).catch(displayError);
+    }).catch(err => {
+        displayError(err.responseJSON.message);
+    });
 
     console.log(STATE);
 }
@@ -118,7 +126,9 @@ function getUserStrains() {
     $.ajax(settings).then(results => {
         STATE.userStrains = results.strains;
         displayCabinet();
-    }).catch(displayError);
+    }).catch(err => {
+        displayError(err.responseJSON.message);
+    });
     
     console.log(STATE);
 }
@@ -135,7 +145,9 @@ function addStrainToCabinet(id) {
 
     $.ajax(settings).then(() => {
         getUserStrains();
-    }).catch(displayError);
+    }).catch(err => {
+        displayError(err.responseJSON.message);
+    });
 }
 
 //DELETE specific strain from user "cabinet" in DB
@@ -150,7 +162,9 @@ function removeStrainFromCabinet(id) {
 
     $.ajax(settings).then(() => {
         getUserStrains();
-    }).catch(displayError);
+    }).catch(err => {
+        displayError(err.responseJSON.message);
+    });
 }
 
 //POST comment to strain in DB
@@ -172,7 +186,9 @@ function addCommentToStrain(id, content, author) {
 
     $.ajax(settings).then(() => {
         getCurrentStrain();
-    }).catch(displayError);
+    }).catch(err => {
+        displayError(err.responseJSON.message);
+    });
 
     console.log(STATE);
 }
@@ -189,7 +205,9 @@ function removeCommentFromStrain(id, commentId) {
 
     $.ajax(settings).then(() => {
         getCurrentStrain();
-    }).catch(displayError)
+    }).catch(err => {
+        displayError(err.responseJSON.message);
+    })
 
     console.log(STATE);
 }
@@ -214,7 +232,9 @@ function getCurrentStrain() {
         });
         STATE.currentStrain = singleStrain
         displayCurrentStrain(STATE.currentStrain);
-    }).catch(displayError);
+    }).catch(err => {
+        displayError(err.responseJSON.message);
+    });
 }
 
 //POST strain name, type, flavor & description to DB
@@ -237,7 +257,9 @@ function createNewStrain(name, type, flavor, description) {
     $.ajax(settings).then(() => {
         $('.js-message').text('Strain created successfully!');
         $('.js-message').prop('hidden', false);
-    }).catch(displayError);
+    }).catch(err => {
+        displayError(err.responseJSON.message);
+    });
 }
 
 
@@ -284,8 +306,8 @@ function displayCurrentStrain(strain) {
 }
 
 //Create & display error message
-function displayError() {
-    $('.js-message').text('There was an error loading the requested data');
+function displayError(message) {
+    $('.js-message').text(message);
     $('.js-message').prop('hidden', false);
 }
 

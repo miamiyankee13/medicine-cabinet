@@ -98,7 +98,7 @@ router.post('/', jsonParser, (req, res) => {
             return Promise.reject({
                 code: 422,
                 reason: 'ValidationError',
-                message: 'userName already taken',
+                message: 'username already taken',
                 location: 'userName'
             });
         }
@@ -114,6 +114,9 @@ router.post('/', jsonParser, (req, res) => {
         return res.status(201).json(user.serialize());
     }).catch(err => {
         console.error(err);
+        if (err.reason === 'ValidationError') {
+            return res.status(err.code).json(err)
+        }
         res.status(500).json({ message: 'Internal server error' });
     });
 });

@@ -49,7 +49,7 @@ router.post('/', jsonParser, jwtAuth, (req, res) => {
         if (!(field in req.body)) {
             const message = `Missing ${field} in request body`;
             console.error(message);
-            return res.status(400).send(message);
+            return res.status(400).json({ message });
         }
     }
 
@@ -57,7 +57,7 @@ router.post('/', jsonParser, jwtAuth, (req, res) => {
         if (strain) {
             const message = 'Strain already exists';
             console.error(message);
-            return res.status(400).send(message);
+            return res.status(400).json({ message} );
         } else {
             Strain.create({
                 name: req.body.name,
