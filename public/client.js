@@ -456,7 +456,18 @@ function submitAddToCabinet() {
         event.preventDefault();
         const index = $('#strain-select').val();
         const id = STATE.strains[index]._id;
+        const strainExists = STATE.userStrains.find((element) => {
+            return element._id === STATE.strains[index]._id;
+        });
+        
+        if (strainExists) {
+            $('.js-message').text('This strain is already in your cabinet');
+            $('.js-message').prop('hidden', false);
+            return
+        }
+
         addStrainToCabinet(id);
+        $('.js-message').prop('hidden', true);
     });
 }
 
@@ -479,8 +490,7 @@ function goToStrainDetails() {
         STATE.currentStrain = strain;
         displayCurrentStrain(strain);
         console.log(STATE);
-
-        //maybe add if statements to change colors of strain type text?
+        $('.js-message').prop('hidden', true);
     });
 }
 
