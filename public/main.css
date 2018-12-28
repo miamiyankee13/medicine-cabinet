@@ -22,7 +22,7 @@ html {
     flex-direction: column;
     height: 100%;
     margin: 1px;
-    background-color: rgba(245, 245, 245, .7);
+    background-color: rgba(245, 245, 245, .8);
 }
 
 .flex-header {
@@ -99,6 +99,10 @@ html {
 
 .hybrid {
     color: dodgerblue;
+}
+
+.error {
+    color: red;
 }
 
 /*ELEMENTS*/
