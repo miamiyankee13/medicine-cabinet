@@ -593,6 +593,8 @@ function userLogOut() {
 
 function goBackToTop() {
     $('.js-back-to-top').on('click', function(event) {
+        $('.js-create-strain').prop('hidden', true);
+        $('.js-single-strain').prop('hidden', true);
         $('.js-cabinet').prop('hidden', true);
         $('.js-cabinet').scrollTop(0);
         $('.js-cabinet').prop('hidden', false);
