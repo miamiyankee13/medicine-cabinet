@@ -107,7 +107,7 @@ html {
 }
 
 body {
-    overscroll-behavior-y: contain;
+    overflow-y: hidden;
 }
 
 header h1 {
