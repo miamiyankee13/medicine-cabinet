@@ -359,16 +359,18 @@ function renderCurrentStrain(strain) {
     return `<div class="flex-single-strain">
                 <h2>${name}</h2>
                 <br>
-                <h3 class="strain-type">${type}</h3>
+                <h3>${type}</h3>
                 <br>
-                <h4>Flavor</h4>
-                <p class="strain-content">${flavor}</p>
+                <h4 class="detail-heading">Flavor</h4>
                 <br>
-                <h4>Description</h4>
-                <p class="strain-content">${description}</p>
+                <p>${flavor}</p>
+                <br>
+                <h4 class="detail-heading">Description</h4>
+                <br>
+                <p>${description}</p>
                 <br>
                 <div>
-                    <h3>Community Comments</h3>
+                    <h4 class="detail-heading">Community Comments</h4>
                     ${comments}
                 </div>
                 <br>
