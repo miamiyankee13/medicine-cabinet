@@ -11,12 +11,18 @@ html, body {
     height: 100%;
 }
 
+html {
+    background: url("images/cannabis.jpg") no-repeat center center fixed;
+    background-size: cover;
+    text-shadow: 1px 1px 2px whitesmoke;
+}
+
 .flex-container {
     display: flex;
     flex-direction: column;
     height: 100%;
     margin: 1px;
-    background-color: whitesmoke;
+    background-color: rgba(245, 245, 245, .7);
 }
 
 .flex-header {
@@ -100,8 +106,8 @@ header h1 {
     color: mediumseagreen;
 }
 
-footer {
-    color: mediumseagreen;
+header p {
+    font-weight: bold;
 }
 
 input, textarea, label, select, button {
@@ -137,10 +143,12 @@ button {
 label {
     margin: 10px;
     color: black;
+    font-weight: bold;
 }
 
 a {
     color: black;
+    font-weight: bold;
 }
 
 a:hover {
