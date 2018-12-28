@@ -11,12 +11,6 @@ html, body {
     height: 100%;
 }
 
-html {
-    background: url("images/cannabis.jpg") no-repeat center center fixed;
-    background-size: cover;
-    text-shadow: 1px 1px 2px whitesmoke;
-}
-
 .flex-container {
     display: flex;
     flex-direction: column;
@@ -106,6 +100,16 @@ html {
 }
 
 /*ELEMENTS*/
+html {
+    background: url("images/cannabis.jpg") no-repeat center center fixed;
+    background-size: cover;
+    text-shadow: 1px 1px 2px whitesmoke;
+}
+
+body {
+    overscroll-behavior-y: contain;
+}
+
 header h1 {
     margin-top: 25px;
     color: mediumseagreen;
