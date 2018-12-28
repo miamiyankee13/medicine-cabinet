@@ -109,6 +109,7 @@ html {
 header h1 {
     margin-top: 25px;
     color: mediumseagreen;
+    cursor: pointer;
 }
 
 header p {

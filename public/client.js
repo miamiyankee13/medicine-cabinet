@@ -591,6 +591,14 @@ function userLogOut() {
     });
 }
 
+function goBackToTop() {
+    $('.js-back-to-top').on('click', function(event) {
+        $('.js-cabinet').prop('hidden', true);
+        $('.js-cabinet').scrollTop(0);
+        $('.js-cabinet').prop('hidden', false);
+    });
+}
+
 
 //DOCUMENT READY FUNCTION
 
@@ -608,6 +616,7 @@ function handleMedicineCabinet() {
     goToCreateStrainPage();
     submitCreateStrain();
     userLogOut();
+    goBackToTop();
 }
 
 $(handleMedicineCabinet);
