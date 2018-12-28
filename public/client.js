@@ -336,7 +336,6 @@ function renderCurrentStrain(strain) {
     const type = strain.type;
     const flavor = strain.flavor;
     const description = strain.description;
-
     const comments = strain.comments.map((comment, index) => {
         const content = comment.content;
         const author = comment.author;
@@ -355,11 +354,21 @@ function renderCurrentStrain(strain) {
         ${removeButton}
         `
     }).join('');
+
+    let typeHtml;
+
+    if (type === 'Sativa' || type === 'sativa') {
+        typeHtml = `<h3 class="sativa">Sativa</h3>`;
+    } else if (type === 'Indica' || type ==='indica') {
+        typeHtml = `<h3 class="indica">Indica</h3>`;
+    } else {
+        typeHtml = `<h3 class="hybrid">Hybrid</h3>`
+    }
     
     return `<div class="flex-single-strain">
                 <h2>${name}</h2>
                 <br>
-                <h3>${type}</h3>
+                ${typeHtml}
                 <br>
                 <h4 class="detail-heading">Flavor</h4>
                 <br>

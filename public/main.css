@@ -74,10 +74,6 @@ html, body {
     color: mediumseagreen;
 }
 
-.flex-single-strain h3 {
-    color: dodgerblue;
-}
-
 .nav-item {
     list-style-type: none;
     margin: 25px;
@@ -87,12 +83,20 @@ html, body {
     color: black;
 }
 
-.strain-type {
-    color: dodgerblue;
-}
-
 .detail-heading {
     text-decoration: underline;
+}
+
+.sativa {
+    color: coral;
+}
+
+.indica {
+    color: darkviolet;
+}
+
+.hybrid {
+    color: dodgerblue;
 }
 
 /*ELEMENTS*/
@@ -131,6 +135,7 @@ button {
     border-color: mediumseagreen;
     cursor: pointer;
     color: mediumseagreen;
+    background-color: whitesmoke;
 }
 
 label {
