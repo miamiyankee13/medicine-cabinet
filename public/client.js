@@ -275,7 +275,7 @@ function displayStrainDropDown() {
             <select id="strain-select">
             ${strainOptions}
             </select>
-            <button class="js-add-btn btn" type="submit">Add to Cabinet</button>
+            <button class="js-add-btn btn" type="submit">Add Strain</button>
         </form>
     `;
 
@@ -287,7 +287,7 @@ function displayStrainDropDown() {
 function displayCabinet() {
     const cabinetStrains = STATE.userStrains.map((strain, index) => renderCabinet(strain, index)).join('');
     const cabinetHtml = `
-        <p><em>Strains in Cabinet: ${STATE.userStrains.length}</em></p>
+        <p class="cabinet-count"><em>Strains in Cabinet: ${STATE.userStrains.length}</em></p>
         <div class="flex-cabinet">
             ${cabinetStrains}
         </div>`;

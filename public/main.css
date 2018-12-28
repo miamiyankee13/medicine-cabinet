@@ -28,6 +28,7 @@ html, body {
     flex: 10;
     overflow-y: scroll;
     text-align: center;
+    background-color: rgba(60, 179, 113, 0.3);
 }
 
 .flex-footer {
@@ -61,6 +62,10 @@ html, body {
 
 .cabinet-strain:hover {
     border-color: mediumseagreen;
+}
+
+.cabinet-count {
+    font-weight: bold;
 }
 
 .comment-content {
@@ -106,10 +111,6 @@ html {
     text-shadow: 1px 1px 2px whitesmoke;
 }
 
-body {
-    overflow-y: hidden;
-}
-
 header h1 {
     margin-top: 25px;
     color: mediumseagreen;
@@ -141,13 +142,18 @@ textarea {
 
 button {
     margin-top: 10px;
-    padding: 4px;
+    padding: 8px;
     border: 2px solid black;
     border-radius: 10px;
     border-color: mediumseagreen;
     cursor: pointer;
     color: whitesmoke;
     background-color: mediumseagreen;
+    width: 120px;
+}
+
+button:hover {
+    transform: scale(1.1);
 }
 
 label {
