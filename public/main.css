@@ -107,6 +107,7 @@ html {
 
 /*ELEMENTS*/
 header h1 {
+    margin-top: 25px;
     color: mediumseagreen;
 }
 
