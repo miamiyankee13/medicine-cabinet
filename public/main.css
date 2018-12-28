@@ -28,7 +28,7 @@ html, body {
     flex: 10;
     overflow-y: scroll;
     text-align: center;
-    background-color: rgba(60, 179, 113, 0.3);
+    background-color: rgba(34, 139, 34, 0.4);
 }
 
 .flex-footer {
@@ -61,7 +61,7 @@ html, body {
 }
 
 .cabinet-strain:hover {
-    border-color: mediumseagreen;
+    border-color: forestgreen;
 }
 
 .cabinet-count {
@@ -113,7 +113,7 @@ html {
 
 header h1 {
     margin-top: 25px;
-    color: mediumseagreen;
+    color: forestgreen;
     cursor: pointer;
 }
 
@@ -145,11 +145,11 @@ button {
     padding: 8px;
     border: 2px solid black;
     border-radius: 10px;
-    border-color: mediumseagreen;
+    border-color: forestgreen;
     cursor: pointer;
     color: whitesmoke;
-    background-color: mediumseagreen;
-    width: 120px;
+    background-color: forestgreen;
+    width: 125px;
 }
 
 button:hover {
@@ -168,7 +168,7 @@ a {
 }
 
 a:hover {
-    color: mediumseagreen;
+    color: forestgreen;
 }
 
 select {
