@@ -70,10 +70,6 @@ html, body {
     text-align: center;
 }
 
-.flex-single-strain h2 {
-    color: mediumseagreen;
-}
-
 .nav-item {
     list-style-type: none;
     margin: 25px;
@@ -134,8 +130,8 @@ button {
     border-radius: 10px;
     border-color: mediumseagreen;
     cursor: pointer;
-    color: mediumseagreen;
-    background-color: whitesmoke;
+    color: whitesmoke;
+    background-color: mediumseagreen;
 }
 
 label {
