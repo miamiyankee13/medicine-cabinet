@@ -2,14 +2,16 @@
 
 ## Summary
 Medicine Cabinet allows users to keep track of medicinal cannabis strains.
-Users can store strains in the cabinet, allowing them to view strain details and leave comments visible to the community. Users can also create a strain if it does not already exist in the database.
+Users can store strains in the cabinet, allowing them to view strain details and post comments visible to the community. Users can also create a strain if it does not already exist in the database.
 
 ## Features
 * Register user
 * Login user
-* Add/remove strain from cabinet
-* Get strain details/comments
-* Add/remove user comments to/from strain
+* Add strains to cabinet
+* Remove strains from cabinet
+* Get strain details
+* Add comments to strains
+* Remove comments from strains
 * Create strain
 
 ## Built with
