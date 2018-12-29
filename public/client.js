@@ -287,7 +287,7 @@ function displayStrainDropDown() {
 function displayCabinet() {
     const cabinetStrains = STATE.userStrains.map((strain, index) => renderCabinet(strain, index)).join('');
     const cabinetHtml = `
-        <p class="cabinet-count"><em>Strains in Cabinet: ${STATE.userStrains.length}</em></p>
+        <h2 class="cabinet-count">Strains in Cabinet: ${STATE.userStrains.length}</h2>
         <div class="flex-cabinet">
             ${cabinetStrains}
         </div>`;

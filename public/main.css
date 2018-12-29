@@ -106,7 +106,7 @@ html, body {
 
 /*ELEMENTS*/
 html {
-    background: url("images/cannabis.jpg") no-repeat center center fixed;
+    background: url("images/cannabis-compressor.jpg") no-repeat center center fixed;
     background-size: cover;
     text-shadow: 1px 1px 2px whitesmoke;
 }
