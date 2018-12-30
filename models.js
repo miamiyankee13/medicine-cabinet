@@ -24,8 +24,8 @@ const strainSchema = mongoose.Schema({
 
 //Declare schema for users
 const userSchema = mongoose.Schema({
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
+    firstName: { type: String },
+    lastName: { type: String },
     userName: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     strains: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Strain'}]
