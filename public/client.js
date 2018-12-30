@@ -16,8 +16,8 @@ $('.js-login').prop('hidden', false);
 //API CALLS
 
 //GET all existing strains from DB
-//-save strains to STATE
-//-display strain drop down
+//-save strains to STATE (29)
+//-display strain dropdown (30)
 function getAllStrains() {
     const settings = {
         url: '/strains',
@@ -36,8 +36,8 @@ function getAllStrains() {
 }
 
 //GET user specific strains from DB
-//-save user specific strains to STATE
-//-display user "cabinet"
+//-save user specific strains to STATE (50)
+//-display user cabinet (51)
 function getUserStrains() {
     const settings = {
         url: '/users/strains',
@@ -57,10 +57,13 @@ function getUserStrains() {
 }
 
 //POST userName & password for authorization/login
-//-save JWT token to STATE
-//-save userName to STATE
-//-hide login & message
-//-display nav bar, strain drop down, & user cabinet
+//-save JWT token to STATE (76)
+//-save userName to STATE (77)
+//-save token refresh interval to STATE (78)
+//-hide login, register, & messages (80-82)
+//-display nav bar (83)
+//-retrieve & display strain dropdown (84)
+//-retrieve & display user cabinet (85)
 function authenticateUser(userName, password) {
     const settings = {
         url: '/auth/login',
@@ -79,6 +82,7 @@ function authenticateUser(userName, password) {
         $('.js-login').prop('hidden', true);
         $('.js-register').prop('hidden', true);
         $('.js-message').prop('hidden', true);
+        $('.js-message-success').prop('hidden', true);
         $('.js-nav').prop('hidden', false);
         getAllStrains();
         getUserStrains();
@@ -90,7 +94,8 @@ function authenticateUser(userName, password) {
 }
 
 //POST userName, password, firstName, & lastName to DB
-//-display message
+//-display successful creation message (113-114)
+//-authenticate user (115)
 function createUser(userName, password, firstName, lastName) {
     const settings = {
         url: '/users',
@@ -106,8 +111,8 @@ function createUser(userName, password, firstName, lastName) {
     }
 
     $.ajax(settings).then(() => {
-        $('.js-message').text('Account created successfully!');
-        $('.js-message').prop('hidden', false);
+        $('.js-message-success').text('Account created successfully!');
+        $('.js-message-success').prop('hidden', false);
         authenticateUser(userName, password);
     }).catch(err => {
         displayError(err.responseJSON.message);
@@ -115,7 +120,7 @@ function createUser(userName, password, firstName, lastName) {
 }
 
 //POST JWT token for refresh
-//-save new token to STATE
+//-save new token to STATE (132)
 function refreshToken() {
     const settings = {
         url: '/auth/refresh',
@@ -133,8 +138,8 @@ function refreshToken() {
     console.log(STATE);
 }
 
-//PUT specific strain in user "cabinet" in DB
-//-retreive & display updated data
+//PUT specific strain in user cabinet in DB
+//-retrieve & display updated user cabinet (151)
 function addStrainToCabinet(id) {
     const settings = {
         url: `/users/strains/${id}`,
@@ -151,7 +156,7 @@ function addStrainToCabinet(id) {
 }
 
 //DELETE specific strain from user "cabinet" in DB
-//-retreive & display updated data
+//-retrieve & display updated user cabinet (168)
 function removeStrainFromCabinet(id) {
     const settings = {
         url: `/users/strains/${id}`,
@@ -168,10 +173,10 @@ function removeStrainFromCabinet(id) {
 }
 
 //GET current strain from DB
-//-retreive user specific strains from DB
-//-save user specific strains to STATE
-//-update current strain in STATE using 'find' method
-//-display current strain
+//-save user specific strains to STATE (187)
+//-retrieve user specific current strain (188-191)
+//-replace current strain in STATE with user specific current strain (192)
+//-display updated current strain details from STATE
 function getCurrentStrain() {
     const settings = {
         url: '/users/strains',
@@ -193,7 +198,7 @@ function getCurrentStrain() {
 }
 
 //POST comment to strain in DB
-//-retreive & display updated data
+//-retrieve & display updated current strain details
 function addCommentToStrain(id, content, author) {
     const settings = {
         url:`/strains/${id}`,
@@ -219,7 +224,7 @@ function addCommentToStrain(id, content, author) {
 }
 
 //DELETE comment from strain in DB
-//-retreive & display updated data
+//-retreive & display updated current strain details
 function removeCommentFromStrain(id, commentId) {
     const settings = {
         url: `/strains/${id}/${commentId}`,
@@ -238,7 +243,7 @@ function removeCommentFromStrain(id, commentId) {
 }
 
 //POST strain name, type, flavor & description to DB
-//-display message
+//-display successful creation message
 function createNewStrain(name, type, flavor, description) {
     const settings = {
         url: '/strains',
@@ -255,8 +260,8 @@ function createNewStrain(name, type, flavor, description) {
     }
 
     $.ajax(settings).then(() => {
-        $('.js-message').text('Strain created successfully!');
-        $('.js-message').prop('hidden', false);
+        $('.js-message-success').text('Strain created successfully!');
+        $('.js-message-success').prop('hidden', false);
     }).catch(err => {
         displayError(err.responseJSON.message);
     });
@@ -525,6 +530,7 @@ function goToMyCabinet() {
         $('.js-single-strain').prop('hidden', true);
         $('.js-create-strain').prop('hidden', true);
         $('.js-message').prop('hidden', true);
+        $('.js-message-success').prop('hidden', true);
         getAllStrains();
         getUserStrains();
     });
@@ -592,6 +598,7 @@ function userLogOut() {
         window.clearInterval(STATE.interval);
         STATE.interval = null;
         $('.js-message').prop('hidden', true);
+        $('.js-message-success').prop('hidden', true);
         $('.js-single-strain').prop('hidden', true);
         $('.js-cabinet-form').prop('hidden', true);
         $('.js-cabinet').prop('hidden', true);

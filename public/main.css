@@ -104,6 +104,10 @@ html, body {
     color: red;
 }
 
+.success {
+    color: green;
+}
+
 /*ELEMENTS*/
 html {
     background: url("images/cannabis-compressor.jpg") no-repeat center center fixed;
