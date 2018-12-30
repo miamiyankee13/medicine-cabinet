@@ -507,6 +507,13 @@ function submitUserComment() {
         const id = STATE.currentStrain._id;
         const content = $('#add-comment').val();
         const author = STATE.currentUser;
+
+        if (content === '' || content === ' ') {
+            $('.js-message').text('Comment is blank. Please add some content');
+            $('.js-message').prop('hidden', false);
+            return
+        }
+
         addCommentToStrain(id, content, author);
         $('.js-message').prop('hidden', true);
     });
