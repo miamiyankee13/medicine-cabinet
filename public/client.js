@@ -622,10 +622,8 @@ function goToCreateStrainPage() {
 }
 
 //Add strain to DB on click
-//-retrieve strain name, type, flavor, & description from inputs (632-635)
-//-validate correct input for strain type (637-638)
-//---if correct, create strain & clear inputs (639-643)
-//---if incorrect, display message (645-646)
+//-retrieve strain name, type, flavor, & description from inputs (630-633)
+//-create strain & clear inputs (634-637)
 function submitCreateStrain() {
     $('.js-create-strain-btn').on('click', function(event) {
         event.preventDefault();
@@ -633,26 +631,18 @@ function submitCreateStrain() {
         const type = $('#strain-type-create').val();
         const flavor = $('#strain-flavor-create').val();
         const description = $('#strain-description-create').val();
-
-        if (type === 'sativa' || type === 'Sativa' || type === 'indica' || type === 'Indica' ||
-            type === 'hybrid' || type === 'Hybrid') {
-                createNewStrain(name, type, flavor, description);
-                $('#strain-name-create').val('');
-                $('#strain-type-create').val('');
-                $('#strain-flavor-create').val('');
-                $('#strain-description-create').val('');
-            } else {
-                $('.js-message').text('"Type" must be "Sativa", "Indica", or "Hybrid"' );
-                $('.js-message').prop('hidden', false);
-            }   
+        createNewStrain(name, type, flavor, description);
+        $('#strain-name-create').val('');
+        $('#strain-flavor-create').val('');
+        $('#strain-description-create').val('');  
     });
 }
 
 //Render login area on click
-//-Remove token, currentUser, currentStrain, & userStrains from STATE (659-662)
-//-Clear & remove interval from STATE (663-664)
-//-hide everything besides login area (665-671)
-//-display login area (672)
+//-Remove token, currentUser, currentStrain, & userStrains from STATE (649-652)
+//-Clear & remove interval from STATE (653-654)
+//-hide everything besides login area (655-661)
+//-display login area (662)
 function userLogOut() {
     $('.js-logout').on('click', function(event) {
         event.preventDefault();
