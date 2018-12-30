@@ -589,6 +589,7 @@ function submitRemoveComment() {
 //Render cabinet area on click
 //-hide single strain, create strain, & messages (595-598)
 //-retrieve & display strain dropdown & user cabinet (599-600)
+//-scroll to top of cabinet (602-605)
 function goToMyCabinet() {
     $('.js-my-cabinet').on('click', function(event) {
         event.preventDefault();
@@ -598,17 +599,6 @@ function goToMyCabinet() {
         $('.js-message-success').prop('hidden', true);
         getAllStrains();
         getUserStrains();
-    });
-}
-
-//Render top of cabinet area on click
-//-hide create strain, single strain (610-611)
-//-hide user cabinet, scroll to top, display user cabinet area (612-614)
-//-display cabinet form area (615)
-function goBackToCabinetTop() {
-    $('.js-back-to-top').on('click', function(event) {
-        $('.js-create-strain').prop('hidden', true);
-        $('.js-single-strain').prop('hidden', true);
         $('.js-cabinet').prop('hidden', true);
         $('.js-cabinet').scrollTop(0);
         $('.js-cabinet').prop('hidden', false);
@@ -617,8 +607,8 @@ function goBackToCabinetTop() {
 }
 
 //Render create strain area on click
-//-hide single strain, cabinet form, cabinet, & message (625-628)
-//-scroll to top & display create strain area (629-630)
+//-hide single strain, cabinet form, cabinet, & message (615-618)
+//-scroll to top & display create strain area (619-620)
 function goToCreateStrainPage() {
     $('.js-create-strain-link').on('click', function(event) {
         event.preventDefault();
@@ -632,10 +622,10 @@ function goToCreateStrainPage() {
 }
 
 //Add strain to DB on click
-//-retrieve strain name, type, flavor, & description from inputs (642-645)
-//-validate correct input for strain type (647-648)
-//---if correct, create strain & clear inputs (649-653)
-//---if incorrect, display message (655-656)
+//-retrieve strain name, type, flavor, & description from inputs (632-635)
+//-validate correct input for strain type (637-638)
+//---if correct, create strain & clear inputs (639-643)
+//---if incorrect, display message (645-646)
 function submitCreateStrain() {
     $('.js-create-strain-btn').on('click', function(event) {
         event.preventDefault();
@@ -659,8 +649,10 @@ function submitCreateStrain() {
 }
 
 //Render login area on click
-//-Remove token, currentUser, currentStrain, & userStrains
-//-Clear & remove interval
+//-Remove token, currentUser, currentStrain, & userStrains from STATE (659-662)
+//-Clear & remove interval from STATE (663-664)
+//-hide everything besides login area (665-671)
+//-display login area (672)
 function userLogOut() {
     $('.js-logout').on('click', function(event) {
         event.preventDefault();
@@ -695,7 +687,6 @@ function handleMedicineCabinet() {
     submitUserComment();
     submitRemoveComment();
     goToMyCabinet();
-    goBackToCabinetTop();
     goToCreateStrainPage();
     submitCreateStrain();
     userLogOut();
