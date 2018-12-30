@@ -68,7 +68,7 @@ router.post('/', jsonParser, jwtAuth, (req, res) => {
                 res.status(201).json(strain.serialize());
             }).catch(err => {
                 console.error(err);
-                res.status(500).json({ message: 'Internal server error' });
+                res.status(500).json({ message: 'Please fill out all fields' });
             });
         }
     }).catch(err => {
