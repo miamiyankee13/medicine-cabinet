@@ -31,9 +31,9 @@ html, body {
     background-color: rgba(34, 139, 34, 0.4);
 }
 
-.flex-footer {
-    flex: 1;
+.footer {
     text-align: center;
+    margin-bottom: 10px;
 }
 
 .flex-cabinet {
