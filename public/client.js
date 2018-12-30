@@ -15,83 +15,6 @@ $('.js-login').prop('hidden', false);
 
 //API CALLS
 
-//POST userName & password for authorization/login
-//-save JWT token to STATE
-//-save userName to STATE
-//-hide login & message
-//-display nav bar, strain drop down, & user cabinet
-function authenticateUser(userName, password) {
-    const settings = {
-        url: '/auth/login',
-        data: {
-            userName: userName,
-            password: password
-        },
-        dataType: 'json',
-        type: 'POST'
-    }
-
-    $.ajax(settings).then(results => {
-        STATE.token = results.authToken;
-        STATE.currentUser = userName;
-        STATE.interval = window.setInterval(refreshToken, 120 * 1000);
-        $('.js-login').prop('hidden', true);
-        $('.js-register').prop('hidden', true);
-        $('.js-message').prop('hidden', true);
-        $('.js-nav').prop('hidden', false);
-        getAllStrains();
-        getUserStrains();
-    }).catch(err => {
-        displayError(err.responseText);
-    });
-
-    console.log(STATE);
-}
-
-//POST JWT token for refresh
-//-save new token to STATE
-function refreshToken() {
-    const settings = {
-        url: '/auth/refresh',
-        headers: {"Authorization": `Bearer ${STATE.token}`},
-        dataType: 'json',
-        type: 'POST'
-    }
-
-    $.ajax(settings).then((results) => {
-        STATE.token = results.authToken;
-    }).catch(err => {
-        displayError(err.responseText);
-    });
-
-    console.log(STATE);
-}
-
-//POST userName, password, firstName, & lastName to DB
-//-display message
-function createUser(userName, password, firstName, lastName) {
-    const settings = {
-        url: '/users',
-        data: JSON.stringify({
-            userName: userName,
-            password: password,
-            firstName: firstName,
-            lastName: lastName
-        }),
-        contentType: 'application/json',
-        dataType: 'json',
-        type: 'POST'
-    }
-
-    $.ajax(settings).then(() => {
-        $('.js-message').text('Account created successfully!');
-        $('.js-message').prop('hidden', false);
-        authenticateUser(userName, password);
-    }).catch(err => {
-        displayError(err.responseJSON.message);
-    });
-}
-
 //GET all existing strains from DB
 //-save strains to STATE
 //-display strain drop down
@@ -133,6 +56,83 @@ function getUserStrains() {
     console.log(STATE);
 }
 
+//POST userName & password for authorization/login
+//-save JWT token to STATE
+//-save userName to STATE
+//-hide login & message
+//-display nav bar, strain drop down, & user cabinet
+function authenticateUser(userName, password) {
+    const settings = {
+        url: '/auth/login',
+        data: {
+            userName: userName,
+            password: password
+        },
+        dataType: 'json',
+        type: 'POST'
+    }
+
+    $.ajax(settings).then(results => {
+        STATE.token = results.authToken;
+        STATE.currentUser = userName;
+        STATE.interval = window.setInterval(refreshToken, 120 * 1000);
+        $('.js-login').prop('hidden', true);
+        $('.js-register').prop('hidden', true);
+        $('.js-message').prop('hidden', true);
+        $('.js-nav').prop('hidden', false);
+        getAllStrains();
+        getUserStrains();
+    }).catch(err => {
+        displayError(err.responseText);
+    });
+
+    console.log(STATE);
+}
+
+//POST userName, password, firstName, & lastName to DB
+//-display message
+function createUser(userName, password, firstName, lastName) {
+    const settings = {
+        url: '/users',
+        data: JSON.stringify({
+            userName: userName,
+            password: password,
+            firstName: firstName,
+            lastName: lastName
+        }),
+        contentType: 'application/json',
+        dataType: 'json',
+        type: 'POST'
+    }
+
+    $.ajax(settings).then(() => {
+        $('.js-message').text('Account created successfully!');
+        $('.js-message').prop('hidden', false);
+        authenticateUser(userName, password);
+    }).catch(err => {
+        displayError(err.responseJSON.message);
+    });
+}
+
+//POST JWT token for refresh
+//-save new token to STATE
+function refreshToken() {
+    const settings = {
+        url: '/auth/refresh',
+        headers: {"Authorization": `Bearer ${STATE.token}`},
+        dataType: 'json',
+        type: 'POST'
+    }
+
+    $.ajax(settings).then((results) => {
+        STATE.token = results.authToken;
+    }).catch(err => {
+        displayError(err.responseText);
+    });
+
+    console.log(STATE);
+}
+
 //PUT specific strain in user "cabinet" in DB
 //-retreive & display updated data
 function addStrainToCabinet(id) {
@@ -162,6 +162,31 @@ function removeStrainFromCabinet(id) {
 
     $.ajax(settings).then(() => {
         getUserStrains();
+    }).catch(err => {
+        displayError(err.responseJSON.message);
+    });
+}
+
+//GET current strain from DB
+//-retreive user specific strains from DB
+//-save user specific strains to STATE
+//-update current strain in STATE using 'find' method
+//-display current strain
+function getCurrentStrain() {
+    const settings = {
+        url: '/users/strains',
+        headers: {"Authorization": `Bearer ${STATE.token}`},
+        dataType: 'json',
+        type: 'GET'
+    }
+    
+    $.ajax(settings).then(results => {
+        STATE.userStrains = results.strains;
+        const singleStrain = STATE.userStrains.find((element) => {
+            return element.name === STATE.currentStrain.name;
+        });
+        STATE.currentStrain = singleStrain
+        displayCurrentStrainDetails(STATE.currentStrain);
     }).catch(err => {
         displayError(err.responseJSON.message);
     });
@@ -210,31 +235,6 @@ function removeCommentFromStrain(id, commentId) {
     })
 
     console.log(STATE);
-}
-
-//GET current strain from DB
-//-retreive user specific strains from DB
-//-save user specific strains to STATE
-//-update current strain in STATE using 'find' method
-//-display current strain
-function getCurrentStrain() {
-    const settings = {
-        url: '/users/strains',
-        headers: {"Authorization": `Bearer ${STATE.token}`},
-        dataType: 'json',
-        type: 'GET'
-    }
-    
-    $.ajax(settings).then(results => {
-        STATE.userStrains = results.strains;
-        const singleStrain = STATE.userStrains.find((element) => {
-            return element.name === STATE.currentStrain.name;
-        });
-        STATE.currentStrain = singleStrain
-        displayCurrentStrain(STATE.currentStrain);
-    }).catch(err => {
-        displayError(err.responseJSON.message);
-    });
 }
 
 //POST strain name, type, flavor & description to DB
@@ -297,7 +297,7 @@ function displayCabinet() {
 }
 
 //Create & display current strain by passing current strain from STATE through rendering function
-function displayCurrentStrain(strain) {
+function displayCurrentStrainDetails(strain) {
     const currentStrain = renderCurrentStrain(strain);
     $('.js-single-strain').html(currentStrain);
     $('.js-cabinet-form').prop('hidden', true);
@@ -489,7 +489,7 @@ function goToStrainDetails() {
         const index = $(event.target).attr('data-index');
         const strain = STATE.userStrains[index];
         STATE.currentStrain = strain;
-        displayCurrentStrain(strain);
+        displayCurrentStrainDetails(strain);
         console.log(STATE);
         $('.js-message').prop('hidden', true);
     });
@@ -527,6 +527,17 @@ function goToMyCabinet() {
         $('.js-message').prop('hidden', true);
         getAllStrains();
         getUserStrains();
+    });
+}
+
+//Render top of cabinet area on click
+function goBackToCabinetTop() {
+    $('.js-back-to-top').on('click', function(event) {
+        $('.js-create-strain').prop('hidden', true);
+        $('.js-single-strain').prop('hidden', true);
+        $('.js-cabinet').prop('hidden', true);
+        $('.js-cabinet').scrollTop(0);
+        $('.js-cabinet').prop('hidden', false);
     });
 }
 
@@ -591,17 +602,6 @@ function userLogOut() {
     });
 }
 
-function goBackToTop() {
-    $('.js-back-to-top').on('click', function(event) {
-        $('.js-create-strain').prop('hidden', true);
-        $('.js-single-strain').prop('hidden', true);
-        $('.js-cabinet').prop('hidden', true);
-        $('.js-cabinet').scrollTop(0);
-        $('.js-cabinet').prop('hidden', false);
-    });
-}
-
-
 //DOCUMENT READY FUNCTION
 
 function handleMedicineCabinet() {
@@ -615,10 +615,10 @@ function handleMedicineCabinet() {
     submitUserComment();
     submitRemoveComment();
     goToMyCabinet();
+    goBackToCabinetTop();
     goToCreateStrainPage();
     submitCreateStrain();
     userLogOut();
-    goBackToTop();
 }
 
 $(handleMedicineCabinet);
