@@ -134,7 +134,7 @@ router.get('/strains', jwtAuth, (req, res) => {
 //PUT route handler for adding a strain to a user
 router.put('/strains/:id', jwtAuth, (req, res) => {
     User.updateOne({userName: req.user.userName}, { $push: { strains: req.params.id } }, { new: true }).then(result => {
-        res.status(200).json(result);
+        res.status(200).json({ message: 'Strain added to user' });
     }).catch(err => {
         console.error(err);
         res.status(500).json({ message: 'Internal server error' });
