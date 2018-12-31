@@ -27,7 +27,7 @@ Users can store strains in the cabinet, allowing them to view strain details and
 * Passport
 
 ## Medicine Cabinet API Documentation
-Coming Soon
+[API Documentation](https://miamiyankee13.github.io/api-docs-medicine-cabinet/#introduction)
 
 ## Screenshots
 Coming Soon
