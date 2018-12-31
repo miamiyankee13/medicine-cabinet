@@ -79,7 +79,7 @@ function authenticateUser(userName, password) {
     $.ajax(settings).then(results => {
         STATE.token = results.authToken;
         STATE.currentUser = userName;
-        STATE.interval = window.setInterval(refreshToken, 120 * 1000);
+        STATE.interval = window.setInterval(refreshToken, 600 * 1000);
         $('.js-login').prop('hidden', true);
         $('.js-register').prop('hidden', true);
         $('.js-message').prop('hidden', true);
