@@ -24,15 +24,21 @@ html, body {
     text-align: center;
 }
 
-.flex-main {
+.flex-main-foot {
     flex: 10;
     overflow-y: scroll;
     text-align: center;
     background-color: rgba(34, 139, 34, 0.4);
+    display: flex;
+    flex-direction: column;
 }
 
-.footer {
-    text-align: center;
+.flex-main {
+    flex: 10;
+}
+
+.flex-footer {
+    flex: 1;
     margin-bottom: 10px;
 }
 
