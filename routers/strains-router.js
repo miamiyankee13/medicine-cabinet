@@ -126,7 +126,7 @@ router.post('/:id', jsonParser, jwtAuth, (req, res) => {
         }
     
     Strain.updateOne({_id: req.params.id}, { $push: {comments: req.body.comment} }, { new: true }).then(result => {
-        res.status(201).json(result);
+        res.status(201).json({ message: 'Comment added to strain' });
     }).catch(err => {
         console.error(err);
         res.status(400).json({ message: 'Bad request'});
