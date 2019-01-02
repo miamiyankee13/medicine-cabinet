@@ -1,7 +1,6 @@
 'use strict'
 //Declare golbal STATE object
 const STATE = {
-    token: null,
     strains: null,
     currentUser: null,
     userStrains: null,
@@ -43,7 +42,7 @@ function getAllStrains() {
 function getUserStrains() {
     const settings = {
         url: '/users/strains',
-        headers: {"Authorization": `Bearer ${STATE.token}`},
+        headers: {"Authorization": 'Bearer ' + sessionStorage.getItem('token')},
         dataType: 'json',
         type: 'GET'
     }
@@ -78,7 +77,8 @@ function authenticateUser(userName, password) {
     }
 
     $.ajax(settings).then(results => {
-        STATE.token = results.authToken;
+        sessionStorage.setItem('token', results.authToken);
+        console.log(sessionStorage.getItem('token'));
         STATE.currentUser = userName;
         STATE.interval = window.setInterval(refreshToken, 600 * 1000);
         $('.js-login').prop('hidden', true);
@@ -128,13 +128,13 @@ function createUser(userName, password, firstName, lastName) {
 function refreshToken() {
     const settings = {
         url: '/auth/refresh',
-        headers: {"Authorization": `Bearer ${STATE.token}`},
+        headers: {"Authorization": 'Bearer ' + sessionStorage.getItem('token')},
         dataType: 'json',
         type: 'POST'
     }
 
     $.ajax(settings).then((results) => {
-        STATE.token = results.authToken;
+        sessionStorage.setItem('token', results.authToken);
     }).catch(err => {
         displayError(err.responseText);
     });
@@ -147,7 +147,7 @@ function refreshToken() {
 function addStrainToCabinet(id) {
     const settings = {
         url: `/users/strains/${id}`,
-        headers: {"Authorization": `Bearer ${STATE.token}`},
+        headers: {"Authorization": 'Bearer ' + sessionStorage.getItem('token')},
         dataType: 'json',
         type: 'PUT'
     }
@@ -164,7 +164,7 @@ function addStrainToCabinet(id) {
 function removeStrainFromCabinet(id) {
     const settings = {
         url: `/users/strains/${id}`,
-        headers: {"Authorization": `Bearer ${STATE.token}`},
+        headers: {"Authorization": 'Bearer ' + sessionStorage.getItem('token')},
         dataType: 'json',
         type: 'DELETE'
     }
@@ -184,7 +184,7 @@ function removeStrainFromCabinet(id) {
 function getCurrentStrain() {
     const settings = {
         url: '/users/strains',
-        headers: {"Authorization": `Bearer ${STATE.token}`},
+        headers: {"Authorization": 'Bearer ' + sessionStorage.getItem('token')},
         dataType: 'json',
         type: 'GET'
     }
@@ -206,7 +206,7 @@ function getCurrentStrain() {
 function addCommentToStrain(id, content, author) {
     const settings = {
         url:`/strains/${id}`,
-        headers: {"Authorization": `Bearer ${STATE.token}`},
+        headers: {"Authorization": 'Bearer ' + sessionStorage.getItem('token')},
         data: JSON.stringify({
             comment: {
                 content: content,
@@ -232,7 +232,7 @@ function addCommentToStrain(id, content, author) {
 function removeCommentFromStrain(id, commentId) {
     const settings = {
         url: `/strains/${id}/${commentId}`,
-        headers: {"Authorization": `Bearer ${STATE.token}`},
+        headers: {"Authorization": 'Bearer ' + sessionStorage.getItem('token')},
         dataType: 'json',
         type: 'DELETE'
     }
@@ -251,7 +251,7 @@ function removeCommentFromStrain(id, commentId) {
 function createNewStrain(name, type, flavor, description) {
     const settings = {
         url: '/strains',
-        headers: {"Authorization": `Bearer ${STATE.token}`},
+        headers: {"Authorization": 'Bearer ' + sessionStorage.getItem('token')},
         data: JSON.stringify({
             name: name,
             type: type,
@@ -277,7 +277,7 @@ function createNewStrain(name, type, flavor, description) {
 function editStrain(id, name, type, flavor, description) {
     const settings = {
         url: `/strains/${id}`,
-        headers: {"Authorization": `Bearer ${STATE.token}`},
+        headers: {"Authorization": 'Bearer ' + sessionStorage.getItem('token')},
         data: JSON.stringify({
             _id: id,
             name: name,
@@ -748,12 +748,12 @@ function submitCreateStrain() {
 function userLogOut() {
     $('.js-logout').on('click', function(event) {
         event.preventDefault();
-        STATE.token = null;
         STATE.currentUser = null;
         STATE.currentStrain = null;
         STATE.userStrains = null;
         window.clearInterval(STATE.interval);
         STATE.interval = null;
+        sessionStorage.clear();
         $('.js-message').prop('hidden', true);
         $('.js-message-success').prop('hidden', true);
         $('.js-single-strain').prop('hidden', true);
