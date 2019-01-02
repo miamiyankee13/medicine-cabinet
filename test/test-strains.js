@@ -11,6 +11,36 @@ const { Strain, User } = require('../models');
 const { app, runServer, closeServer } = require('../server');
 const { JWT_SECRET, TEST_DATABASE_URL } = require('../config');
 
+const createUserAndLogin = () => {
+    const userName = 'exampleUser'
+    const password = 'examplePassword';
+    const firstName = 'Babe';
+    const lastName = 'Ruth';
+
+
+    return User.hashPassword(password).then(function (password) {
+        return User.create({
+            userName,
+            password,
+            firstName,
+            lastName
+        })
+    }).then(function () {
+        return chai.request(app).post('/auth/login')
+            // .set('authorization', `Bearer ${token}`)
+            .send({ userName, password }).then(function (res) {
+                expect(res).to.have.status(200);
+                expect(res).to.be.a('object');
+                token = res.body.authToken
+                expect(token).to.be.a('string');
+                const payload = jwt.verify(token, JWT_SECRET, {
+                    algorithm: ['HS256']
+                });
+                return token
+            })
+    })
+}
+
 //Enable expect style syntax
 const expect = chai.expect;
 
@@ -60,12 +90,12 @@ describe('/strains API resource', function() {
 
     //Create new data before each test
     beforeEach(function() {
-        return seedStrainData();
+        return tearDownDb().then(seedStrainData);
     });
 
     //Delete database after each test
     afterEach(function() {
-        return tearDownDb();
+        // return tearDownDb();
     })
 
     //Close server after tests run
@@ -128,25 +158,8 @@ describe('/strains API resource', function() {
 
         //Create a strain & verify request was successful/response has correct fields
         it('Should add new strain', function() {
-            let token;
 
-            return User.hashPassword(password).then(function(password) {
-                return User.create({
-                    userName,
-                    password,
-                    firstName,
-                    lastName
-                })
-            }).then(function() {
-                return chai.request(app).post('/auth/login').send({userName, password}).then(function(res) {
-                    expect(res).to.have.status(200);
-                    expect(res).to.be.a('object');
-                    token = res.body.authToken
-                    expect(token).to.be.a('string');
-                    const payload = jwt.verify(token, JWT_SECRET, {
-                        algorithm: ['HS256']
-                    });
-                }).then(function() {
+            return createUserAndLogin().then(function(token) {
                     const newStrain = generateStrainData();
                     return chai.request(app).post('/strains').set('authorization', `Bearer ${token}`).send(newStrain).then(function(res) {
                         expect(res).to.have.status(201);
@@ -171,7 +184,7 @@ describe('/strains API resource', function() {
                     }
                 });
             });
-        });
+        // });
 
         it('Should add new strain & add a comment', function() {
             let strainId;
