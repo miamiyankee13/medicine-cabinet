@@ -16,7 +16,6 @@ const strainsRouter = require('./routers/strains-router');
 const usersRouter = require('./routers/users-router');
 const authRouter = require('./routers/auth-router');
 
-
 //Declare new app instance
 const app = express();
 
@@ -89,7 +88,7 @@ function closeServer() {
     });
 }
 
-//Allows access to 'node server.js' & other test files if imported/exported
+//Allows access to runServer via 'node server.js' & other test files if imported/exported
 if (require.main === module) {
     runServer(DATABASE_URL).catch(err => console.error(err));
 }

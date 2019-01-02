@@ -3,11 +3,10 @@
 const mongoose = require('mongoose');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const faker = require('faker');
 const jwt = require('jsonwebtoken');
 
 //Import modules
-const { Strain, User } = require('../models');
+const { User } = require('../models');
 const { app, runServer, closeServer } = require('../server');
 const { JWT_SECRET, TEST_DATABASE_URL } = require('../config');
 

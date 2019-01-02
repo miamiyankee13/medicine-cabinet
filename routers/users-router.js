@@ -19,7 +19,7 @@ const jwtAuth = passport.authenticate('jwt', { session: false });
 //POST route handler to register a new user
 //-validate userName & password fields
 //-check if userName already exists
-//-hash password, create user & send json response
+//-hash password, create user & send JSON response
 router.post('/', jsonParser, (req, res) => {
     const requiredFields = ['userName', 'password'];
     const missingField = requiredFields.find(field => !(field in req.body));
@@ -122,6 +122,8 @@ router.post('/', jsonParser, (req, res) => {
 });
 
 //GET route handler for all user's strains
+//-find current user & return array of strains
+//-send JSON response
 router.get('/strains', jwtAuth, (req, res) => {
     User.findOne({userName: req.user.userName}, "strains").then(result => {
         res.status(200).json(result);
@@ -132,8 +134,10 @@ router.get('/strains', jwtAuth, (req, res) => {
 });
 
 //PUT route handler for adding a strain to a user
+//-find current user & add strain to array of strains
+//-send JSON response
 router.put('/strains/:id', jwtAuth, (req, res) => {
-    User.updateOne({userName: req.user.userName}, { $push: { strains: req.params.id } }, { new: true }).then(result => {
+    User.updateOne({userName: req.user.userName}, { $push: { strains: req.params.id } }, { new: true }).then(() => {
         res.status(200).json({ message: 'Strain added to user' });
     }).catch(err => {
         console.error(err);
@@ -142,8 +146,10 @@ router.put('/strains/:id', jwtAuth, (req, res) => {
 });
 
 //DELETE route handler for removing a strain from a user
+//-find current user & remove strain from array of strains
+//-send JSON response
 router.delete('/strains/:id', jwtAuth, (req, res) => {
-    User.updateOne({userName: req.user.userName}, { $pull: { strains: req.params.id} }, { new: true }).then(user => {
+    User.updateOne({userName: req.user.userName}, { $pull: { strains: req.params.id} }, { new: true }).then(() => {
         res.status(204).end();
     }).catch(err => {
         console.error(err);

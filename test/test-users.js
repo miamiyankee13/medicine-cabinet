@@ -7,7 +7,7 @@ const faker = require('faker');
 const jwt = require('jsonwebtoken');
 
 //Import modules
-const { Strain, User } = require('../models');
+const { User } = require('../models');
 const { app, runServer, closeServer } = require('../server');
 const { JWT_SECRET, TEST_DATABASE_URL } = require('../config');
 
@@ -262,7 +262,7 @@ describe('/users endpoints', function() {
 
         });
 
-        //Login, create strain, add strain, retreive strains
+        //Login, create strain, add strain, & retreive strains
         it('Should login, create a strain, add a strain, & retreive strains', function() {
             let token;
             let strainId;
@@ -316,7 +316,7 @@ describe('/users endpoints', function() {
             });
         });
 
-        //Login, create strain, add strain, delete strain
+        //Login, create strain, add strain, & delete strain
         it('Should login, create a strain, add a strain, & delete a strain', function() {
             let token;
             let strainId;
