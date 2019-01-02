@@ -185,7 +185,7 @@ describe('/strains API resource', function() {
                     lastName
                 })
             }).then(function() {
-                return chai.request(app).post('/auth/login').set('authorization', `Bearer ${token}`).send({userName, password}).then(function(res) {
+                return chai.request(app).post('/auth/login').send({userName, password}).then(function(res) {
                     expect(res).to.have.status(200);
                     expect(res).to.be.a('object');
                     token = res.body.authToken
@@ -228,7 +228,7 @@ describe('/strains API resource', function() {
                     lastName
                 })
             }).then(function() {
-                return chai.request(app).post('/auth/login').set('authorization', `Bearer ${token}`).send({userName, password}).then(function(res) {
+                return chai.request(app).post('/auth/login').send({userName, password}).then(function(res) {
                     expect(res).to.have.status(200);
                     expect(res).to.be.a('object');
                     token = res.body.authToken
@@ -281,7 +281,7 @@ describe('/strains API resource', function() {
                     lastName
                 })
             }).then(function() {
-                return chai.request(app).post('/auth/login').set('authorization', `Bearer ${token}`).send({userName, password}).then(function(res) {
+                return chai.request(app).post('/auth/login').send({userName, password}).then(function(res) {
                     expect(res).to.have.status(200);
                     expect(res).to.be.a('object');
                     token = res.body.authToken
@@ -320,7 +320,7 @@ describe('/strains API resource', function() {
                     lastName
                 })
             }).then(function() {
-                return chai.request(app).post('/auth/login').set('authorization', `Bearer ${token}`).send({userName, password}).then(function(res) {
+                return chai.request(app).post('/auth/login').send({userName, password}).then(function(res) {
                     expect(res).to.have.status(200);
                     expect(res).to.be.a('object');
                     token = res.body.authToken
