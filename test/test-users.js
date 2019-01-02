@@ -17,6 +17,37 @@ const expect = chai.expect;
 //Enable use of chai-http testing methods
 chai.use(chaiHttp);
 
+//Create user & token
+const createUserAndLogin = () => {
+    const userName = 'exampleUser'
+    const password = 'examplePassword';
+    const firstName = 'Babe';
+    const lastName = 'Ruth';
+
+
+    return User.hashPassword(password).then(function (password) {
+        return User.create({
+            userName,
+            password,
+            firstName,
+            lastName
+        })
+    }).then(function () {
+        return chai.request(app).post('/auth/login')
+            // .set('authorization', `Bearer ${token}`)
+            .send({ userName, password }).then(function (res) {
+                expect(res).to.have.status(200);
+                expect(res).to.be.a('object');
+                const token = res.body.authToken
+                expect(token).to.be.a('string');
+                const payload = jwt.verify(token, JWT_SECRET, {
+                    algorithm: ['HS256']
+                });
+                return token
+            })
+    })
+}
+
 //Delete entire DB
 function tearDownDb() {
     console.warn('Deleting database');
@@ -214,26 +245,9 @@ describe('/users endpoints', function() {
 
         //Login, create strain, & add strain
         it('Should login, create a strain, & add a strain', function() {
-            let token;
             let strainId;
 
-            return User.hashPassword(password).then(function(password) {
-                return User.create({
-                    userName,
-                    password,
-                    firstName,
-                    lastName
-                })
-            }).then(function() {
-                return chai.request(app).post('/auth/login').send({userName, password}).then(function(res) {
-                    expect(res).to.have.status(200);
-                    expect(res).to.be.a('object');
-                    token = res.body.authToken
-                    expect(token).to.be.a('string');
-                    const payload = jwt.verify(token, JWT_SECRET, {
-                        algorithm: ['HS256']
-                    });
-                }).then(function() {
+            return createUserAndLogin().then(function(token) {
                     return chai.request(app).post('/strains').set('authorization', `Bearer ${token}`).send({
                         name: strainName, 
                         type: strainType, 
@@ -254,36 +268,13 @@ describe('/users endpoints', function() {
                         throw err;
                     }
                 });
-            }).catch(function(err) {
-                if (err instanceof chai.AssertionError) {
-                    throw err;
-                }
             });
-
-        });
 
         //Login, create strain, add strain, & retreive strains
         it('Should login, create a strain, add a strain, & retreive strains', function() {
-            let token;
             let strainId;
 
-            return User.hashPassword(password).then(function(password) {
-                return User.create({
-                    userName,
-                    password,
-                    firstName,
-                    lastName
-                })
-            }).then(function() {
-                return chai.request(app).post('/auth/login').send({userName, password}).then(function(res) {
-                    expect(res).to.have.status(200);
-                    expect(res).to.be.a('object');
-                    token = res.body.authToken
-                    expect(token).to.be.a('string');
-                    const payload = jwt.verify(token, JWT_SECRET, {
-                        algorithm: ['HS256']
-                    });
-                }).then(function() {
+            return createUserAndLogin().then(function(token) {
                     return chai.request(app).post('/strains').set('authorization', `Bearer ${token}`).send({
                         name: strainName, 
                         type: strainType, 
@@ -309,35 +300,13 @@ describe('/users endpoints', function() {
                         throw err;
                     }
                 });
-            }).catch(function(err) {
-                if (err instanceof chai.AssertionError) {
-                    throw err;
-                }
             });
-        });
 
         //Login, create strain, add strain, & delete strain
         it('Should login, create a strain, add a strain, & delete a strain', function() {
-            let token;
             let strainId;
 
-            return User.hashPassword(password).then(function(password) {
-                return User.create({
-                    userName,
-                    password,
-                    firstName,
-                    lastName
-                })
-            }).then(function() {
-                return chai.request(app).post('/auth/login').send({userName, password}).then(function(res) {
-                    expect(res).to.have.status(200);
-                    expect(res).to.be.a('object');
-                    token = res.body.authToken
-                    expect(token).to.be.a('string');
-                    const payload = jwt.verify(token, JWT_SECRET, {
-                        algorithm: ['HS256']
-                    });
-                }).then(function() {
+            return createUserAndLogin().then(function(token) {
                     return chai.request(app).post('/strains').set('authorization', `Bearer ${token}`).send({
                         name: strainName, 
                         type: strainType, 
@@ -362,12 +331,6 @@ describe('/users endpoints', function() {
                         throw err;
                     }
                 });
-            }).catch(function(err) {
-                if (err instanceof chai.AssertionError) {
-                    throw err;
-                }
             });
         });
-
     });
-});
