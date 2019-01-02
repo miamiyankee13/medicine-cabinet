@@ -264,9 +264,39 @@ function createNewStrain(name, type, flavor, description) {
     $.ajax(settings).then(() => {
         $('.js-message-success').text('Strain created successfully!');
         $('.js-message-success').prop('hidden', false);
+        $('.js-create-strain').prop('hidden', true);
+        getAllStrains();
+        getUserStrains();
     }).catch(err => {
         displayError(err.responseJSON.message);
     });
+}
+
+function editStrain(id, name, type, flavor, description) {
+    const settings = {
+        url: `/strains/${id}`,
+        headers: {"Authorization": `Bearer ${STATE.token}`},
+        data: JSON.stringify({
+            _id: id,
+            name: name,
+            type: type,
+            description: description,
+            flavor: flavor
+        }),
+        contentType: 'application/json',
+        dataType: 'json',
+        type: 'PUT'
+    }
+
+    $.ajax(settings).then(() => {
+        $('.js-message-success').text('Strain edited successfully!');
+        $('.js-message-success').prop('hidden', false);
+        $('.js-edit-strain').prop('hidden', true);
+        getAllStrains();
+        getUserStrains();
+    }).catch(err => {
+        displayError(err.responseJSON.message);
+    })
 }
 
 
@@ -319,6 +349,41 @@ function displayCurrentStrainDetails(strain) {
     $('.js-cabinet').prop('hidden', true);
     $('.js-single-strain').scrollTop(0);
     $('.js-single-strain').prop('hidden', false);
+}
+
+function displayEditStrain() {
+    const strainEditOptions = STATE.strains.map((strain, index) => renderStrainOptions(strain, index)).join('');
+    const strainEditHtml = `
+    <form>
+            <label for="strain-name">Strain</label>
+            <select id="strain-name">
+                ${strainEditOptions}
+            </select>
+
+            <label for="strain-name-edit">Name</label>
+            <input type="text" id="strain-name-edit" name="strain-name-edit">
+
+            <label for="strain-type-edit">Type</label>
+            <select id="strain-type-edit">
+                <option value="Sativa">Sativa</option>
+                <option value="Indica">Indica</option>
+                <option value="Hybrid">Hybrid</option>
+            </select>
+
+            <label for="strain-flavor-edit">Flavor</label>
+            <input type="text" id="strain-flavor-edit" name="strain-flavor-edit">
+
+            <label for="strain-description-edit">Description</label>
+            <textarea id="strain-description-edit" name="strain-description-edit" rows="4" cols="50">
+
+            </textarea>
+
+            <button class="js-edit-strain-btn btn" type="submit">Edit Strain</button>
+    </form>`;
+
+    $('.js-edit-strain').html(strainEditHtml);
+    $('.js-edit-strain').scrollTop(0);
+    $('.js-edit-strain').prop('hidden', false);
 }
 
 //Display error message
@@ -510,6 +575,7 @@ function submitAddToCabinet() {
 
         addStrainToCabinet(id);
         $('.js-message').prop('hidden', true);
+        $('.js-message-success').prop('hidden', true);
     });
 }
 
@@ -525,6 +591,24 @@ function submitRemoveFromCabinet() {
         const id = STATE.userStrains[index]._id;
         removeStrainFromCabinet(id);
         $('.js-message').prop('hidden', true);
+        $('.js-message-success').prop('hidden', true);
+    });
+}
+
+function submitEditStrain() {
+    $('body').on('click', '.js-edit-strain-btn', function(event) {
+        event.preventDefault();
+        const index = $('#strain-name').val();
+        const id = STATE.strains[index]._id;
+        const name = $('#strain-name-edit').val();
+        const type = $('#strain-type-edit').val();
+        const flavor = $('#strain-flavor-edit').val();
+        const description = $('#strain-description-edit').val();
+        editStrain(id, name, type, flavor, description)
+        $('#strain-name-edit').val('');
+        $('#strain-type-edit').val('');
+        $('#strain-flavor-edit').val('');
+        $('#strain-description-edit').val('');
     });
 }
 
@@ -597,6 +681,7 @@ function goToMyCabinet() {
         event.preventDefault();
         $('.js-single-strain').prop('hidden', true);
         $('.js-create-strain').prop('hidden', true);
+        $('.js-edit-strain').prop('hidden', true);
         $('.js-message').prop('hidden', true);
         $('.js-message-success').prop('hidden', true);
         getAllStrains();
@@ -617,9 +702,22 @@ function goToCreateStrainPage() {
         $('.js-single-strain').prop('hidden', true);
         $('.js-cabinet-form').prop('hidden', true);
         $('.js-cabinet').prop('hidden', true);
+        $('.js-edit-strain').prop('hidden', true);
         $('.js-message').prop('hidden', true);
         $('.js-create-strain').scrollTop(0);
         $('.js-create-strain').prop('hidden', false);
+    });
+}
+
+function goToEditStrainPage() {
+    $('.js-edit-strain-link').on('click', function(event) {
+        event.preventDefault();
+        $('.js-single-strain').prop('hidden', true);
+        $('.js-cabinet-form').prop('hidden', true);
+        $('.js-cabinet').prop('hidden', true);
+        $('.js-create-strain').prop('hidden', true);
+        $('.js-message').prop('hidden', true);
+        displayEditStrain();
     });
 }
 
@@ -660,6 +758,7 @@ function userLogOut() {
         $('.js-cabinet-form').prop('hidden', true);
         $('.js-cabinet').prop('hidden', true);
         $('.js-create-strain').prop('hidden', true);
+        $('.js-edit-strain').prop('hidden', true);
         $('.js-nav').prop('hidden', true);
         $('.js-login').prop('hidden', false);
         $('.js-intro').prop('hidden', false);
@@ -681,7 +780,9 @@ function handleMedicineCabinet() {
     submitRemoveComment();
     goToMyCabinet();
     goToCreateStrainPage();
+    goToEditStrainPage();
     submitCreateStrain();
+    submitEditStrain();
     userLogOut();
 }
 
