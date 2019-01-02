@@ -12,6 +12,7 @@ const STATE = {
 //Make login area & intro message visible
 $('.js-login').prop('hidden', false);
 $('.js-intro').prop('hidden', false);
+$('.test-credentials').prop('hidden', false);
 
 
 //API CALLS
@@ -85,6 +86,7 @@ function authenticateUser(userName, password) {
         $('.js-message').prop('hidden', true);
         $('.js-message-success').prop('hidden', true);
         $('.js-intro').prop('hidden', true);
+        $('.test-credentials').prop('hidden', true);
         $('.js-nav').prop('hidden', false);
         getAllStrains();
         getUserStrains();
@@ -762,6 +764,7 @@ function userLogOut() {
         $('.js-nav').prop('hidden', true);
         $('.js-login').prop('hidden', false);
         $('.js-intro').prop('hidden', false);
+        $('.test-credentials').prop('hidden', false);
         console.log(STATE);
     });
 }

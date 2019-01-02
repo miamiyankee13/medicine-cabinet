@@ -114,6 +114,10 @@ html, body {
     color: green;
 }
 
+.test-credentials {
+    color: red;
+}
+
 /*ELEMENTS*/
 html {
     background: url("images/cannabis-compressor.jpg") no-repeat center center fixed;
