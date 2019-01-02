@@ -117,7 +117,7 @@ function createUser(userName, password, firstName, lastName) {
         $('.js-message-success').prop('hidden', false);
         authenticateUser(userName, password);
     }).catch(err => {
-        displayError(`${err.responseJSON.message} (${err.responseJSON.location})`);
+        displayError(err.responseJSON.message);
     });
 }
 
