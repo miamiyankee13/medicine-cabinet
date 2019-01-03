@@ -325,7 +325,8 @@ function displayStrainDropDown() {
         <form>
             <label for="strain-select">Select a Strain</label>
             <select id="strain-select">
-            ${strainOptions}
+                <option value="">--Select a Strain--</option>
+                ${strainOptions}
             </select>
             <button class="js-add-btn btn" type="submit">Add Strain</button>
         </form>`;
@@ -373,6 +374,7 @@ function displayEditStrain() {
     <form>
             <label for="strain-name">Strain</label>
             <select id="strain-name">
+                <option value="">--Select a Strain--</option>
                 ${strainEditOptions}
             </select>
 
