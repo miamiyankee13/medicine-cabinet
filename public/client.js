@@ -256,6 +256,7 @@ function removeCommentFromStrain(id, commentId) {
 
 //POST strain name, type, flavor & description to DB
 //-display successful creation message
+//-retrieve & display cabinet
 function createNewStrain(name, type, flavor, description) {
     const settings = {
         url: '/strains',
@@ -282,6 +283,9 @@ function createNewStrain(name, type, flavor, description) {
     });
 }
 
+//PUT update strain name, type, flavor, and/or description
+//-display successful update message
+//-retrieve & display cabinet
 function editStrain(id, name, type, flavor, description) {
     const settings = {
         url: `/strains/${id}`,
@@ -309,9 +313,7 @@ function editStrain(id, name, type, flavor, description) {
     })
 }
 
-
 //DISPLAY FUNCTIONS
-
 
 //Display strain dropdown
 //-retrieve strain dropdown options from STATE
@@ -361,6 +363,10 @@ function displayCurrentStrainDetails(strain) {
     $('.js-single-strain').prop('hidden', false);
 }
 
+//Display edit strain area
+//-retrieve strain dropdown options from STATE
+//-create HTML
+//-display HTML
 function displayEditStrain() {
     const strainEditOptions = STATE.strains.map((strain, index) => renderStrainOptions(strain, index)).join('');
     const strainEditHtml = `
@@ -429,7 +435,7 @@ function renderCabinet(strain, index) {
 //Render current strain
 //-retrieve strain name, type, flavor, description 
 //-retrieve comments content & comments author, create remove button 
-//-compare comments author & current user from STATE, render remove button if equal 
+//-compare comments author & current user from session storage, render remove button if equal 
 //-render comments HTML 
 //-compare strain types & render neccessary HTML with classes for specific colors 
 //-render current strain HTML 
@@ -606,23 +612,6 @@ function submitRemoveFromCabinet() {
     });
 }
 
-function submitEditStrain() {
-    $('body').on('click', '.js-edit-strain-btn', function(event) {
-        event.preventDefault();
-        const index = $('#strain-name').val();
-        const id = STATE.strains[index]._id;
-        const name = $('#strain-name-edit').val();
-        const type = $('#strain-type-edit').val();
-        const flavor = $('#strain-flavor-edit').val();
-        const description = $('#strain-description-edit').val();
-        editStrain(id, name, type, flavor, description)
-        $('#strain-name-edit').val('');
-        $('#strain-type-edit').val('');
-        $('#strain-flavor-edit').val('');
-        $('#strain-description-edit').val('');
-    });
-}
-
 //Render current strain details area on click
 //-retrieve strain index from data-index 
 //-retrieve strain from STATE 
@@ -644,7 +633,7 @@ function goToStrainDetails() {
 //Add comment to strain on click
 //-retrieve strain id from STATE 
 //-retrieve content from input 
-//-retrieve author from STATE 
+//-retrieve author from session storage
 //-check if content is blank, display message if true
 //-add comment 
 //-hide message 
@@ -720,6 +709,9 @@ function goToCreateStrainPage() {
     });
 }
 
+//Render edit strain area on click
+//-hide single strain, cabinet form, cabinet, & message
+//-display edit strain
 function goToEditStrainPage() {
     $('.js-edit-strain-link').on('click', function(event) {
         event.preventDefault();
@@ -749,9 +741,32 @@ function submitCreateStrain() {
     });
 }
 
+//Edit strain on click
+//-retrieve strain index from dropdown
+//-retrieve strain id from STATE
+//-retrieve name, type, flavor, & description from inputs
+//-edit strain & clear inputs
+function submitEditStrain() {
+    $('body').on('click', '.js-edit-strain-btn', function(event) {
+        event.preventDefault();
+        const index = $('#strain-name').val();
+        const id = STATE.strains[index]._id;
+        const name = $('#strain-name-edit').val();
+        const type = $('#strain-type-edit').val();
+        const flavor = $('#strain-flavor-edit').val();
+        const description = $('#strain-description-edit').val();
+        editStrain(id, name, type, flavor, description)
+        $('#strain-name-edit').val('');
+        $('#strain-type-edit').val('');
+        $('#strain-flavor-edit').val('');
+        $('#strain-description-edit').val('');
+    });
+}
+
 //Render login area on click
-//-Remove token, currentUser, currentStrain, & userStrains from STATE
-//-Clear & remove interval from STATE
+//-remove currentStrain & userStrains from STATE
+//-clear & remove interval from STATE
+//-clear session storage
 //-hide everything besides login area 
 //-display login area 
 function userLogOut() {
