@@ -117,6 +117,7 @@ html, body {
 
 .test-credentials {
     color: red;
+    margin-top: 5px;
 }
 
 .intro {

@@ -51,7 +51,10 @@
 
             <label for="password">Password</label>
             <input type="password" id="password" name="password">
-
+            <div class="test-credentials" aria-live="assertive" hidden>
+              <p>username: "testuser"</p>  
+              <p>password: "testpassword"</p>
+            </div>
             <button class="js-login-btn btn" type="submit">Login</button>
             <button class="js-register-btn btn">Register</button>
           </form>
@@ -124,10 +127,6 @@
       <br>
 
       <footer role="contentinfo" class="flex-footer">
-        <div class="test-credentials" aria-live="assertive" hidden>
-          <p>username: "testuser"</p>  
-          <p>password: "testpassword"</p>
-        </div>
         <p>FOR USE BY ADULTS ONLY. AGES 21 & OLDER</p>
         <p><small>Copyright &copy; 2019 Anthony D'Amico</small></p>
       </footer>
