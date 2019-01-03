@@ -578,6 +578,7 @@ function goBackToLogin() {
         event.preventDefault(); 
         $('.js-message').prop('hidden', true);
         $('.js-register').prop('hidden', true);
+        $('.js-login').scrollTop(0);
         $('.js-login').prop('hidden', false);
     });
 }
