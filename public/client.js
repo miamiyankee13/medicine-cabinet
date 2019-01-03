@@ -526,6 +526,7 @@ function goToUserRegister() {
         event.preventDefault();
         $('.js-login').prop('hidden', true);
         $('.js-message').prop('hidden', true);
+        $('.js-register').scrollTop(0);
         $('.js-register').prop('hidden', false);
     });
 }
