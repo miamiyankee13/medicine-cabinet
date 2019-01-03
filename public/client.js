@@ -67,8 +67,8 @@ function getUserStrains() {
 }
 
 //POST userName & password for authorization/login
-//-save JWT token to STATE
-//-save userName to STATE
+//-save JWT token to session storage
+//-save userName to session storage
 //-save token refresh interval to STATE
 //-hide login, register, & messages
 //-display nav bar
