@@ -17,7 +17,7 @@ function checkToken() {
         getAllStrains();
         getUserStrains();
     } else {
-        $('.js-login').prop('hidden', false);
+        $('.js-landing').prop('hidden', false);
         $('.js-intro').prop('hidden', false);
         $('.test-credentials').prop('hidden', false);
     }
@@ -557,7 +557,16 @@ function submitCreateUser() {
     });
 }
 
-//Render login area on click
+//Render login area from landing page on click
+function goToLogin() {
+    $('.js-go-to-login-btn').on('click', function(event) {
+        event.preventDefault();
+        $('.js-landing').prop('hidden', true);
+        $('.js-login').prop('hidden', false);
+    });
+}
+
+//Render login area from register page on click
 //-hide register area & message 
 //-display login area 
 function goBackToLogin() {
@@ -785,7 +794,7 @@ function userLogOut() {
         $('.js-create-strain').prop('hidden', true);
         $('.js-edit-strain').prop('hidden', true);
         $('.js-nav').prop('hidden', true);
-        $('.js-login').prop('hidden', false);
+        $('.js-landing').prop('hidden', false);
         $('.js-intro').prop('hidden', false);
         $('.test-credentials').prop('hidden', false);
         console.log(STATE);
@@ -799,6 +808,7 @@ function handleMedicineCabinet() {
     submitUserLogin();
     goToUserRegister();
     submitCreateUser();
+    goToLogin();
     goBackToLogin();
     submitAddToCabinet();
     submitRemoveFromCabinet();
