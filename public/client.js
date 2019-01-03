@@ -2,17 +2,26 @@
 //Declare golbal STATE object
 const STATE = {
     strains: null,
-    currentUser: null,
     userStrains: null,
     currentStrain: null,
     interval: null
 }
 
-//Make login area & intro message visible
-$('.js-login').prop('hidden', false);
-$('.js-intro').prop('hidden', false);
-$('.test-credentials').prop('hidden', false);
-
+//Check if token exists
+//-if so, show navigation & user cabinet
+//-if not, render login page
+function checkToken() {
+    const token = sessionStorage.getItem('token');
+    if (token) {
+        $('.js-nav').prop('hidden', false);
+        getAllStrains();
+        getUserStrains();
+    } else {
+        $('.js-login').prop('hidden', false);
+        $('.js-intro').prop('hidden', false);
+        $('.test-credentials').prop('hidden', false);
+    }
+}
 
 //API CALLS
 
@@ -78,8 +87,7 @@ function authenticateUser(userName, password) {
 
     $.ajax(settings).then(results => {
         sessionStorage.setItem('token', results.authToken);
-        console.log(sessionStorage.getItem('token'));
-        STATE.currentUser = userName;
+        sessionStorage.setItem('currentUser', userName);
         STATE.interval = window.setInterval(refreshToken, 600 * 1000);
         $('.js-login').prop('hidden', true);
         $('.js-register').prop('hidden', true);
@@ -433,9 +441,10 @@ function renderCurrentStrain(strain) {
     const comments = strain.comments.map((comment, index) => {
         const content = comment.content;
         const author = comment.author;
+        const currentUser = sessionStorage.getItem('currentUser');
         let removeButton;
         
-        if (STATE.currentUser === author) {
+        if (currentUser === author) {
             removeButton = `<button class="js-remove-comment-btn btn" data-index="${index}">Remove</button>`
         } else {
             removeButton = '';
@@ -644,7 +653,7 @@ function submitUserComment() {
         event.preventDefault();
         const id = STATE.currentStrain._id;
         const content = $('#add-comment').val();
-        const author = STATE.currentUser;
+        const author = sessionStorage.getItem('currentUser');
 
         if (content === '' || content === ' ') {
             $('.js-message').text('Comment is blank. Please add some content');
@@ -748,7 +757,6 @@ function submitCreateStrain() {
 function userLogOut() {
     $('.js-logout').on('click', function(event) {
         event.preventDefault();
-        STATE.currentUser = null;
         STATE.currentStrain = null;
         STATE.userStrains = null;
         window.clearInterval(STATE.interval);
@@ -772,6 +780,7 @@ function userLogOut() {
 //DOCUMENT READY FUNCTION
 
 function handleMedicineCabinet() {
+    checkToken();
     submitUserLogin();
     goToUserRegister();
     submitCreateUser();
