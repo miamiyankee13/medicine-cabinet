@@ -734,6 +734,7 @@ function goToEditStrainPage() {
         $('.js-cabinet').prop('hidden', true);
         $('.js-create-strain').prop('hidden', true);
         $('.js-message').prop('hidden', true);
+        $('.js-message-success').prop('hidden', true);
         displayEditStrain();
     });
 }
