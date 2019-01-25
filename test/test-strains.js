@@ -89,6 +89,11 @@ describe('/strains API resource', function() {
         return tearDownDb().then(seedStrainData);
     });
 
+    //Delete databse after each test
+    afterEach(function() {
+        return tearDownDb();
+    });
+
     //Close server after tests run
     after(function() {
         return closeServer();

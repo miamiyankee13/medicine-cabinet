@@ -73,6 +73,11 @@ describe('/users endpoints', function() {
         return runServer(TEST_DATABASE_URL);
     });
 
+    //Delete database before each test
+    beforeEach(function() {
+        return tearDownDb();
+    })
+
     //Delete database after each test
     afterEach(function() {
         return tearDownDb();
