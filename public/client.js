@@ -322,9 +322,9 @@ function editStrain(id, name, type, flavor, description) {
 function displayStrainDropDown() {
     const strainOptions = STATE.strains.map((strain, index) => renderStrainOptions(strain, index)).join('');
     const strainDropDownHtml = `
-        <form>
+        <form class="js-strain-select-form">
             <label for="strain-select">Select a Strain</label>
-            <select id="strain-select">
+            <select id="strain-select" required>
                 <option value="">--Select a Strain--</option>
                 ${strainOptions}
             </select>
@@ -371,28 +371,28 @@ function displayCurrentStrainDetails(strain) {
 function displayEditStrain() {
     const strainEditOptions = STATE.strains.map((strain, index) => renderStrainOptions(strain, index)).join('');
     const strainEditHtml = `
-    <form>
+    <form class="js-strain-edit-form">
             <label for="strain-name">Strain</label>
-            <select id="strain-name">
+            <select id="strain-name" required>
                 <option value="">--Select a Strain--</option>
                 ${strainEditOptions}
             </select>
 
             <label for="strain-name-edit">Name</label>
-            <input type="text" id="strain-name-edit" name="strain-name-edit">
+            <input type="text" id="strain-name-edit" name="strain-name-edit" required>
 
             <label for="strain-type-edit">Type</label>
-            <select id="strain-type-edit">
+            <select id="strain-type-edit" required>
                 <option value="Sativa">Sativa</option>
                 <option value="Indica">Indica</option>
                 <option value="Hybrid">Hybrid</option>
             </select>
 
             <label for="strain-flavor-edit">Flavor</label>
-            <input type="text" id="strain-flavor-edit" name="strain-flavor-edit">
+            <input type="text" id="strain-flavor-edit" name="strain-flavor-edit" required>
 
             <label for="strain-description-edit">Description</label>
-            <textarea id="strain-description-edit" name="strain-description-edit" rows="4" cols="50">
+            <textarea id="strain-description-edit" name="strain-description-edit" rows="4" cols="50" required>
 
             </textarea>
 
@@ -508,7 +508,7 @@ function renderCurrentStrain(strain) {
 //-authenticate user 
 //-clear inputs
 function submitUserLogin() {
-    $('.js-login-btn').on('click', function(event) {
+    $('.js-login-form').on('submit', function(event) {
         event.preventDefault();
         const userName = $('#username').val();
         const password = $('#password').val();
@@ -537,7 +537,7 @@ function goToUserRegister() {
 //-create user 
 //-clear inputs
 function submitCreateUser() {
-    $('.js-create-btn').on('click', function(event) {
+    $('.js-register-form').on('submit', function(event) {
         event.preventDefault();
         const userName = $('#username-create').val();
         const password = $('#password-create').val();
@@ -590,7 +590,7 @@ function goBackToLogin() {
 //-add strain to cabinet 
 //-hide message 
 function submitAddToCabinet() {
-    $('body').on('click', '.js-add-btn', function(event) {
+    $('body').on('submit', '.js-strain-select-form', function(event) {
         event.preventDefault();
         const index = $('#strain-select').val();
         const id = STATE.strains[index]._id;
@@ -718,6 +718,7 @@ function goToCreateStrainPage() {
         $('.js-cabinet').prop('hidden', true);
         $('.js-edit-strain').prop('hidden', true);
         $('.js-message').prop('hidden', true);
+        $('.js-message-success').prop('hidden', true);
         $('.js-create-strain').scrollTop(0);
         $('.js-create-strain').prop('hidden', false);
     });
@@ -743,7 +744,7 @@ function goToEditStrainPage() {
 //-retrieve strain name, type, flavor, & description from inputs 
 //-create strain & clear inputs 
 function submitCreateStrain() {
-    $('.js-create-strain-btn').on('click', function(event) {
+    $('.js-create-strain-form').on('submit', function(event) {
         event.preventDefault();
         const name = $('#strain-name-create').val();
         const type = $('#strain-type-create').val();
@@ -762,7 +763,7 @@ function submitCreateStrain() {
 //-retrieve name, type, flavor, & description from inputs
 //-edit strain & clear inputs
 function submitEditStrain() {
-    $('body').on('click', '.js-edit-strain-btn', function(event) {
+    $('body').on('submit', '.js-strain-edit-form', function(event) {
         event.preventDefault();
         const index = $('#strain-name').val();
         const id = STATE.strains[index]._id;

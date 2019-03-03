@@ -45,12 +45,12 @@
           <button class="js-go-to-login-btn btn">Go to Login</button>
         </section>
         <section role="region" class="js-login login" aria-live="assertive" hidden>
-          <form>
+          <form class="js-login-form">
             <label for="username">Username</label>
-            <input type= "text" id="username" name="username">
+            <input type= "text" id="username" name="username" required>
 
             <label for="password">Password</label>
-            <input type="password" id="password" name="password">
+            <input type="password" id="password" name="password" required>
             <div class="test-credentials" aria-live="assertive" hidden>
               <p>username: "testuser"</p>  
               <p>password: "testpassword"</p>
@@ -61,21 +61,21 @@
         </section>
 
         <section role="region" class="js-register" aria-live="assertive" hidden>
-          <form>
+          <form class="js-register-form">
             <label for="username-create">Username</label>
-            <input type="text" id="username-create" name="username-create">
+            <input type="text" id="username-create" name="username-create" required>
 
             <label for="password-create">Password (must be 10 characters long)</label>
-            <input type="password" id="password-create" name="password-create">
+            <input type="password" id="password-create" name="password-create" required>
 
             <label for="password-check">Verify Password</label>
-            <input type="password" id="password-check" name="password-check">
+            <input type="password" id="password-check" name="password-check" required>
 
             <label for="firstname-create">First Name</label>
-            <input type="text" id="firstname-create" name="firstname-create">
+            <input type="text" id="firstname-create" name="firstname-create" required>
 
             <label for="lastname-create">Last Name</label>
-            <input type="text" id="lastname-create" name="lastname-create">
+            <input type="text" id="lastname-create" name="lastname-create" required>
 
             <button class="js-create-btn btn" type="submit">Register</button>
             <button class="js-login-return-btn btn">Back to Login</button>
@@ -83,22 +83,22 @@
         </section>
 
         <section role="region" class="js-create-strain" aria-live="assertive" hidden>
-          <form>
+          <form class="js-create-strain-form">
             <label for="strain-name-create">Name</label>
-            <input type="text" id="strain-name-create" name="strain-name-create">
+            <input type="text" id="strain-name-create" name="strain-name-create" required>
 
             <label for="strain-type-create">Type</label>
-            <select id="strain-type-create">
+            <select id="strain-type-create" required>
               <option value="Sativa">Sativa</option>
               <option value="Indica">Indica</option>
               <option value="Hybrid">Hybrid</option>
             </select>
 
             <label for="strain-flavor-create">Flavor</label>
-            <input type="text" id="strain-flavor-create" name="strain-flavor-create">
+            <input type="text" id="strain-flavor-create" name="strain-flavor-create" required>
 
             <label for="strain-description-create">Description</label>
-            <textarea id="strain-description-create" name="strain-description-create" rows="4" cols="50">
+            <textarea id="strain-description-create" name="strain-description-create" rows="4" cols="50" required>
 
             </textarea>
 
