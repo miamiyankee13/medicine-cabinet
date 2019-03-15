@@ -24,7 +24,8 @@ Users can store strains in the cabinet, allowing them to view strain details and
 * MongoDB
 * Mongoose
 * JSON Web Token (JWT)
-* Passport
+* Mocha
+* Chai
 
 ## Medicine Cabinet API Documentation
 [API Documentation](https://miamiyankee13.github.io/api-docs-medicine-cabinet/#introduction)
