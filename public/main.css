@@ -85,7 +85,9 @@ html, body {
 
 .nav-item {
     list-style-type: none;
-    margin: 25px;
+    margin-left: 25px;
+    margin-right: 25px;
+    margin-bottom: 5px;
 }
 
 .detail-heading {
@@ -196,6 +198,7 @@ label {
 a {
     color: black;
     font-weight: bold;
+    text-decoration: none;
 }
 
 a:hover {
@@ -217,6 +220,7 @@ small {
     }
 
     .nav-item {
-        margin: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
     }
 }
