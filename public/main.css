@@ -90,6 +90,10 @@ html, body {
     margin-bottom: 5px;
 }
 
+.nav-item a {
+    text-decoration: none;
+}
+
 .detail-heading {
     text-decoration: underline;
 }
@@ -198,7 +202,6 @@ label {
 a {
     color: black;
     font-weight: bold;
-    text-decoration: none;
 }
 
 a:hover {
