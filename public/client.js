@@ -565,6 +565,7 @@ function goToLogin() {
     $('.js-go-to-login-btn').on('click', function(event) {
         event.preventDefault();
         $('.js-landing').prop('hidden', true);
+        $('.js-intro').prop('hidden', true);
         $('.js-login').scrollTop(0);
         $('.js-login').prop('hidden', false);
     });
