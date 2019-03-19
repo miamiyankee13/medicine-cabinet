@@ -1,5 +1,5 @@
 'use strict'
-//Declare golbal STATE object
+//Declare global STATE object
 const STATE = {
     strains: null,
     userStrains: null,
@@ -41,8 +41,6 @@ function getAllStrains() {
     }).catch(err => {
         displayError(err.responseJSON.message);
     });
-
-    console.log(STATE);
 }
 
 //GET user specific strains from DB
@@ -62,8 +60,6 @@ function getUserStrains() {
     }).catch(err => {
         displayError(err.responseJSON.message);
     });
-    
-    console.log(STATE);
 }
 
 //POST userName & password for authorization/login
@@ -101,8 +97,6 @@ function authenticateUser(userName, password) {
     }).catch(err => {
         displayError(err.responseText);
     });
-
-    console.log(STATE);
 }
 
 //POST userName, password, firstName, & lastName to DB
@@ -146,8 +140,6 @@ function refreshToken() {
     }).catch(err => {
         displayError(err.responseText);
     });
-
-    console.log(STATE);
 }
 
 //PUT specific strain in user cabinet in DB
@@ -231,8 +223,6 @@ function addCommentToStrain(id, content, author) {
     }).catch(err => {
         displayError(err.responseJSON.message);
     });
-
-    console.log(STATE);
 }
 
 //DELETE comment from strain in DB
@@ -249,9 +239,7 @@ function removeCommentFromStrain(id, commentId) {
         getCurrentStrain();
     }).catch(err => {
         displayError(err.responseJSON.message);
-    })
-
-    console.log(STATE);
+    });
 }
 
 //POST strain name, type, flavor & description to DB
@@ -561,6 +549,7 @@ function submitCreateUser() {
 }
 
 //Render login area from landing page on click
+//-hide landing page & intro message
 function goToLogin() {
     $('.js-go-to-login-btn').on('click', function(event) {
         event.preventDefault();
@@ -641,7 +630,6 @@ function goToStrainDetails() {
         STATE.currentStrain = strain;
         displayCurrentStrainDetails(strain);
         $('.js-message').prop('hidden', true);
-        console.log(STATE);
     });
 }
 
@@ -805,7 +793,6 @@ function userLogOut() {
         $('.js-landing').prop('hidden', false);
         $('.js-intro').prop('hidden', false);
         $('.test-credentials').prop('hidden', false);
-        console.log(STATE);
     });
 }
 
